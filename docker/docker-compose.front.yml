@@ -1,0 +1,18 @@
+services:
+  gamler-front-prod:
+    image: gamler-front-image
+    container_name: gamler-front-container
+    restart: no
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - '${DOCKER_IP}:${DOCKER_PORT}:3000'
+    networks:
+      - gamler-front-container
+
+networks:
+  gamler-front-container:
+    driver: bridge

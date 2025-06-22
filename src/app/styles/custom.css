@@ -1,0 +1,24 @@
+@theme {
+  --color-epta: rgb(255, 0, 153);
+
+  --color-uiPrimaryBg: var(--uiPrimaryBg);
+  --color-uiSecondaryBg: var(--uiSecondaryBg);
+
+  --color-uiPrimaryText: var(--uiPrimaryText);
+  --color-uiSecondaryText: var(--uiSecondaryText);
+
+
+  --breakpoint-mq1440: 1440px;
+}
+
+@layer base {
+
+  :root {
+    --uiPrimaryBg: rgb(255, 255, 255);
+    --uiSecondaryBg: rgb(0, 0, 0);
+
+    --uiPrimaryText: rgb(31, 29, 29);
+    --uiSecondaryText: rgb(0, 0, 0);
+
+  }
+}
