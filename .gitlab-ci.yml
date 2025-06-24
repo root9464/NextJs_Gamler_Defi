@@ -23,6 +23,7 @@ Deploy to dev:
       - main
    script:
       #- mv .env.dev .env
+      - yarn config set registry https://registry.npmjs.org
       - yarn install
       - yarn build
       - rsync --exclude '.git'  --exclude '.gitlab-ci.yml'  -avzh . /www/gamler/gamler_micro
