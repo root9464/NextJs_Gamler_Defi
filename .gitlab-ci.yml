@@ -20,8 +20,7 @@ Deploy to dev:
    tags:
       - atmadev
    only:
-      - master
-      - test
+      - main
    script:
       #- mv .env.dev .env
       - yarn install
