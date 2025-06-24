@@ -27,8 +27,8 @@ Deploy to dev:
       - yarn install
       - yarn build
       - rsync --exclude '.git'  --exclude '.gitlab-ci.yml'  -avzh . /www/gamler/gamler_micro
-      #- sudo systemctl stop gamlermicro
-      #- sudo systemctl start gamlermicro
+      - sudo systemctl stop gamlermicro
+      - sudo systemctl start gamlermicro
 
 #Deploy to prod:
 #   stage: deploy
