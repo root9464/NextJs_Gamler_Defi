@@ -40,8 +40,6 @@ const REFERRAL_PROGRAM_DATA = [
 
 export const DescWorkProgram = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  console.log(isOpen);
-
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger

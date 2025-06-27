@@ -1,7 +1,7 @@
 'use client';
+import HelperIcon from '@/assets/svg/helper-symbol.svg';
 import { Button } from '@/components/ui/button';
 import { useJettonWallet } from '@/shared/hooks/api/useJettonWallet';
-import HelperIcon from '@/assets/svg/helper-symbol.svg';
 import { useTonAddress } from '@tonconnect/ui-react';
 
 export const CurrentBalance = () => {
@@ -23,12 +23,14 @@ export const CurrentBalance = () => {
             {(Number(jettonWallet?.balance) / 10 ** jettonWallet?.jetton.decimals).toFixed(2)} Gamler
           </p>
         )}
-        {isLoadingJettonWallets && <p className='text-sm text-black/85'>Загрузка...</p>}
-        {isErrorJettonWallets && <p className='text-sm text-black/85'>Ошибка загрузки баланса</p>}
-        {!address && !jettonWallet && <p className='text-sm text-black/85'>0 Gamler</p>}
+        {isLoadingJettonWallets && <p className='text-sm font-bold text-black/85'>Загрузка...</p>}
+        {isErrorJettonWallets && <p className='text-sm font-bold text-black/85'>Ошибка загрузки баланса</p>}
+        {!address && !jettonWallet && <p className='text-sm font-bold text-black/85'>0 Gamler</p>}
       </div>
       <div className='flex flex-row items-center gap-2.5'>
-        <Button intent='outline'>Вывести</Button>
+        <Button intent='outline' size='sm'>
+          Вывести
+        </Button>
         <HelperIcon />
       </div>
     </div>

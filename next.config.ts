@@ -1,4 +1,3 @@
-import { transform } from '@formatjs/ts-transformer';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -12,44 +11,63 @@ const nextConfig: NextConfig = {
   compress: true,
 
   webpack(config) {
-    // Grab the existing rule that handles SVG imports
-    // @ts-ignore
-    const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const fileLoaderRule = config.module.rules.find((rule: any) => rule.test?.test?.('.svg'));
 
     config.module.rules.push(
-      // Reapply the existing rule, but only for svg imports ending in ?url
       {
         ...fileLoaderRule,
         test: /\.svg$/i,
         resourceQuery: /url/, // *.svg?url
       },
-      // Convert all other *.svg imports to React components
       {
         test: /\.svg$/i,
         issuer: fileLoaderRule.issuer,
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
         use: ['@svgr/webpack'],
       },
-      {
-        test: /\.tsx?$/,
-        loader: 'ts-loader', // or 'next-babel-loader'
-        options: {
-          transpileOnly: true,
-          // make sure not to set `transpileOnly: true` here, otherwise it will not work
-          getCustomTransformers: () => ({
-            before: [
-              transform({
-                overrideIdFn: '[sha512:contenthash:base64:6]',
-              }),
-            ],
-          }),
-        },
-      },
     );
 
-    // Modify the file loader rule to ignore *.svg, since we have it handled now.
     fileLoaderRule.exclude = /\.svg$/i;
 
+    config.optimization.splitChunks = {
+      chunks: 'all',
+      // minSize: 20000,
+      // maxSize: 244000,
+      // minChunks: 1,
+      // maxAsyncRequests: 30,
+      // maxInitialRequests: 30,
+      // enforceSizeThreshold: 50000,
+      cacheGroups: {
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+          name: 'react-core',
+          chunks: 'all',
+          priority: 50,
+          enforce: true,
+        },
+        ton: {
+          test: /[\\/]node_modules[\\/](@ton\/core|@ton\/crypto)[\\/]/,
+          name: 'ton-libs',
+          chunks: 'all',
+          priority: 10,
+        },
+        common: {
+          minChunks: 3,
+          name: 'common',
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+      },
+    };
+
+    config.optimization.chunkIds = 'deterministic';
+    config.optimization.runtimeChunk = 'single';
+
+    config.experiments = {
+      ...config.experiments,
+      topLevelAwait: true,
+    };
     return config;
   },
 

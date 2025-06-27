@@ -7,6 +7,7 @@
   --color-uiPrimaryText: var(--uiPrimaryText);
   --color-uiSecondaryText: var(--uiSecondaryText);
 
+  --color-uiPrimaryMuted: var(--uiPrimaryMuted);
 
   --breakpoint-mq1440: 1440px;
 }
@@ -17,8 +18,10 @@
     --uiPrimaryBg: rgb(255, 255, 255);
     --uiSecondaryBg: rgb(0, 0, 0);
 
-    --uiPrimaryText: rgb(31, 29, 29);
+    --uiPrimaryText: rgba(0, 0, 0, 0.85);
     --uiSecondaryText: #1890FF;
+
+    --uiPrimaryMuted: rgb(0, 12, 121);
 
   }
 }

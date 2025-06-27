@@ -13,5 +13,9 @@ export const WalletConnectButton = () => {
     }
     tonConnectUI.disconnect();
   };
-  return <Button onClick={handleConnectWallet}>{address ? sliceAddress : 'Подключить кошелек'}</Button>;
+  return (
+    <Button className='bg-blue-500 hover:bg-blue-500/85' onClick={handleConnectWallet}>
+      {address ? sliceAddress : 'Подключить кошелек'}
+    </Button>
+  );
 };
