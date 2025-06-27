@@ -17,6 +17,19 @@
     border-color: var(--border, currentColor);
   }
 
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+  }
+
   * {
     text-rendering: optimizeLegibility;
     scrollbar-width: thin;
@@ -36,25 +49,14 @@
   body {
     @apply bg-uiPrimaryBg text-uiPrimaryText no-underline w-full min-h-screen h-full;
   }
+}
 
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--border, currentColor);
+@layer components {
+  .heading-1 {
+    @apply text-lg font-medium text-black/85;
   }
 
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 4px;
+  .title-1 {
+    @apply text-xs font-normal text-black/60;
   }
 }

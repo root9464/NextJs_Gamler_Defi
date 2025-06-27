@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "ui:add": "bunx @intentui/cli@latest add"
+    "ui:add": "npx @intentui/cli@latest add"
   },
   "dependencies": {
     "@intentui/icons": "^1.11.0",
