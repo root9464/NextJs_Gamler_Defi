@@ -10,6 +10,7 @@
     "ui:add": "npx @intentui/cli@latest add"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.2",
     "@intentui/icons": "^1.11.0",
     "@next/eslint-plugin-next": "^15.3.4",
     "@react-aria/utils": "^3.29.1",
@@ -20,12 +21,14 @@
     "@ton/core": "^0.61.0",
     "@ton/crypto": "^3.3.0",
     "@tonconnect/ui-react": "^2.1.0",
+    "antd": "^5.26.2",
     "axios": "^1.10.0",
     "clsx": "^2.1.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
+    "motion": "^12.19.2",
     "next": "15.3.4",
     "next-themes": "^0.4.6",
     "prettier": "^3.5.3",
