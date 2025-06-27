@@ -10,7 +10,7 @@ const usePay = (authorId: number) => {
   const address = useTonAddress();
   const { data: jettonWallets, isError: isErrorJettonWallet } = useJettonWallet({ address });
   if (isErrorJettonWallet) throw new Error('Error fetching jetton wallet');
-  const jettonWallet = jettonWallets?.balances.find((b) => b.jetton.symbol === 'FROGE');
+  const jettonWallet = jettonWallets?.balances.find((b) => b.jetton.symbol === 'GMLR');
   const { mutate: deleteOrder } = useDeletePaymentOrder(authorId);
 
   const payProcess = async (cell: string, commission_count: number) => {
