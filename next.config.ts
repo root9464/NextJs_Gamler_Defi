@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
     gzipSize: true,
     webpackMemoryOptimizations: true,
   },
-  swcMinify: true,
   reactStrictMode: true,
   compress: true,
 
