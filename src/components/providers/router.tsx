@@ -8,7 +8,7 @@ declare module 'react-aria-components' {
   }
 }
 
-export const RouterProvider = ({ children }: Readonly<{ children: ReactNode }>) => {
+export function RouterProvider({ children }: Readonly<{ children: ReactNode }>) {
   const router = useRouter();
   return <ReactAriaRouterProvider navigate={router.push}>{children}</ReactAriaRouterProvider>;
-};
+}

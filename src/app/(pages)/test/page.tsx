@@ -1,3 +1,9 @@
+import { PageFlow } from '@components/layouts/page-flow';
+
 export default function TestPage() {
-  return <div>TestPage</div>;
+  return (
+    <PageFlow>
+      <div>TestPage</div>
+    </PageFlow>
+  );
 }

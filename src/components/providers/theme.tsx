@@ -1,9 +1,8 @@
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { ReactNode } from 'react';
+import { ThemeProvider as NextThemesProvider, type ThemeProviderProps } from 'next-themes';
 
-export const ThemeProvider = ({ children, ...props }: Readonly<{ children: ReactNode }>) => {
+export const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
   return (
-    <NextThemesProvider enableSystem storageKey='justd-theme' defaultTheme='light' {...props}>
+    <NextThemesProvider enableSystem storageKey='intentui-theme' {...props}>
       {children}
     </NextThemesProvider>
   );

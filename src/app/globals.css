@@ -1,6 +1,8 @@
 @import "tailwindcss";
+@plugin "tailwindcss-react-aria-components";
 @import "tw-animate-css";
-@import './styles/stone.css';
+
+@import './styles/theme.css';
 @import './styles/custom.css';
 
 @variant dark (&:is(.dark *));
@@ -17,7 +19,7 @@
 
   * {
     text-rendering: optimizeLegibility;
-    scrollbar-width: none;
+    scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
   }
 
@@ -32,6 +34,27 @@
   }
 
   body {
-    @apply bg-uiPrimaryBg text-uiPrimaryText no-underline w-full min-h-screen h-full
+    @apply bg-uiPrimaryBg text-uiPrimaryText no-underline w-full min-h-screen h-full;
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--border, currentColor);
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
   }
 }

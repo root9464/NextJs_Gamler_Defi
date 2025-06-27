@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "ui:add": "bunx @intentui/cli@latest add"
   },
   "dependencies": {
+    "@intentui/icons": "^1.11.0",
     "@next/eslint-plugin-next": "^15.3.4",
     "@react-aria/utils": "^3.29.1",
     "@react-stately/utils": "^3.10.7",
