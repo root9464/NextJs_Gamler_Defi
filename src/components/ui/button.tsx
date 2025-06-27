@@ -15,7 +15,7 @@ const buttonStyles = tv({
   variants: {
     intent: {
       primary:
-        'bg-[#007AFF] hover:bg-[#4096FF] active:bg-[#007AFF] pressed:bg-[#0958d9] text-uiPrimaryText w-fit h-fit shadow-[0_2px_0_rgba(5,145,255,0.1)]',
+        'bg-[#007AFF] hover:bg-[#4096FF] active:bg-[#007AFF] pressed:bg-[#0958d9] text-uiSecondaryText w-fit h-fit shadow-[0_2px_0_rgba(5,145,255,0.1)]',
       secondary:
         '[--btn-bg:var(--color-secondary)] [--btn-fg:var(--color-secondary-fg)] [--btn-icon:var(--color-muted-fg)] [--btn-outline:var(--color-secondary-fg)] [--btn-overlay:var(--color-secondary)]/85 [--btn-ring:var(--color-muted-fg)]/20',
       warning:

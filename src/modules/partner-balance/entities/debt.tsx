@@ -42,10 +42,10 @@ export const Debt = () => {
     <div className='flex flex-row items-center justify-between gap-5'>
       <div className='flex flex-col items-center justify-center gap-2.5'>
         <p className='text-sm text-black/85'>Задолженость</p>
-        {isSuccessDebt && debt && <p className='text-lg font-bold text-black/85'>{debt} Gamler</p>}
-        {isLoadingDebt && <p className='text-sm font-bold text-black/85'>Загрузка...</p>}
-        {isErrorDebt && <p className='text-sm font-bold text-black/85'>Ошибка загрузки задолжености</p>}
-        {!account?.user_id && !debt && <p className='text-sm font-bold text-black/85'>0 Gamler</p>}
+        {isSuccessDebt && debt && <p className='text-lg font-bold text-red-600'>{debt} Gamler</p>}
+        {isLoadingDebt && <p className='text-lg font-bold text-red-600'>Загрузка...</p>}
+        {isErrorDebt && <p className='text-lg font-bold text-red-600'>Ошибка загрузки задолжености</p>}
+        {!account?.user_id && !debt && <p className='text-lg font-bold text-red-600'>0 Gamler</p>}
       </div>
       <div className='flex flex-row items-center gap-2.5'>
         <Button size='sm' intent='primary' onClick={handlePayAllOrders}>

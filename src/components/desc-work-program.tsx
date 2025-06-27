@@ -42,9 +42,7 @@ export const DescWorkProgram = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <Modal.Trigger
-        onClick={onOpen}
-        className='text-uiSecondaryText cursor-pointer bg-transparent text-start text-[16px] font-medium underline'>
+      <Modal.Trigger onClick={onOpen} className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-[#1890FF] underline'>
         Как работает партнерская программа?
       </Modal.Trigger>
       <Modal.Content>

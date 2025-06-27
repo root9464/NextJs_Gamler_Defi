@@ -23,9 +23,9 @@ export const CurrentBalance = () => {
             {(Number(jettonWallet?.balance) / 10 ** jettonWallet?.jetton.decimals).toFixed(2)} Gamler
           </p>
         )}
-        {isLoadingJettonWallets && <p className='text-sm font-bold text-black/85'>Загрузка...</p>}
-        {isErrorJettonWallets && <p className='text-sm font-bold text-black/85'>Ошибка загрузки баланса</p>}
-        {!address && !jettonWallet && <p className='text-sm font-bold text-black/85'>0 Gamler</p>}
+        {isLoadingJettonWallets && <p className='text-lg font-bold text-black/85'>Загрузка...</p>}
+        {isErrorJettonWallets && <p className='text-lg font-bold text-black/85'>Ошибка загрузки баланса</p>}
+        {!address && !jettonWallet && <p className='text-lg font-bold text-black/85'>0 Gamler</p>}
       </div>
       <div className='flex flex-row items-center gap-2.5'>
         <Button intent='outline' size='sm'>
