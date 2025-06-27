@@ -1,0 +1,55 @@
+stages:
+  - build
+  - deploy
+
+build:
+   tags:
+      - gamlerprod
+   stage: build
+   script:
+      - echo Build
+      - yarn install
+      - yarn build
+
+Deploy to dev:
+   stage: deploy
+   environment:
+      name: dev
+      url: https://gamler.atma-dev.ru/
+   when: manual
+   tags:
+      - atmadev
+   only:
+      - main
+   script:
+      #- mv .env.dev .env
+      - yarn config set registry https://registry.npmjs.org
+      - yarn install
+      - yarn build
+      - rsync --exclude '.git'  --exclude '.gitlab-ci.yml'  -avzh . /www/gamler/gamler_micro
+      - sudo systemctl stop gamlermicro
+      - sudo systemctl start gamlermicro
+
+#Deploy to prod:
+#   stage: deploy
+#   environment:
+#      name: prod
+#      url: https://gamler.online/
+#   when: manual
+#   tags:
+#      - gamlerprod
+#   only:
+#      - master
+#   script:
+##      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+##      - ". ~/.nvm/nvm.sh"
+##      - nvm install 20
+##      - nvm use 20
+#      - mv .env.prod .env
+#      - yarn install
+#      - yarn build
+#      - rsync --exclude '.git'  --exclude '.gitlab-ci.yml'  -avzh . /www/gamler/backend
+#      - cd /www/gamler/backend
+#      - npx sequelize-cli db:migrate
+#      - sudo systemctl stop gamler
+#      - sudo systemctl start gamler
