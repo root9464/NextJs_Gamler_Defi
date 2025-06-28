@@ -3,7 +3,7 @@ import { useAccount } from '@/shared/hooks/api/useAccount';
 import { EventManager } from '@/shared/lib/event.manager';
 import { User } from '@/shared/types/deps';
 import { useTonAddress } from '@tonconnect/ui-react';
-import { FC, ReactNode, useLayoutEffect, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 
 type IsReferralProgramProps = {
   Notification: Readonly<ReactNode>;
@@ -13,10 +13,16 @@ type IsReferralProgramProps = {
 
 export const IsReferralProgram: FC<IsReferralProgramProps> = ({ Notification, PartnerBalance, TableStatistics }) => {
   const [userAccount, setUserAccount] = useState<User | null>(null);
+  const address = useTonAddress();
+  const { data: account, isSuccess: isSuccessAccount } = useAccount(address ?? '');
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    const cachedUser = EventManager.getEventInCache<User>('user-logged-in');
+    if (cachedUser) {
+      setUserAccount(cachedUser);
+    }
+
     const removeListener = EventManager.addEventListener('user-logged-in', (data: User) => {
-      console.log('user-logged-in', data);
       setUserAccount(data);
     });
 
@@ -26,9 +32,6 @@ export const IsReferralProgram: FC<IsReferralProgramProps> = ({ Notification, Pa
   }, []);
 
   console.log('userAccount', userAccount);
-
-  const address = useTonAddress();
-  const { data: account, isSuccess: isSuccessAccount } = useAccount(address ?? '');
 
   return (
     <>
