@@ -2,8 +2,33 @@
 type EventHandler<T> = (data: T) => void;
 
 class EventManager {
+  private static channels: Map<string, BroadcastChannel> = new Map();
   private static listeners: Map<string, Set<EventHandler<any>>> = new Map();
   private static cacheEvents: Map<string, any[]> = new Map();
+
+  private static getChannel(eventName: string): BroadcastChannel {
+    if (!this.channels.has(eventName)) {
+      const channel = new BroadcastChannel(eventName);
+      channel.onmessage = (event) => this.handleBroadcast(eventName, event.data);
+      this.channels.set(eventName, channel);
+    }
+    return this.channels.get(eventName)!;
+  }
+
+  private static handleBroadcast<T>(eventName: string, data: T): void {
+    if (!this.cacheEvents.has(eventName)) this.cacheEvents.set(eventName, []);
+
+    const events = this.cacheEvents.get(eventName)!;
+    events.unshift(data);
+    if (events.length > 5) events.pop();
+
+    const handlers = this.listeners.get(eventName);
+    if (handlers) {
+      for (const handler of handlers) {
+        handler(data);
+      }
+    }
+  }
 
   static dispatchEvent<T>(eventName: string, data: T): void {
     if (!this.cacheEvents.has(eventName)) {
@@ -12,13 +37,9 @@ class EventManager {
 
     const events = this.cacheEvents.get(eventName)!;
     events.unshift(data);
+    if (events.length > 5) events.pop();
 
-    if (events.length > 5) {
-      events.pop();
-    }
-
-    const event = new CustomEvent(eventName, { detail: data });
-    window.dispatchEvent(event);
+    this.getChannel(eventName).postMessage(data);
   }
 
   static addEventListener<T>(eventName: string, handler: EventHandler<T>): () => void {
@@ -27,16 +48,13 @@ class EventManager {
     }
     this.listeners.get(eventName)!.add(handler);
 
-    const listener = (event: Event) => {
-      if (event instanceof CustomEvent) {
-        handler(event.detail as T);
-      }
-    };
-    window.addEventListener(eventName, listener);
+    const cachedData = this.getEventInCache<T>(eventName);
+    if (cachedData !== undefined) {
+      handler(cachedData);
+    }
 
     return () => {
-      window.removeEventListener(eventName, listener);
-      this.listeners.get(eventName)?.delete(handler);
+      this.removeEventListener(eventName, handler);
     };
   }
 
@@ -61,6 +79,8 @@ class EventManager {
       handlers.delete(handler);
       if (handlers.size === 0) {
         this.listeners.delete(eventName);
+        this.channels.get(eventName)?.close();
+        this.channels.delete(eventName);
       }
     }
   }
