@@ -71,9 +71,9 @@ export const TableStatisticsModule = () => {
     <div className='flex w-[1141px] flex-col gap-2.5'>
       <Tabs aria-label='Table Statistics'>
         <TabList>
-          <Tab>История транзакций</Tab>
-          <Tab>Ваши приглашённые</Tab>
-          <Tab>Задолженности</Tab>
+          <Tab id='1'>История транзакций</Tab>
+          <Tab id='2'>Ваши приглашённые</Tab>
+          <Tab id='3'>Задолженности</Tab>
         </TabList>
         <TabPanel id='1'>
           {isSuccessTransactions && transactions && <TransactionsTable tableData={transactions_table_data ?? []} />}

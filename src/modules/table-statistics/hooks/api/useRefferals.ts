@@ -12,7 +12,7 @@ type Referrals = z.infer<typeof ReferralsSchema>;
 
 const useRefferals = (wallet_address: string) =>
   useQuery({
-    queryKey: ['refferals', wallet_address],
+    queryKey: ['referrals-users', wallet_address],
     queryFn: async () => {
       const refferals = await fetchData<Referrals>({
         method: 'GET',

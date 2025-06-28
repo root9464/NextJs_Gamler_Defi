@@ -74,11 +74,13 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/ton/:path*',
-        destination: 'https://testnet.tonapi.io/v2/:path*',
+        destination: 'https://tonapi.io/v2/:path*',
       },
       {
         source: '/api/web3/:path*',
         destination: 'https://serv.gamler.online/web3/api/:path*',
+        //https://serv.gamler.online/web3/api/:path*
+        //http://127.0.0.1:6069/api/:path*
       },
       {
         source: '/api/web2/:path*',

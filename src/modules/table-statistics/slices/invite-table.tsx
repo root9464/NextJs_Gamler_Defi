@@ -33,6 +33,7 @@ export const InviteTable: FC<{ tableData: InviteTableType[] }> = ({ tableData })
       pagination,
     }));
   };
+
   return (
     <Table dataSource={tableData} onChange={handleTableChange} pagination={tableParams.pagination} rowKey='user_id'>
       <Column title='Реферал' dataIndex='name' key='name' />
