@@ -1,0 +1,41 @@
+export type Gender = 'Мужской' | 'Женский' | 'Другой' | 'Не указан';
+
+export type Language = 'Русский' | 'Не указан';
+
+export type User = {
+  user_id: number;
+  link: string;
+  name: string;
+  name_native: string;
+  surname: string;
+  surname_native: string;
+  specialization: string;
+  specialization_native: string;
+  education: string;
+  education_native: string;
+  country: string;
+  country_native: string;
+  city: string;
+  city_native: string;
+  site: string;
+  vk: string;
+  instagram: string;
+  photo_path: string;
+  email: string;
+  is_email_verified: boolean;
+  is_phone_verified: boolean;
+  phone: string;
+  whatsapp: string;
+  telegram: string;
+  telegram_id: string;
+  coins_number: number;
+  player_likes_number: number;
+  host_likes_number: number;
+  gender: Gender;
+  native_language: Language;
+  languages: Language[];
+  currency: string;
+  certificates: string[];
+  about: string;
+  referral_program_choice: boolean;
+};
