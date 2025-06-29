@@ -1,4 +1,5 @@
 'use client';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactNode } from 'react';
 import { NuqsProvider } from './nuqs';
 import { RouterProvider } from './router';
@@ -12,7 +13,10 @@ export function GlobalProvider({ children, ...props }: { children: Readonly<Reac
       <NuqsProvider>
         <TonProvider>
           <ThemeProvider {...props}>
-            <TanstackProvider>{children}</TanstackProvider>
+            <TanstackProvider>
+              {children}
+              <ReactQueryDevtools initialIsOpen={false} />
+            </TanstackProvider>
           </ThemeProvider>
         </TonProvider>
       </NuqsProvider>

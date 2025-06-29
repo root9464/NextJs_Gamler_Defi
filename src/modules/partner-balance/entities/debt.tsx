@@ -6,12 +6,10 @@ import { usePaymentOrder } from '@/modules/table-statistics/hooks/api/usePayment
 import { usePayAllOrders } from '@/modules/table-statistics/hooks/api/usePayOrder';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { formatUnixToDate } from '@/shared/utils/common.utils';
-import { useTonAddress } from '@tonconnect/ui-react';
 import { useDebt } from '../hooks/api/usePaymentStats';
 
 export const Debt = () => {
-  const address = useTonAddress();
-  const { data: account } = useAccount(address ?? '');
+  const { data: account } = useAccount();
 
   const { data: paymentOrders } = usePaymentOrder(account?.user_id ?? 0);
 

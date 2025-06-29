@@ -1,7 +1,6 @@
 import { DescWorkProgram } from '@/components/desc-work-program';
 import { IsReferralProgram } from '@/components/is-referral-program';
 import { PartnerBalanceModule } from '@/modules/partner-balance/module';
-import { TableStatisticsModule } from '@/modules/table-statistics/module';
 import { PageFlow } from '@components/layouts/page-flow';
 
 export default function TestPage() {
@@ -11,7 +10,7 @@ export default function TestPage() {
         content: 'flex h-full w-full flex-col gap-8 px-[18px] py-4',
       }}>
       <ReferralDescription />
-      <IsReferralProgram Notification={<Notification />} PartnerBalance={<PartnerBalanceModule />} TableStatistics={<TableStatisticsModule />} />
+      <IsReferralProgram Notification={<Notification />} PartnerBalance={<PartnerBalanceModule />} />
     </PageFlow>
   );
 }

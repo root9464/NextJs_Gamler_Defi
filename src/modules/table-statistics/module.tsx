@@ -17,7 +17,7 @@ import { TransactionsTable } from './slices/transactions-table';
 
 export const TableStatisticsModule = () => {
   const address = useTonAddress();
-  const { data: account } = useAccount(address ?? '');
+  const { data: account } = useAccount();
 
   const {
     data: paymentOrders,

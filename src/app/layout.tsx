@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Gamler',
   description: 'Gamler online gamefi platform',
   icons: {
-    icon: '/favicon.svg', 
+    icon: '/favicon.svg',
   },
 };
 

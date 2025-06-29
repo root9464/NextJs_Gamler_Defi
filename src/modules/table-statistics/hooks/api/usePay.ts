@@ -14,6 +14,7 @@ const usePay = (authorId: number) => {
   const { mutate: deleteOrder } = useDeletePaymentOrder(authorId);
 
   const payProcess = async (cell: string, commission_count: number) => {
+    console.log('cell', cell);
     if (!jettonWallet) return;
     try {
       const validUntil = Date.now() + 300000; // 5 minutes
