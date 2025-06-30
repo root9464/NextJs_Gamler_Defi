@@ -73,6 +73,7 @@ export default tseslint.config(
       'no-unneeded-ternary': ['error', { defaultAssignment: false }],
       '@next/next/no-img-element': 'error',
       '@next/next/no-html-link-for-pages': 'error',
+      '@typescript-eslint/consistent-type-imports': ['warn', { prefer: 'type-imports' }],
     },
   },
 

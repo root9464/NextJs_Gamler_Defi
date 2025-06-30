@@ -1,10 +1,8 @@
 'use client';
-import { TestEvents } from '@/components/test-events';
-import { Button } from '@/components/ui/button';
+import { PageFlow } from '@/components/layouts/page-flow';
 import user from '@/shared/mocks/user.json';
 import { UserSchema } from '@/shared/types/user';
 import { validateResult } from '@/shared/utils/zod.utils';
-import Icon from '../assets/svg/helper-symbol.svg';
 
 export default function Home() {
   const userAccount = validateResult(JSON.parse(JSON.stringify(user)), UserSchema);
@@ -12,10 +10,8 @@ export default function Home() {
   console.log('userAccount', userAccount);
 
   return (
-    <div>
-      <Button>Click me</Button>
-      <Icon />
-      <TestEvents />
-    </div>
+    <PageFlow classNames={{ content: 'flex h-full w-full flex-col gap-8 px-[18px] py-4' }}>
+      <h1>fff</h1>
+    </PageFlow>
   );
 }

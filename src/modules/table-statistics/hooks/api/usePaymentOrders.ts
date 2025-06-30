@@ -1,5 +1,6 @@
-import { AdditionalInformation, AdditionalInformationSchema, BaseUser } from '@shared/types/orders';
-import { Extend } from '@shared/types/utils';
+import type { AdditionalInformation, BaseUser } from '@shared/types/orders';
+import { AdditionalInformationSchema } from '@shared/types/orders';
+import type { Extend } from '@shared/types/utils';
 import { fetchData } from '@shared/utils/zod.utils';
 
 import { useQuery } from '@tanstack/react-query';

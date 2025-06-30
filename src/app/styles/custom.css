@@ -8,7 +8,6 @@
   --color-uiSecondaryText: var(--uiSecondaryText);
 
   --color-uiPrimaryMuted: var(--uiPrimaryMuted);
-
   --breakpoint-mq1440: 1440px;
 }
 
@@ -22,6 +21,5 @@
     --uiSecondaryText: rgb(255, 255, 255);
 
     --uiPrimaryMuted: rgb(0, 12, 121);
-
   }
 }

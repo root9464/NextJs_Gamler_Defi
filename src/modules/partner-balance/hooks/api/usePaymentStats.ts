@@ -1,5 +1,5 @@
 import { PaymentOrderSchema } from '@/modules/table-statistics/hooks/api/usePaymentOrders';
-import { PaymentOrder } from '@/modules/table-statistics/hooks/api/usePayOrder';
+import type { PaymentOrder } from '@/modules/table-statistics/hooks/api/usePayOrder';
 import { validateResult } from '@shared/utils/zod.utils';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';

@@ -1,6 +1,7 @@
 import { GlobalProvider } from '@/components/providers/global';
 import type { Metadata } from 'next';
-import { ReactNode } from 'react';
+import Head from 'next/head';
+import type { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -14,6 +15,17 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang='en'>
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.ym = function() {
+                console.log('Yandex.Metrika disabled');
+              };
+            `,
+          }}
+        />
+      </Head>
       <body>
         <GlobalProvider>{children}</GlobalProvider>
       </body>

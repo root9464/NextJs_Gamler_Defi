@@ -1,7 +1,7 @@
 'use client';
 
+import { Button } from '@components/ui/button';
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
-import { Button } from './ui/button';
 
 export const WalletConnectButton = () => {
   const [tonConnectUI] = useTonConnectUI();

@@ -1,5 +1,5 @@
 import HelperIcon from '@/assets/svg/helper-symbol.svg';
-import { WalletConnectButton } from '@/components/connect-wallet-button';
+import { WalletConnectButton } from '@components/features/connect-wallet-button';
 import { CurrentBalance } from './entities/current-balance';
 import { Debt } from './entities/debt';
 

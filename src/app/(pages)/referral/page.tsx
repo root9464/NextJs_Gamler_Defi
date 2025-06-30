@@ -1,7 +1,7 @@
-import { DescWorkProgram } from '@/components/desc-work-program';
-import { IsReferralProgram } from '@/components/is-referral-program';
-import { PartnerBalanceModule } from '@/modules/partner-balance/module';
 import { PageFlow } from '@components/layouts/page-flow';
+import { DescWorkProgram } from '@components/slices/desc-work-program';
+import { IsReferralProgram } from '@components/slices/is-referral-program';
+import { PartnerBalanceModule } from '@modules/partner-balance/module';
 
 export default function TestPage() {
   return (
