@@ -1,4 +1,4 @@
-import userMock from '@/shared/mocks/user.json';
+import { userMock } from '@/shared/mocks/user.json';
 import { UserSchema } from '@/shared/types/user';
 import type { AdditionalInformation } from '@shared/types/orders';
 import { AdditionalInformationSchema } from '@shared/types/orders';
@@ -10,7 +10,7 @@ const useAccount = () =>
     queryKey: ['account'],
     queryFn: async () => {
       // const userAccount = localStorage.getItem('user-logged-in');
-      const userAccountMock = validateResult(JSON.parse(JSON.stringify(userMock)), UserSchema);
+      const userAccountMock = validateResult(userMock, UserSchema);
 
       const user = await fetchData<AdditionalInformation>({
         method: 'GET',
