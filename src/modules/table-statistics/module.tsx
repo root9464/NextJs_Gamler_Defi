@@ -32,7 +32,7 @@ export const TableStatisticsModule = () => {
         order_id: order.id,
         tickets: order.ticket_count,
         date: formatUnixToDate(order.created_at),
-        debt_amount: order.total_amount,
+        debt_amount: Number(order.total_amount),
         refferer_id: order.referrer_id,
         refferal: order.telegram,
       }))
