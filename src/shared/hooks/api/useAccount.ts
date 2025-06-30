@@ -1,6 +1,7 @@
 import userMock from '@/shared/mocks/user.json';
 import { UserSchema } from '@/shared/types/user';
-import { AdditionalInformation, AdditionalInformationSchema } from '@shared/types/orders';
+import type { AdditionalInformation } from '@shared/types/orders';
+import { AdditionalInformationSchema } from '@shared/types/orders';
 import { fetchData, validateResult } from '@shared/utils/zod.utils';
 import { useQuery } from '@tanstack/react-query';
 
@@ -16,6 +17,8 @@ const useAccount = () =>
         url: `/api/web2/referral/referrer/${userAccountMock.user_id}`,
         schema: AdditionalInformationSchema,
       });
+
+      console.log(user, 'user');
 
       return user;
     },
