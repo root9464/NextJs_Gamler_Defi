@@ -1,3 +1,4 @@
+import { TableStatisticsModule } from '@/modules/table-statistics/module';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useTonAddress } from '@tonconnect/ui-react';
 import type { FC, ReactNode } from 'react';
@@ -15,7 +16,7 @@ export const IsReferralProgram: FC<IsReferralProgramProps> = ({ Notification, Pa
     <>
       {!address && Notification}
       {PartnerBalance}
-      {isSuccessAccount && hasAddress && account.referral_program_choice && <></>}
+      {isSuccessAccount && hasAddress && account.referral_program_choice && <TableStatisticsModule />}
     </>
   );
 };
