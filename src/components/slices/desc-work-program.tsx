@@ -1,8 +1,8 @@
 'use client';
 
 import { useDisclosure } from '@hooks/useDisclosure';
+import { Button } from '@ui/button';
 import { Modal } from '@ui/modal';
-import { Button } from './ui/button';
 
 const REFERRAL_PROGRAM_DATA = [
   {
