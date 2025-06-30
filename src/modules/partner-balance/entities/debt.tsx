@@ -28,7 +28,7 @@ export const Debt = () => {
 
   const { payAllOrders } = usePay(account?.user_id ?? 0);
   const debt_arr = debt_table_data.map((order) => ({
-    amount: order.debt_amount,
+    amount: Number(order.debt_amount),
     reffererId: order.refferer_id,
   }));
 

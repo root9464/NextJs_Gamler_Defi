@@ -12,12 +12,13 @@ type IsReferralProgramProps = {
 export const IsReferralProgram: FC<IsReferralProgramProps> = ({ Notification, PartnerBalance }) => {
   const address = useTonAddress();
   const { data: account, isSuccess: isSuccessAccount } = useAccount();
-
+  console.log(address, 'address');
+  const hasAddress = !!address && address.trim() !== '';
   return (
     <>
       {!address && Notification}
       {PartnerBalance}
-      {isSuccessAccount && account && account.referral_program_choice && <TableStatisticsModule />}
+      {isSuccessAccount && hasAddress && account.referral_program_choice && <TableStatisticsModule />}
     </>
   );
 };

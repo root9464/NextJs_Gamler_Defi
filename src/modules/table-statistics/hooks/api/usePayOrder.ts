@@ -1,5 +1,6 @@
 import { fetchData } from '@shared/utils/zod.utils';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useTonAddress } from '@tonconnect/ui-react';
 import { z } from 'zod/v4';
 
 const PaymentOrderSchema = z.object({
@@ -9,9 +10,9 @@ const PaymentOrderSchema = z.object({
 type PaymentOrder = z.infer<typeof PaymentOrderSchema>;
 
 const usePayOrder = () => {
-  const queryClient = useQueryClient();
+  const address = useTonAddress();
   return useMutation({
-    mutationKey: ['pay-order'],
+    mutationKey: ['pay-order', address],
     mutationFn: async (orderId: string) =>
       fetchData<PaymentOrder>({
         method: 'GET',
@@ -20,17 +21,17 @@ const usePayOrder = () => {
         params: {
           order_id: orderId,
         },
+        headers: {
+          'Wallet-Address': address,
+        },
       }),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['payment-order', data.cell] });
-    },
   });
 };
 
 const usePayAllOrders = () => {
-  const queryClient = useQueryClient();
+  const address = useTonAddress();
   return useMutation({
-    mutationKey: ['pay-all-orders'],
+    mutationKey: ['pay-all-orders', address],
     mutationFn: async (authorId: number) =>
       fetchData<PaymentOrder>({
         method: 'GET',
@@ -39,10 +40,10 @@ const usePayAllOrders = () => {
         params: {
           author_id: authorId,
         },
+        headers: {
+          'Wallet-Address': address,
+        },
       }),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['payment-order', data.cell] });
-    },
   });
 };
 

@@ -12,7 +12,7 @@ const useDebt = (authorId: number) =>
       const { data, status, statusText } = await axios.get<PaymentOrder[]>(`/api/web3/referral/${authorId}/payment-orders`);
       if (status !== 200) throw new Error(statusText);
       const paymentOrders = validateResult(data, z.array(PaymentOrderSchema));
-      const debt = paymentOrders.reduce((acc, order) => acc + order.total_amount, 0);
+      const debt = paymentOrders.reduce((acc, order) => acc + Number(order.total_amount), 0);
       return debt;
     },
     enabled: !!authorId && authorId !== 0,

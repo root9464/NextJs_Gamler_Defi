@@ -7,8 +7,8 @@ import { z } from 'zod/v4';
 
 const LevelSchema = z.object({
   level_number: z.number(),
-  rate: z.number(),
-  amount: z.number(),
+  rate: z.string(),
+  amount: z.string(),
   address: z.string(),
 });
 
@@ -17,7 +17,7 @@ const PaymentOrderSchema = z.object({
   leader_id: z.number(),
   referrer_id: z.number(),
   referral_id: z.number(),
-  total_amount: z.number(),
+  total_amount: z.string(),
   ticket_count: z.number(),
   levels: z.array(LevelSchema),
   created_at: z.number(),
