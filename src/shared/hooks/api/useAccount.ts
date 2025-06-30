@@ -1,3 +1,4 @@
+import { Web2ApiInstance } from '@/shared/lib/axios';
 import { userMock } from '@/shared/mocks/user.json';
 import { UserSchema } from '@/shared/types/user';
 import type { AdditionalInformation } from '@shared/types/orders';
@@ -14,8 +15,9 @@ const useAccount = () =>
 
       const user = await fetchData<AdditionalInformation>({
         method: 'GET',
-        url: `/api/web2/referral/referrer/${userAccountMock.user_id}`,
+        url: `/referral/referrer/${userAccountMock.user_id}`,
         schema: AdditionalInformationSchema,
+        instance: Web2ApiInstance,
       });
 
       console.log(user, 'user');

@@ -1,6 +1,6 @@
+import { Web2ApiInstance } from '@/shared/lib/axios';
 import { fetchData, validateResult } from '@shared/utils/zod.utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { z } from 'zod/v4';
 
 type DeletePaymentOrderResponse = {
@@ -45,7 +45,7 @@ const UpdateEarningBalanceSchema = z.object({
 type UpdateEarningBalanceResponse = z.infer<typeof UpdateEarningBalanceSchema>;
 
 const updateEarningBalance = async (userId: number, amount: number) => {
-  const { data, status } = await axios.patch<UpdateEarningBalanceResponse>(`/api/web2/referral/user/${userId}/balance`, {
+  const { data, status } = await Web2ApiInstance.patch<UpdateEarningBalanceResponse>(`/referral/user/${userId}/balance`, {
     amount: amount,
   });
   if (status !== 200) throw new Error('Error updating earning balance');

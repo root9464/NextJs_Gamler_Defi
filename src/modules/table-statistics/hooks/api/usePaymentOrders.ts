@@ -1,3 +1,4 @@
+import { Web2ApiInstance } from '@/shared/lib/axios';
 import type { AdditionalInformation, BaseUser } from '@shared/types/orders';
 import { AdditionalInformationSchema } from '@shared/types/orders';
 import type { Extend } from '@shared/types/utils';
@@ -42,8 +43,9 @@ const usePaymentOrder = (authorId: number) =>
       const additionalInfoPromises = paymentOrders.map((order) =>
         fetchData<AdditionalInformation>({
           method: 'GET',
-          url: `/api/web2/referral/referrer/${order.referral_id}`,
+          url: `/referral/referrer/${order.referral_id}`,
           schema: AdditionalInformationSchema,
+          instance: Web2ApiInstance,
         }),
       );
 

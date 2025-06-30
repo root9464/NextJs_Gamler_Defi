@@ -1,3 +1,4 @@
+import { Web2ApiInstance } from '@/shared/lib/axios';
 import { fetchData } from '@/shared/utils/zod.utils';
 import { BaseUserSchema, ReferralProgramChoiceSchema } from '@shared/types/orders';
 import { useQuery } from '@tanstack/react-query';
@@ -16,8 +17,9 @@ const useRefferals = (wallet_address: string) =>
     queryFn: async () => {
       const refferals = await fetchData<Referrals>({
         method: 'GET',
-        url: `/api/web2/referral/referrer/levels2/${wallet_address}`,
+        url: `/referral/referrer/levels2/${wallet_address}`,
         schema: ReferralsSchema,
+        instance: Web2ApiInstance,
       });
       return refferals;
     },

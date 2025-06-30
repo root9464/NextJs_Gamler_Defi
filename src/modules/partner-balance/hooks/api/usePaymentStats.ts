@@ -1,5 +1,6 @@
 import { PaymentOrderSchema } from '@/modules/table-statistics/hooks/api/usePaymentOrders';
 import type { PaymentOrder } from '@/modules/table-statistics/hooks/api/usePayOrder';
+import { Web2ApiInstance } from '@/shared/lib/axios';
 import { validateResult } from '@shared/utils/zod.utils';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -28,7 +29,7 @@ const useEarnings = (authorId: number) =>
   useQuery({
     queryKey: ['earnings', authorId],
     queryFn: async () => {
-      const { data, status, statusText } = await axios.get<Earnings>(`/api/web2/referral/user/${authorId}/balance`);
+      const { data, status, statusText } = await Web2ApiInstance.get<Earnings>(`/referral/user/${authorId}/balance`);
       if (status !== 200) throw new Error(statusText);
       const earnings = validateResult(data, EarningsSchema);
       return earnings;
