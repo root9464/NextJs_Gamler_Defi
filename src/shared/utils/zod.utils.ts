@@ -1,6 +1,7 @@
-import axios, { AxiosInstance, AxiosResponse, type AxiosRequestConfig } from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 import { z } from 'zod/v4';
-import { Extend } from '../types/utils';
+import type { Extend } from '../types/utils';
 
 const validateResult = <T extends z.ZodType, R>(data: R, resType: T): z.infer<T> => {
   try {
