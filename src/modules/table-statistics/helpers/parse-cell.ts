@@ -1,4 +1,5 @@
-import { Address, Cell, Dictionary, type DictionaryValue } from '@ton/core';
+import type { Address } from '@ton/core';
+import { Cell, Dictionary, type DictionaryValue } from '@ton/core';
 
 const jettonsDictionaryValue: DictionaryValue<bigint> = {
   serialize: (src, builder) => {

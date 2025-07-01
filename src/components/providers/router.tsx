@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { RouterProvider as ReactAriaRouterProvider } from 'react-aria-components';
 
 declare module 'react-aria-components' {

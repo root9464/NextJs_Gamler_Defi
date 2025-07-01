@@ -1,6 +1,6 @@
 'use client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { NuqsProvider } from './nuqs';
 import { RouterProvider } from './router';
 import { TanstackProvider } from './tanstack';
