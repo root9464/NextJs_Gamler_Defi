@@ -42,3 +42,4 @@ const fetchData = async <T>({ method, url, data: body, schema, instance, ...conf
 };
 
 export { fetchData, validateResult };
+export type { FetchDataOptions };

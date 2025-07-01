@@ -1,6 +1,5 @@
-import { fetchData, validateResult } from '@shared/utils/zod.utils';
+import { proxy } from '@/shared/lib/proxy';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { z } from 'zod/v4';
 
 type DeletePaymentOrderResponse = {
@@ -45,12 +44,16 @@ const UpdateEarningBalanceSchema = z.object({
 type UpdateEarningBalanceResponse = z.infer<typeof UpdateEarningBalanceSchema>;
 
 const updateEarningBalance = async (userId: number, amount: number) => {
-  const { data, status } = await axios.patch<UpdateEarningBalanceResponse>(`/referral/user/${userId}/balance`, {
-    amount: amount,
-  });
-  if (status !== 200) throw new Error('Error updating earning balance');
-
-  return validateResult(data, UpdateEarningBalanceSchema);
+  const balance = await proxy.patch<UpdateEarningBalanceResponse>(
+    `/api/web2/referral/user/${userId}/balance`,
+    {
+      amount: amount,
+    },
+    {
+      schema: UpdateEarningBalanceSchema,
+    },
+  );
+  return balance;
 };
 
 const useDeletePaymentOrder = (authorId: number) => {
@@ -60,12 +63,17 @@ const useDeletePaymentOrder = (authorId: number) => {
     mutationFn: async ([order, options]: [ValidatorOrder, Options]) => {
       await new Promise((resolve) => setTimeout(resolve, 1000 * 10 * 6 * 2)); // 120000 = 2 minutes
       console.log('start');
-      const result = await fetchData<ValidatorOrderResponse>({
-        method: 'POST',
-        url: '/api/web3/validation/validate',
+      // const result = await fetchData<ValidatorOrderResponse>({
+      //   method: 'POST',
+      //   url: '/api/web3/validation/validate',
+      //   schema: ValidatorOrderSchema,
+      //   data: order,
+      // });
+
+      const result = await proxy.post<ValidatorOrderResponse>('/api/web3/validation/validate', order, {
         schema: ValidatorOrderSchema,
-        data: order,
       });
+
       return { result, options };
     },
     onSuccess: async ({ result: ValidData, options: { type, orderId, array } }) => {
@@ -74,9 +82,10 @@ const useDeletePaymentOrder = (authorId: number) => {
           array.forEach(async (item) => {
             await updateEarningBalance(item.reffererId, item.amount);
           });
-          return await fetchData<DeletePaymentOrderResponse>({
-            method: 'DELETE',
-            url: '/api/web3/referral/payment-orders/all',
+          return await proxy.delete<DeletePaymentOrderResponse>('/api/web3/referral/payment-orders/all', {
+            params: {
+              author_id: authorId,
+            },
             schema: z.object({
               message: z.string(),
             }),
@@ -84,9 +93,7 @@ const useDeletePaymentOrder = (authorId: number) => {
         case ValidData.status === 'success' && type === 'single':
           if (!orderId) throw new Error('Order ID is required');
           await updateEarningBalance(array[0].reffererId, array[0].amount);
-          return await fetchData<DeletePaymentOrderResponse>({
-            method: 'DELETE',
-            url: `/api/web3/referral/payment-orders`,
+          return await proxy.delete<DeletePaymentOrderResponse>(`/api/web3/referral/payment-orders`, {
             schema: z.object({
               message: z.string(),
             }),

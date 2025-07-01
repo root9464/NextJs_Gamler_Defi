@@ -1,17 +1,15 @@
 import { PaymentOrderSchema } from '@/modules/table-statistics/hooks/api/usePaymentOrders';
-import type { PaymentOrder } from '@/modules/table-statistics/hooks/api/usePayOrder';
-import { validateResult } from '@shared/utils/zod.utils';
+import { proxy } from '@/shared/lib/proxy';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { z } from 'zod/v4';
 
 const useDebt = (authorId: number) =>
   useQuery({
     queryKey: ['debt', authorId],
     queryFn: async () => {
-      const { data, status, statusText } = await axios.get<PaymentOrder[]>(`/api/web3/referral/${authorId}/payment-orders`);
-      if (status !== 200) throw new Error(statusText);
-      const paymentOrders = validateResult(data, z.array(PaymentOrderSchema));
+      const paymentOrders = await proxy.get(`/api/web3/referral/${authorId}/payment-orders`, {
+        schema: z.array(PaymentOrderSchema),
+      });
       const debt = paymentOrders.reduce((acc, order) => acc + Number(order.total_amount), 0);
       return debt;
     },
@@ -22,15 +20,13 @@ const EarningsSchema = z.object({
   balance: z.number(),
 });
 
-type Earnings = z.infer<typeof EarningsSchema>;
-
 const useEarnings = (authorId: number) =>
   useQuery({
     queryKey: ['earnings', authorId],
     queryFn: async () => {
-      const { data, status, statusText } = await axios.get<Earnings>(`/referral/user/${authorId}/balance`);
-      if (status !== 200) throw new Error(statusText);
-      const earnings = validateResult(data, EarningsSchema);
+      const earnings = await proxy.get(`/api/web2/referral/user/${authorId}/balance`, {
+        schema: EarningsSchema,
+      });
       return earnings;
     },
     enabled: !!authorId && authorId !== 0,

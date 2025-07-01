@@ -1,5 +1,5 @@
+import { proxy } from '@/shared/lib/proxy';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 
 type Address = {
   address: string;
@@ -27,8 +27,8 @@ const useJettonWallet = ({ address }: { address: string }) =>
   useQuery({
     queryKey: ['jetton-wallet', address],
     queryFn: async () => {
-      const jettons = await axios.get<{ balances: TokenBalance[] }>(`/api/ton/accounts/${address}/jettons`);
-      return jettons.data;
+      const jettons = await proxy.get<{ balances: TokenBalance[] }>(`/api/ton/accounts/${address}/jettons`);
+      return jettons;
     },
     enabled: !!address,
   });

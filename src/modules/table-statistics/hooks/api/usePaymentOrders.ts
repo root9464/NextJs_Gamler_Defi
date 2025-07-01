@@ -1,7 +1,7 @@
+import { proxy } from '@/shared/lib/proxy';
 import type { AdditionalInformation, BaseUser } from '@shared/types/orders';
 import { AdditionalInformationSchema } from '@shared/types/orders';
 import type { Extend } from '@shared/types/utils';
-import { fetchData } from '@shared/utils/zod.utils';
 
 import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod/v4';
@@ -33,16 +33,12 @@ const usePaymentOrder = (authorId: number) =>
   useQuery({
     queryKey: ['payment-orders', authorId],
     queryFn: async () => {
-      const paymentOrders = await fetchData<PaymentOrder[]>({
-        method: 'GET',
-        url: `/api/web3/referral/${authorId}/payment-orders`,
+      const paymentOrders = await proxy.get(`/api/web3/referral/${authorId}/payment-orders`, {
         schema: z.array(PaymentOrderSchema),
       });
 
       const additionalInfoPromises = paymentOrders.map((order) =>
-        fetchData<AdditionalInformation>({
-          method: 'GET',
-          url: `/referral/referrer/${order.referrer_id}`,
+        proxy.get(`/api/web2/referral/referrer/${order.referrer_id}`, {
           schema: AdditionalInformationSchema,
         }),
       );

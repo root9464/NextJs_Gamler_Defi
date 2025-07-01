@@ -1,4 +1,4 @@
-import { fetchData } from '@/shared/utils/zod.utils';
+import { proxy } from '@/shared/lib/proxy';
 import { BaseUserSchema, ReferralProgramChoiceSchema } from '@shared/types/orders';
 import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod/v4';
@@ -14,9 +14,7 @@ const useRefferals = (wallet_address: string) =>
   useQuery({
     queryKey: ['referrals-users', wallet_address],
     queryFn: async () => {
-      const refferals = await fetchData<Referrals>({
-        method: 'GET',
-        url: `/referral/referrer/levels2/${wallet_address}`,
+      const refferals = await proxy.get(`/api/web2/referral/referrer/levels2/${wallet_address}`, {
         schema: ReferralsSchema,
       });
       return refferals;

@@ -1,5 +1,5 @@
+import { proxy } from '@/shared/lib/proxy';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 
 type Account = {
   address: string;
@@ -84,16 +84,14 @@ const useGetTransactions = (address: string) => {
     queryKey: ['transactions', address],
     enabled: !!address,
     queryFn: async () => {
-      const { data, status, statusText } = await axios.get<ResponseGetTrHistory>(`/api/ton/accounts/${address}/events`, {
+      const tokens = await proxy.get<ResponseGetTrHistory>(`/api/ton/accounts/${address}/events`, {
         params: {
           initiator: true,
           subject_only: false,
           limit: 100,
         },
       });
-
-      if (status !== 200) throw new Error(statusText);
-      return data;
+      return tokens;
     },
   });
 };

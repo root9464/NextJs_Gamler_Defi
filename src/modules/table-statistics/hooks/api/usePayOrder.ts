@@ -1,4 +1,4 @@
-import { fetchData } from '@shared/utils/zod.utils';
+import { proxy } from '@/shared/lib/proxy';
 import { useMutation } from '@tanstack/react-query';
 import { useTonAddress } from '@tonconnect/ui-react';
 import { z } from 'zod/v4';
@@ -14,9 +14,7 @@ const usePayOrder = () => {
   return useMutation({
     mutationKey: ['pay-order', address],
     mutationFn: async (orderId: string) =>
-      fetchData<PaymentOrder>({
-        method: 'GET',
-        url: `/api/web3/referral/payment-orders/pay`,
+      proxy.get('/api/web3/referral/payment-orders/pay', {
         schema: PaymentOrderSchema,
         params: {
           order_id: orderId,
@@ -33,12 +31,10 @@ const usePayAllOrders = () => {
   return useMutation({
     mutationKey: ['pay-all-orders', address],
     mutationFn: async (authorId: number) =>
-      fetchData<PaymentOrder>({
-        method: 'GET',
-        url: `/api/web3/referral/payment-orders/all`,
+      proxy.get('/api/web3/referral/payment-orders/all', {
         schema: PaymentOrderSchema,
         params: {
-          author_id: authorId,
+          leader_id: authorId,
         },
         headers: {
           'Wallet-Address': address,
