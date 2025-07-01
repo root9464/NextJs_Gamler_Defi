@@ -43,7 +43,7 @@ const usePaymentOrder = (authorId: number) =>
       const additionalInfoPromises = paymentOrders.map((order) =>
         fetchData<AdditionalInformation>({
           method: 'GET',
-          url: `/referral/referrer/${order.referral_id}`,
+          url: `/referral/referrer/${order.referrer_id}`,
           schema: AdditionalInformationSchema,
           instance: Web2ApiInstance,
         }),
