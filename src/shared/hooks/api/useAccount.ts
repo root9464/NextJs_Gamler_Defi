@@ -1,4 +1,3 @@
-import { apiProxy } from '@/shared/lib/axios';
 import { userMock } from '@/shared/mocks/user.json';
 import { UserSchema } from '@/shared/types/user';
 import type { AdditionalInformation } from '@shared/types/orders';
@@ -17,7 +16,6 @@ const useAccount = () =>
         method: 'GET',
         url: `/api/web2/referral/referrer/${userAccountMock.user_id}`,
         schema: AdditionalInformationSchema,
-        instance: apiProxy,
       });
 
       console.log(user, 'user');

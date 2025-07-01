@@ -1,4 +1,3 @@
-import { apiProxy } from '@/shared/lib/axios';
 import { fetchData } from '@/shared/utils/zod.utils';
 import { BaseUserSchema, ReferralProgramChoiceSchema } from '@shared/types/orders';
 import { useQuery } from '@tanstack/react-query';
@@ -19,7 +18,6 @@ const useRefferals = (wallet_address: string) =>
         method: 'GET',
         url: `/referral/referrer/levels2/${wallet_address}`,
         schema: ReferralsSchema,
-        instance: apiProxy,
       });
       return refferals;
     },

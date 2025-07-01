@@ -1,4 +1,3 @@
-import { apiProxy } from '@/shared/lib/axios';
 import type { AdditionalInformation, BaseUser } from '@shared/types/orders';
 import { AdditionalInformationSchema } from '@shared/types/orders';
 import type { Extend } from '@shared/types/utils';
@@ -45,7 +44,6 @@ const usePaymentOrder = (authorId: number) =>
           method: 'GET',
           url: `/referral/referrer/${order.referrer_id}`,
           schema: AdditionalInformationSchema,
-          instance: apiProxy,
         }),
       );
 

@@ -1,5 +1,5 @@
-import { apiProxy } from '@/shared/lib/axios';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 type Account = {
   address: string;
@@ -84,7 +84,7 @@ const useGetTransactions = (address: string) => {
     queryKey: ['transactions', address],
     enabled: !!address,
     queryFn: async () => {
-      const { data, status, statusText } = await apiProxy.get<ResponseGetTrHistory>(`/api/ton/accounts/${address}/events`, {
+      const { data, status, statusText } = await axios.get<ResponseGetTrHistory>(`/api/ton/accounts/${address}/events`, {
         params: {
           initiator: true,
           subject_only: false,

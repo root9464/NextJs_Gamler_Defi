@@ -1,4 +1,3 @@
-import { apiProxy } from '@/shared/lib/axios';
 import { fetchData } from '@shared/utils/zod.utils';
 import { useMutation } from '@tanstack/react-query';
 import { useTonAddress } from '@tonconnect/ui-react';
@@ -25,7 +24,6 @@ const usePayOrder = () => {
         headers: {
           'Wallet-Address': address,
         },
-        instance: apiProxy,
       }),
   });
 };
@@ -45,7 +43,6 @@ const usePayAllOrders = () => {
         headers: {
           'Wallet-Address': address,
         },
-        instance: apiProxy,
       }),
   });
 };
