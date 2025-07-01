@@ -1,11 +1,9 @@
 'use client';
 import { PageFlow } from '@/components/layouts/page-flow';
-import { userMock } from '@/shared/mocks/user.json';
-import { UserSchema } from '@/shared/types/user';
-import { validateResult } from '@/shared/utils/zod.utils';
+import { useAccount } from '@/shared/hooks/api/useAccount';
 
 export default function Home() {
-  const userAccount = validateResult(userMock, UserSchema);
+  const { data: userAccount } = useAccount();
 
   console.log('userAccount', userAccount);
 

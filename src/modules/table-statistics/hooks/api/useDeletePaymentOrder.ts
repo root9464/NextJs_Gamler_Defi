@@ -1,4 +1,4 @@
-import { Web2ApiInstance } from '@/shared/lib/axios';
+import { apiProxy } from '@/shared/lib/axios';
 import { fetchData, validateResult } from '@shared/utils/zod.utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod/v4';
@@ -45,7 +45,7 @@ const UpdateEarningBalanceSchema = z.object({
 type UpdateEarningBalanceResponse = z.infer<typeof UpdateEarningBalanceSchema>;
 
 const updateEarningBalance = async (userId: number, amount: number) => {
-  const { data, status } = await Web2ApiInstance.patch<UpdateEarningBalanceResponse>(`/referral/user/${userId}/balance`, {
+  const { data, status } = await apiProxy.patch<UpdateEarningBalanceResponse>(`/referral/user/${userId}/balance`, {
     amount: amount,
   });
   if (status !== 200) throw new Error('Error updating earning balance');
@@ -65,6 +65,7 @@ const useDeletePaymentOrder = (authorId: number) => {
         url: '/api/web3/validation/validate',
         schema: ValidatorOrderSchema,
         data: order,
+        instance: apiProxy,
       });
       return { result, options };
     },
@@ -80,6 +81,7 @@ const useDeletePaymentOrder = (authorId: number) => {
             schema: z.object({
               message: z.string(),
             }),
+            instance: apiProxy,
           });
         case ValidData.status === 'success' && type === 'single':
           if (!orderId) throw new Error('Order ID is required');
@@ -93,6 +95,7 @@ const useDeletePaymentOrder = (authorId: number) => {
             params: {
               order_id: orderId,
             },
+            instance: apiProxy,
           });
         default:
           throw new Error('Invalid delete type');

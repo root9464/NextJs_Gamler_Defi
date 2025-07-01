@@ -1,7 +1,8 @@
 import { useJettonWallet } from '@hooks/api/useJettonWallet';
 import { Address, Cell, toNano } from '@ton/core';
 import { CHAIN, useTonAddress, useTonConnectUI, type SendTransactionRequest } from '@tonconnect/ui-react';
-import { useDeletePaymentOrder, ValidatorOrder } from './useDeletePaymentOrder';
+import type { ValidatorOrder } from './useDeletePaymentOrder';
+import { useDeletePaymentOrder } from './useDeletePaymentOrder';
 
 type CreateCellFn<T> = (id: T) => Promise<{ cell: string }>;
 
