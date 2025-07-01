@@ -71,27 +71,27 @@ const nextConfig: NextConfig = {
     return config;
   },
 
-  async rewrites() {
-    return [
-      {
-        source: '/api/ton/:path*',
-        destination: 'https://tonapi.io/v2/:path*',
-        basePath: false,
-      },
-      {
-        source: '/api/web3/:path*',
-        destination: 'https://serv.gamler.online/web3/api/:path*',
-        basePath: false,
-        //https://serv.gamler.online/web3/api/:path*
-        //http://127.0.0.1:6069/api/:path*
-      },
-      {
-        source: '/api/web2/:path*',
-        destination: 'https://serv.gamler.atma-dev.ru/:path*',
-        basePath: false,
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/api/ton/:path*',
+  //       destination: 'https://tonapi.io/v2/:path*',
+  //       basePath: false,
+  //     },
+  //     {
+  //       source: '/api/web3/:path*',
+  //       destination: 'https://serv.gamler.online/web3/api/:path*',
+  //       basePath: false,
+  //       //https://serv.gamler.online/web3/api/:path*
+  //       //http://127.0.0.1:6069/api/:path*
+  //     },
+  //     {
+  //       source: '/api/web2/:path*',
+  //       destination: 'https://serv.gamler.atma-dev.ru/:path*',
+  //       basePath: false,
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;
