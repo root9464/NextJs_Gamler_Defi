@@ -7,7 +7,7 @@ const buttonStyles = tv({
   base: [
     '[--btn-icon-active:var(--btn-fg)] [--btn-outline:var(--btn-bg)] [--btn-ring:var(--btn-bg)]/20',
     'bg-(--btn-bg) text-(--btn-fg) outline-(--btn-outline) ring-(--btn-ring) hover:bg-(--btn-overlay)',
-    'relative isolate inline-flex items-center justify-center font-medium',
+    'relative isolate inline-flex items-center justify-center font-normal cursor-pointer',
     'focus:outline-0 focus-visible:outline focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-offset-3 focus-visible:ring-offset-bg',
     '*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-0.5 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:self-center *:data-[slot=icon]:text-(--btn-icon) pressed:*:data-[slot=icon]:text-(--btn-icon-active) focus-visible:*:data-[slot=icon]:text-(--btn-icon-active)/80 hover:*:data-[slot=icon]:text-(--btn-icon-active)/90 sm:*:data-[slot=icon]:my-1 forced-colors:[--btn-icon:ButtonText] forced-colors:hover:[--btn-icon:ButtonText]',
     '*:data-[slot=loader]:-mx-0.5 *:data-[slot=loader]:my-0.5 *:data-[slot=loader]:shrink-0 *:data-[slot=loader]:self-center *:data-[slot=loader]:text-(--btn-icon) sm:*:data-[slot=loader]:my-1',
@@ -15,7 +15,7 @@ const buttonStyles = tv({
   variants: {
     intent: {
       primary:
-        'bg-[#007AFF] hover:bg-[#4096FF] active:bg-[#007AFF] pressed:bg-[#0958d9] text-uiSecondaryText w-fit h-fit shadow-[0_2px_0_rgba(5,145,255,0.1)]',
+        'bg-[#007AFF] hover:bg-[#4096FF] active:bg-[#007AFF] pressed:bg-[#0958d9] text-uiPrimaryText w-fit h-fit shadow-[0_2px_0_rgba(5,145,255,0.1)]',
       secondary:
         '[--btn-bg:var(--color-secondary)] [--btn-fg:var(--color-secondary-fg)] [--btn-icon:var(--color-muted-fg)] [--btn-outline:var(--color-secondary-fg)] [--btn-overlay:var(--color-secondary)]/85 [--btn-ring:var(--color-muted-fg)]/20',
       warning:
@@ -34,7 +34,7 @@ const buttonStyles = tv({
         '*:data-[slot=loader]:size-3.5 sm:*:data-[slot=loader]:size-3',
       ],
       sm: [
-        'gap-x-1.5 px-[15px] sm:px-[15px] sm:py-1.5 sm:text-sm/5',
+        'gap-x-1.5 px-[16px] sm:px-[16px] sm:py-[7px] sm:text-sm/5 h-[38px]',
         '*:data-[slot=icon]:size-4.5 sm:*:data-[slot=icon]:size-4',
         '*:data-[slot=loader]:size-4.5 sm:*:data-[slot=loader]:size-4',
       ],
@@ -63,7 +63,7 @@ const buttonStyles = tv({
       false: 'rounded-sm',
     },
     isDisabled: {
-      true: 'inset-ring-0 opacity-50 forced-colors:text-[GrayText]',
+      true: 'inset-ring-0 opacity-50 forced-colors:text-black/25 bg-uiButtonBg text-black/25 border-black/25 shadow-[0_2px_0px_0px_rgba(0,0,0,0.016)] cursor-not-allowed',
     },
     isPending: {
       true: 'opacity-50',

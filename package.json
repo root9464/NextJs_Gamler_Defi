@@ -7,12 +7,14 @@
     "build": "next build",
     "start": "next start -p 8085",
     "lint": "next lint",
+    "analyze": "ANALYZE=true next build",
     "ui:add": "npx @intentui/cli@latest add",
     "init:lock": "npm install --package-lock-only"
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.2",
     "@intentui/icons": "^1.11.0",
+    "@next/bundle-analyzer": "^15.3.4",
     "@next/eslint-plugin-next": "^15.3.4",
     "@react-aria/utils": "^3.29.1",
     "@react-stately/utils": "^3.10.7",

@@ -18,7 +18,7 @@ const usePay = (authorId: number) => {
     console.log('cell', cell);
     if (!jettonWallet) return;
     try {
-      const validUntil = Date.now() + 300000; // 5 minutes
+      const validUntil = Date.now() + 300000; // 3 minutes
       const message: SendTransactionRequest = {
         validUntil,
         network: CHAIN.MAINNET,

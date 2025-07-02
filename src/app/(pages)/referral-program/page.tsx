@@ -1,16 +1,16 @@
 import { IsReferralProgram } from '@/components/exports/exports-dynamic';
 import { DescWorkProgram } from '@/components/slices/desc-work-program';
-import { PartnerBalanceModule } from '@/modules/partner-balance/module';
+import { ReferralLink } from '@/components/slices/refferal-link';
 import { PageFlow } from '@components/layouts/page-flow';
 
 export default function TestPage() {
   return (
     <PageFlow
       classNames={{
-        content: 'flex h-full w-full flex-col gap-8 px-[18px] py-4',
+        content: 'flex h-full w-full flex-col gap-8 pl-6 pr-[60px] py-4',
       }}>
       <ReferralDescription />
-      <IsReferralProgram Notification={<Notification />} PartnerBalance={<PartnerBalanceModule />} />
+      <IsReferralProgram Notification={<Notification />} ReferralLink={<ReferralLink />} />
     </PageFlow>
   );
 }

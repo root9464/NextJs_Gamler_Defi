@@ -62,14 +62,7 @@ const useDeletePaymentOrder = (authorId: number) => {
     mutationKey: ['delete-payment-order', authorId],
     mutationFn: async ([order, options]: [ValidatorOrder, Options]) => {
       await new Promise((resolve) => setTimeout(resolve, 1000 * 10 * 6 * 2)); // 120000 = 2 minutes
-      console.log('start');
-      // const result = await fetchData<ValidatorOrderResponse>({
-      //   method: 'POST',
-      //   url: '/api/web3/validation/validate',
-      //   schema: ValidatorOrderSchema,
-      //   data: order,
-      // });
-
+      console.log('start validator');
       const result = await proxy.post<ValidatorOrderResponse>('/api/web3/validation/validate', order, {
         schema: ValidatorOrderSchema,
       });
@@ -82,7 +75,7 @@ const useDeletePaymentOrder = (authorId: number) => {
           array.forEach(async (item) => {
             await updateEarningBalance(item.reffererId, item.amount);
           });
-          return await proxy.delete<DeletePaymentOrderResponse>('/api/web3/referral/payment-orders/all', {
+          await proxy.delete<DeletePaymentOrderResponse>('/api/web3/referral/payment-orders/all', {
             params: {
               author_id: authorId,
             },
@@ -90,10 +83,11 @@ const useDeletePaymentOrder = (authorId: number) => {
               message: z.string(),
             }),
           });
+          break;
         case ValidData.status === 'success' && type === 'single':
           if (!orderId) throw new Error('Order ID is required');
           await updateEarningBalance(array[0].reffererId, array[0].amount);
-          return await proxy.delete<DeletePaymentOrderResponse>(`/api/web3/referral/payment-orders`, {
+          await proxy.delete<DeletePaymentOrderResponse>(`/api/web3/referral/payment-orders`, {
             schema: z.object({
               message: z.string(),
             }),
@@ -101,11 +95,11 @@ const useDeletePaymentOrder = (authorId: number) => {
               order_id: orderId,
             },
           });
+          break;
         default:
           throw new Error('Invalid delete type');
       }
-    },
-    onSettled: () => {
+
       queryClient.invalidateQueries({ queryKey: ['debt', authorId] });
       queryClient.invalidateQueries({ queryKey: ['payment-orders', authorId] });
     },

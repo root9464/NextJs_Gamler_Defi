@@ -34,7 +34,7 @@ const usePayAllOrders = () => {
       proxy.get('/api/web3/referral/payment-orders/all', {
         schema: PaymentOrderSchema,
         params: {
-          leader_id: authorId,
+          author_id: authorId,
         },
         headers: {
           'Wallet-Address': address,

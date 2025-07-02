@@ -3,11 +3,28 @@
 
   --color-uiPrimaryBg: var(--uiPrimaryBg);
   --color-uiSecondaryBg: var(--uiSecondaryBg);
+  --color-uiPrimaryMuted: var(--uiPrimaryMuted);
 
+
+  /*text*/
   --color-uiPrimaryText: var(--uiPrimaryText);
   --color-uiSecondaryText: var(--uiSecondaryText);
+  --color-uiPrimaryMutedText: var(--uiPrimaryMutedText);
+  --color-uiSecondaryMutedText: var(--uiSecondaryMutedText);
 
-  --color-uiPrimaryMuted: var(--uiPrimaryMuted);
+
+
+
+  /*buttons*/
+
+  --color-uiButtonBg: var(--uiButtonBg);
+  --color-uiButtonFg: var(--uiButtonFg);
+  --color-uiButtonText: var(--uiButtonText);
+  --color-uiButtonMuted: var(--uiButtonMuted);
+  --color-uiButtonOutline: var(--uiButtonOutline);
+  --color-uiButtonOverlay: var(--uiButtonOverlay);
+
+
   --breakpoint-mq1440: 1440px;
 }
 
@@ -16,10 +33,14 @@
   :root {
     --uiPrimaryBg: rgb(255, 255, 255);
     --uiSecondaryBg: rgb(0, 0, 0);
-
-    --uiPrimaryText: rgba(0, 0, 0, 0.85);
-    --uiSecondaryText: rgb(255, 255, 255);
-
     --uiPrimaryMuted: rgb(0, 12, 121);
+
+    --uiPrimaryText: rgb(255, 255, 255);
+    --uiSecondaryText: rgb(24, 144, 255);
+    --uiPrimaryMutedText: rgb(255, 0, 0);
+    --uiSecondaryMutedText: rgb(255, 0, 0);
+
+    --uiButtonBg: rgb(245, 245, 245);
+    --uiButtonFg: rgb(0, 0, 0);
   }
 }

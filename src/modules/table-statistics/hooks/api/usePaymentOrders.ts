@@ -54,4 +54,4 @@ const usePaymentOrder = (authorId: number) =>
   });
 
 export { AdditionalInformationSchema, PaymentOrderSchema, usePaymentOrder };
-export type { AdditionalInformation, Level, PaymentOrder };
+export type { AdditionalInformation, Level, PaymentOrder, PaymentOrdersResponse };

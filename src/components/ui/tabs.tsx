@@ -72,7 +72,7 @@ const Tab = ({ children, className, ref, ...props }: TabProps) => {
       {...props}
       className={composeRenderProps(className, (className) =>
         twMerge([
-          'text-uiSecondaryText relative flex cursor-default items-center rounded-full text-sm font-medium whitespace-nowrap outline-hidden transition hover:text-[#1890FF] *:data-[slot=icon]:mr-2 *:data-[slot=icon]:size-4',
+          'text-uiPrimaryText relative flex cursor-default items-center rounded-full text-sm font-medium whitespace-nowrap outline-hidden transition hover:text-[#1890FF] *:data-[slot=icon]:mr-2 *:data-[slot=icon]:size-4',
           'group-orientation-vertical/tabs:w-full group-orientation-vertical/tabs:py-0 group-orientation-vertical/tabs:pr-2 group-orientation-vertical/tabs:pl-4',
           'group-orientation-horizontal/tabs:pb-3',
           'selected:text-[#1890FF] text-muted-fg focus:ring-0',

@@ -11,6 +11,7 @@ export const TanstackProvider = ({ children }: Readonly<{ children: ReactNode }>
           queries: {
             staleTime: 1 * 60 * 60 * 1000,
             refetchOnWindowFocus: false,
+            retry: false,
           },
         },
       }),

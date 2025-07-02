@@ -1,8 +1,9 @@
 'use client';
-import HelperIcon from '@/assets/svg/helper-symbol.svg';
-import { Button } from '@/components/ui/button';
 import { useJettonWallet } from '@/shared/hooks/api/useJettonWallet';
+import HelperIcon from '@assets/svg/helper-symbol.svg';
 import { useTonAddress } from '@tonconnect/ui-react';
+import { Button } from '@ui/button';
+import { Skeleton } from '@ui/skeleton';
 
 export const CurrentBalance = () => {
   const address = useTonAddress();
@@ -23,7 +24,7 @@ export const CurrentBalance = () => {
             {(Number(jettonWallet?.balance) / 10 ** jettonWallet?.jetton.decimals).toFixed(2)} Gamler
           </p>
         )}
-        {isLoadingJettonWallets && <p className='text-lg font-bold text-black/85'>Загрузка...</p>}
+        {isLoadingJettonWallets && <Skeleton className='h-9 w-[140px]' />}
         {isErrorJettonWallets && <p className='text-lg font-bold text-black/85'>Ошибка загрузки баланса</p>}
         {!address && !jettonWallet && <p className='text-lg font-bold text-black/85'>0 Gamler</p>}
       </div>
