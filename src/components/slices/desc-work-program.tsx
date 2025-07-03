@@ -45,7 +45,7 @@ export const DescWorkProgram = () => {
       <Modal.Trigger onClick={onOpen} className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-[#1890FF] underline'>
         Как работает партнерская программа?
       </Modal.Trigger>
-      <Modal.Content>
+      <Modal.Content size='full' className='absolute top-0 h-full rounded-none sm:relative sm:rounded-2xl'>
         <Modal.Header />
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           {REFERRAL_PROGRAM_DATA.map((item, index) => (
@@ -70,8 +70,8 @@ export const DescWorkProgram = () => {
             </div>
           ))}
         </Modal.Body>
-        <Modal.Footer className='flex h-8 items-center justify-end'>
-          <Button onClick={onClose} className='font-normal' intent='outline'>
+        <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>
+          <Button onClick={onClose} className='font-normal w-full sm:w-fit' intent='outline'>
             Понятно
           </Button>
         </Modal.Footer>

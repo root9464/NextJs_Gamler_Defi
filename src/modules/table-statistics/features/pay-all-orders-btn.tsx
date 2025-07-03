@@ -1,6 +1,6 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@components/ui/button';
 import { useAccount } from '@shared/hooks/api/useAccount';
-import { Skeleton } from 'antd';
 import { usePay } from '../hooks/api/usePay';
 import { usePayAllOrders } from '../hooks/api/usePayOrder';
 import { usePaymentOrder } from '../hooks/api/usePaymentOrders';
@@ -12,7 +12,6 @@ export const PayAllOrdersBtn = () => {
     data: paymentOrders,
     isLoading: isLoadingPaymentOrders,
     isError: isErrorPaymentOrders,
-    error: errorPaymentOrders,
     isSuccess: isSuccessPaymentOrders,
   } = usePaymentOrder(account?.user_id ?? 0);
 
@@ -28,15 +27,20 @@ export const PayAllOrdersBtn = () => {
   const { payAllOrders } = usePay(account?.user_id ?? 0);
   const handlePayAllOrders = () => payAllOrders(createCell, debt_arr);
 
+  const isNullDebt = debt_arr.length > 0;
   return (
     <>
-      {isSuccessPaymentOrders && debt_arr.length > 0 && (
+      {isSuccessPaymentOrders && isNullDebt && (
         <Button intent='primary' onClick={handlePayAllOrders}>
           {isPendingPayAllOrders ? 'Ожидание...' : isSuccessPayAllOrders ? 'Выполнено' : 'Погасить'}
         </Button>
       )}
-      {isLoadingPaymentOrders && <Skeleton className='h-9 w-[140px]' />}
-      {isErrorPaymentOrders && <p>Ошибка при загрузке задолженностей {errorPaymentOrders.message}</p>}
+      {isSuccessPaymentOrders && !isNullDebt && (
+        <Button intent='primary' isDisabled>
+          Погашено
+        </Button>
+      )}
+      {(isLoadingPaymentOrders || isErrorPaymentOrders) && <Skeleton className='h-9 w-[100px]' />}
     </>
   );
 };

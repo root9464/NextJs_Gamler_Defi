@@ -12,7 +12,7 @@ export const TableStatisticsModule = () => {
   return (
     <div className='flex w-full flex-col gap-2.5'>
       <Tabs aria-label='Table Statistics'>
-        <TabList className='flex flex-col items-center gap-2.5 sm:flex-row'>
+        <TabList className='flex flex-col items-center gap-[30px] sm:flex-row'>
           <Tab id='1'>История транзакций</Tab>
           <Tab id='2'>Ваши приглашённые</Tab>
           <Tab id='3'>Задолженности</Tab>

@@ -16,7 +16,7 @@ const Dialog = ({ role = 'dialog', className, ...props }: React.ComponentProps<t
     <DialogPrimitive
       role={role}
       className={twMerge(
-        'peer/dialog group/dialog relative flex max-h-[inherit] flex-col overflow-hidden outline-hidden [--gutter:--spacing(6)] [scrollbar-width:thin] sm:[--gutter:--spacing(8)] [&::-webkit-scrollbar]:size-0.5',
+        'peer/dialog group/dialog relative flex max-h-[inherit] flex-col overflow-hidden outline-hidden [--gutter:--spacing(6)] [scrollbar-width:thin] sm:max-h-full sm:[--gutter:--spacing(8)] [&::-webkit-scrollbar]:size-0.5 top-0',
         className,
       )}
       {...props}

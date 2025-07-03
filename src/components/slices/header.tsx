@@ -30,7 +30,7 @@ export const Header: FC<HeaderProps> = ({ className }) => {
   const { isMobile } = useWindow();
 
   return (
-    <div className={cn('flex h-16 w-full flex-row items-center justify-between', isMobile ? 'px-4' : 'px-16', className)}>
+    <div className={cn('flex h-16 w-full flex-row items-center justify-between', isMobile ? 'px-4' : 'px-[50px]', className)}>
       {!isMobile ? (
         <>
           <NavBreadcrumbs breadcrumbs={breadcrumbs} />

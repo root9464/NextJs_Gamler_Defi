@@ -1,6 +1,9 @@
 import MenuIcon from '@assets/svg/menu.svg';
 import { Sheet } from '../ui/sheet';
 
+import Link from 'next/link';
+import { MENU_ITEMS } from './side-bar';
+
 export const MobileSheet = () => (
   <Sheet>
     <Sheet.Trigger>
@@ -12,21 +15,14 @@ export const MobileSheet = () => (
       </Sheet.Header>
       <Sheet.Body>
         <div className='space-y-4 p-4'>
-          <div className='flex items-center gap-2'>
-            <span className='text-black/85'>Размещенные игры</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <span className='text-black/85'>Мои игры</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <span className='text-black/85'>События</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <span className='text-black/85'>Мои игроки</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <span className='text-black/85'>Билеты</span>
-          </div>
+          {MENU_ITEMS.map((item) => (
+            <div key={item.label} className='flex flex-row items-center gap-2'>
+              <item.icon />
+              <Link className='text-black/85' href={item.href}>
+                {item.label}
+              </Link>
+            </div>
+          ))}
         </div>
       </Sheet.Body>
     </Sheet.Content>

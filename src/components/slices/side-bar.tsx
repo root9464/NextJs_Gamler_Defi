@@ -6,6 +6,12 @@ import { motion } from 'motion/react';
 import { type FC } from 'react';
 import { Button } from '../ui/button';
 
+import EventsIcon from '@assets/svg/enents.svg';
+import MyGamesIcon from '@assets/svg/my-games.svg';
+import MyPlayersIcon from '@assets/svg/my-players.svg';
+import RefferalProgramIcon from '@assets/svg/refferal-program.svg';
+import TicketsIcon from '@assets/svg/tickets.svg';
+
 type SideBarProps = {
   classNames?: Partial<{
     body: string;
@@ -74,6 +80,15 @@ const bodyVariants: Variants = {
     },
   },
 };
+
+export const MENU_ITEMS = [
+  { label: 'Размещенные игры', icon: MyPlayersIcon, href: '/account/published_games/' },
+  { label: 'Мои игры', icon: MyGamesIcon, href: '/account/my-games/' },
+  { label: 'События', icon: EventsIcon, href: '/account/events/' },
+  { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
+  { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
+  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/web3/referral-program' },
+];
 
 const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => (
   <motion.div

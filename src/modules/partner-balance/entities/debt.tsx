@@ -11,7 +11,7 @@ export const Debt = () => {
   return (
     <div className='grid w-full grid-cols-[130px_auto] place-content-stretch gap-5 sm:flex sm:w-fit sm:flex-row sm:items-center sm:justify-between'>
       <div className='flex flex-col items-start justify-center gap-2.5 sm:items-center'>
-        <p className='text-sm text-black/85'>Задолженонсть</p>
+        <p className='text-sm text-black/85'>Задолженность</p>
         {isSuccessDebt && <p className='text-lg font-bold text-red-600'>{debt} Gamler</p>}
         {isLoadingDebt && <p className='text-lg font-bold text-red-600'>Загрузка...</p>}
         {isErrorDebt && <p className='text-lg font-bold text-red-600'>Ошибка загрузки задолжености</p>}
