@@ -34,9 +34,6 @@
     text-rendering: optimizeLegibility;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
-
-    /* box-sizing: border-box;
-    box-shadow: 0 0 0 2px rgb(255, 0, 0); */
   }
 
   html {
@@ -61,5 +58,18 @@
 
   .title-1 {
     @apply text-xs font-normal text-black/60;
+  }
+
+  .test-box {
+    box-sizing: border-box;
+    box-shadow: 0 0 0 2px rgb(255, 0, 0);
+  }
+
+  .custom-scroll {
+    @apply overflow-x-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-track]:bg-transparent;
+  }
+
+  .table-scroll {
+    @apply [&_.ant-table]:w-full [&_.ant-table-content]:overflow-x-auto [&_.ant-table-content::-webkit-scrollbar]:h-2 [&_.ant-table-content::-webkit-scrollbar-thumb]:bg-gray-200 [&_.ant-table-content::-webkit-scrollbar-track]:bg-transparent [&_.ant-table-tbody]:overflow-y-auto;
   }
 }

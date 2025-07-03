@@ -47,7 +47,12 @@ export const TransactionsTable: FC<{ address: string }> = ({ address }) => {
   return (
     <>
       {isSuccessTransactions && transactions && (
-        <Table dataSource={transactions_table_data} onChange={handleTableChange} pagination={tableParams.pagination} rowKey='id'>
+        <Table
+          dataSource={transactions_table_data}
+          onChange={handleTableChange}
+          pagination={tableParams.pagination}
+          rowKey='id'
+          className='table-scroll'>
           <Column title='Дата' dataIndex='time' key='time' />
           <Column title='Сумма' dataIndex='amount' key='amount' />
           <Column title='Действие' dataIndex='action' key='action' />

@@ -21,7 +21,7 @@ export const PageFlow: FC<Readonly<PageFlowProps>> = ({ children, classNames }) 
   const { isMobile } = useWindow();
 
   return (
-    <div className={cn('flex h-full w-full flex-col', classNames?.header)}>
+    <div className={cn('flex h-fit w-full flex-col sm:h-full', classNames?.header)}>
       <Header className={classNames?.header} />
       <div className='flex flex-1 flex-row'>
         <LayoutGroup>

@@ -16,8 +16,8 @@ export const CurrentBalance = () => {
   const jettonWallet = jettonWallets?.balances.find((balance) => balance.jetton.symbol === 'GMLR');
 
   return (
-    <div className='flex flex-row items-center justify-between gap-5'>
-      <div className='flex flex-col items-center justify-center gap-2.5'>
+    <div className='grid w-full grid-cols-[130px_auto] place-content-stretch gap-5 sm:flex sm:w-fit sm:flex-row sm:items-center sm:justify-between'>
+      <div className='flex flex-col items-start justify-center gap-2.5 sm:items-center'>
         <p className='text-sm text-black/85'>Текущий баланс</p>
         {isSuccessJettonWallets && jettonWallet && (
           <p className='text-lg font-bold text-black/85'>
@@ -28,7 +28,7 @@ export const CurrentBalance = () => {
         {isErrorJettonWallets && <p className='text-lg font-bold text-black/85'>Ошибка загрузки баланса</p>}
         {!address && !jettonWallet && <p className='text-lg font-bold text-black/85'>0 Gamler</p>}
       </div>
-      <div className='flex flex-row items-center gap-2.5'>
+      <div className='flex flex-row items-center justify-end gap-2.5'>
         <Button intent='outline' size='sm'>
           Вывести
         </Button>

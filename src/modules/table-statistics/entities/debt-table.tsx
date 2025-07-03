@@ -66,42 +66,32 @@ export const DebtTable = () => {
   };
 
   return (
-    <>
+    <div className='custom-scroll'>
       {isSuccessPaymentOrders && debt_table_data && (
         <>
-          <div className='flex flex-row items-center gap-2.5'>
+          <div className='mb-4 hidden flex-row items-center gap-2.5 sm:flex'>
             <LazyPayAllOrdersBtn />
-            <p className='text-sm text-black/85'>
+            <p className='text-sm text-gray-700'>
               Чтобы погасить все задолженности сразу, нажмите кнопку “Погасить все”. Или выберите реферала и оплатите каждую транзакцию отдельно
             </p>
           </div>
-          <Table dataSource={debt_table_data} onChange={handleTableChange} pagination={tableParams.pagination} rowKey='order_id'>
-            <Column
-              title='Количество билетов'
-              dataIndex='tickets'
-              sorter={(a: DebtTableDataType, b: DebtTableDataType) => a.tickets - b.tickets}
-              key='tickets'
-            />
-            <Column
-              title='Дата'
-              dataIndex='date'
-              sorter={(a: DebtTableDataType, b: DebtTableDataType) => a.date.localeCompare(b.date)}
-              key='date'
-            />
-            <Column
-              title='Сумма задолженности'
-              dataIndex='debt_amount'
-              sorter={(a: DebtTableDataType, b: DebtTableDataType) => a.debt_amount - b.debt_amount}
-              key='debt_amount'
-            />
+          <Table
+            dataSource={debt_table_data}
+            onChange={handleTableChange}
+            pagination={tableParams.pagination}
+            rowKey='order_id'
+            className='table-scroll'>
+            <Column title='Количество билетов' dataIndex='tickets' sorter={(a, b) => a.tickets - b.tickets} key='tickets' />
+            <Column title='Дата' dataIndex='date' sorter={(a, b) => a.date.localeCompare(b.date)} key='date' />
+            <Column title='Сумма задолженности' dataIndex='debt_amount' sorter={(a, b) => a.debt_amount - b.debt_amount} key='debt_amount' />
             <Column title='Реферал' dataIndex='refferal' key='refferal' />
             <Column
               title={isPending ? 'Ожидание...' : isSuccess ? 'Выполнено' : 'Действие'}
               dataIndex='action'
-              render={(_, record: DebtTableDataType) => (
+              render={(_, record) => (
                 <a
                   key={record.order_id}
-                  className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-[#1890FF] underline'
+                  className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-blue-500 underline'
                   onClick={() => payOrder(createCell, record.order_id, { amount: record.debt_amount, reffererId: record.refferer_id })}>
                   Погасить задолженность
                 </a>
@@ -113,11 +103,11 @@ export const DebtTable = () => {
       )}
       {isLoadingPaymentOrders && (
         <>
-          <Skeleton className='h-9 w-[200px]' />
+          <Skeleton className='mb-4 h-9 w-[200px]' />
           <TableSkeleton rows={3} columns={5} />
         </>
       )}
-      {isErrorPaymentOrders && <p>Ошибка при загрузке задолженностей {errorPaymentOrders.message}</p>}
-    </>
+      {isErrorPaymentOrders && <p className='text-red-500'>Ошибка при загрузке задолженностей {errorPaymentOrders.message}</p>}
+    </div>
   );
 };

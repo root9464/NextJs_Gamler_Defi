@@ -32,7 +32,7 @@ export const PayAllOrdersBtn = () => {
     <>
       {isSuccessPaymentOrders && debt_arr.length > 0 && (
         <Button intent='primary' onClick={handlePayAllOrders}>
-          {isPendingPayAllOrders ? 'Ожидание...' : isSuccessPayAllOrders ? 'Выполнено' : 'Погасить все'}
+          {isPendingPayAllOrders ? 'Ожидание...' : isSuccessPayAllOrders ? 'Выполнено' : 'Погасить'}
         </Button>
       )}
       {isLoadingPaymentOrders && <Skeleton className='h-9 w-[140px]' />}

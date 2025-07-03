@@ -7,7 +7,7 @@ export default function TestPage() {
   return (
     <PageFlow
       classNames={{
-        content: 'flex h-full w-full flex-col gap-8 pl-6 pr-[60px] py-4',
+        content: 'flex h-fit w-full flex-col gap-8 py-4 px-[30px] md:pl-6 md:pr-[60px]',
       }}>
       <ReferralDescription />
       <IsReferralProgram Notification={<Notification />} ReferralLink={<ReferralLink />} />
@@ -16,10 +16,10 @@ export default function TestPage() {
 }
 
 const ReferralDescription = () => (
-  <div className='flex h-fit w-[900px] flex-col gap-2.5'>
+  <div className='flex h-fit w-full flex-col gap-2.5 sm:w-[900px]'>
     <h2 className='heading-1'>Партнерская программа</h2>
     <p className='title-1'>
-      Партнёрская программа — это способ получать вознаграждение за привлечение новых пользователей на платформу. Каждый зарегистрированный{' '}
+      Партнёрская программа — это способ получать вознаграждение за привлечение новых пользователей на платформу. Каждый зарегистрированный
       участник может стать реферером — пригласить других пользователей и получать бонусы за их активность.
     </p>
 
