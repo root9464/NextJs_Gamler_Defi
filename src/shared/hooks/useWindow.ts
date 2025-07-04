@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react';
 import { fromEvent } from 'rxjs/internal/observable/fromEvent';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';

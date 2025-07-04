@@ -1,11 +1,8 @@
-'use client';
-import { useDisclosure } from '@/shared/hooks/useDisclosure';
-import { useWindow } from '@/shared/hooks/useWindow';
 import { cn } from '@shared/utils/tw.utils';
-import { LayoutGroup, motion } from 'motion/react';
 import type { FC, ReactNode } from 'react';
+import { DynamicLayoutFlow } from '../exports/exports-dynamic';
 import { Header } from '../slices/header';
-import { SideBar } from '../slices/side-bar';
+import { SocialLinks } from '../slices/social-links';
 
 type PageFlowProps = {
   children: ReactNode;
@@ -17,20 +14,10 @@ type PageFlowProps = {
 };
 
 export const PageFlow: FC<Readonly<PageFlowProps>> = ({ children, classNames }) => {
-  const { isOpen, onOpenChange } = useDisclosure();
-  const { isMobile } = useWindow();
-
   return (
     <div className={cn('flex h-fit w-full flex-col sm:h-full', classNames?.header)}>
-      <Header className={classNames?.header} />
-      <div className='flex flex-1 flex-row'>
-        <LayoutGroup>
-          {!isMobile && <SideBar className={cn('h-full w-[285px]', classNames?.sidebar)} isOpen={isOpen} onOpenChange={onOpenChange} />}
-          <motion.div layout className={cn('h-full flex-1', classNames?.content)}>
-            {children}
-          </motion.div>
-        </LayoutGroup>
-      </div>
+      <Header className={classNames?.header} SocialLinks={<SocialLinks />} />
+      <DynamicLayoutFlow classNames={classNames}>{children}</DynamicLayoutFlow>
     </div>
   );
 };
