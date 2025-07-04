@@ -22,6 +22,7 @@ const PaymentOrderSchema = z.object({
   ticket_count: z.number(),
   levels: z.array(LevelSchema),
   created_at: z.number(),
+  tr_hash: z.string(),
 });
 
 type Level = z.infer<typeof LevelSchema>;

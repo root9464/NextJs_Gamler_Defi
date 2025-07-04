@@ -64,4 +64,7 @@ export function useDisclosure(props: UseDisclosureProps = {}) {
   };
 }
 
-export type UseDisclosureReturn = ReturnType<typeof useDisclosure>;
+type UseDisclosureReturn = ReturnType<typeof useDisclosure>;
+type BaseDisclosureProps = Pick<UseDisclosureReturn, 'isOpen' | 'onOpen' | 'onClose' | 'onOpenChange'>;
+
+export type { BaseDisclosureProps, UseDisclosureReturn };

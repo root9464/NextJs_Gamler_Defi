@@ -25,6 +25,10 @@
   --color-uiButtonOverlay: var(--uiButtonOverlay);
 
 
+  /*active*/
+  --color-uiActiveBlue: var(--uiActiveBlue);
+  --color-uiActiveMutedBlue: var(--uiActiveMutedBlue);
+
   --breakpoint-mq1440: 1440px;
 }
 
@@ -42,5 +46,8 @@
 
     --uiButtonBg: rgb(245, 245, 245);
     --uiButtonFg: rgb(0, 0, 0);
+
+    --uiActiveBlue: rgb(22, 119, 255);
+    --uiActiveMutedBlue: rgb(230, 244, 255);
   }
 }
