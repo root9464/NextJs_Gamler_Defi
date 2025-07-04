@@ -2,18 +2,18 @@
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useBreadcrumbs } from '@/shared/hooks/useBreadcrumbs';
 import { cn } from '@/shared/utils/tw.utils';
-import Logo from '@assets/svg/logo.svg';
 import type { ReactNode } from 'react';
 import { memo, type FC } from 'react';
 import { Avatar } from '../ui/avatar';
 
+import BaseAvatar from '@assets/svg/base-avatar.svg';
 import CoinIcon from '@assets/svg/coin.svg';
 import OrangeHeartIcon from '@assets/svg/heart-orange.svg';
 import HeartIcon from '@assets/svg/heart.svg';
+import Logo from '@assets/svg/logo.svg';
 
-import { useWindow } from '@/shared/hooks/useWindow';
-import BaseAvatar from '@assets/svg/base-avatar.svg';
 import { LazyMobileSheet } from '../exports/exports-lazy';
+import { IsMobileFlow } from '../layouts/is-mobile-flow';
 import { Skeleton } from '../ui/skeleton';
 import { NavBreadcrumbs } from './breadcrumbs';
 
@@ -26,25 +26,27 @@ export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
   const breadcrumbs = useBreadcrumbs({
     '/referral-program': 'Реферальная программа',
   });
-  const { isMobile } = useWindow();
 
   return (
-    <div className={cn('flex h-16 w-full flex-row items-center justify-between', isMobile ? 'px-4' : 'px-[50px]', className)}>
-      {!isMobile ? (
-        <>
-          <NavBreadcrumbs breadcrumbs={breadcrumbs} />
-          <div className='flex w-fit flex-row items-center justify-between gap-[74px]'>
-            {SocialLinks}
+    <div className={cn('flex h-16 w-full flex-row items-center justify-between px-[50px]', className)}>
+      <IsMobileFlow
+        mobile={
+          <div className='grid w-full grid-cols-[auto_1fr_auto] items-center justify-between gap-2.5'>
+            <Logo className='w-[107px]' />
             <AccountInfo />
+            <LazyMobileSheet />
           </div>
-        </>
-      ) : (
-        <div className='grid w-full grid-cols-[auto_1fr_auto] items-center justify-between gap-2.5'>
-          <Logo className='w-[107px]' />
-          <AccountInfo />
-          <LazyMobileSheet />
-        </div>
-      )}
+        }
+        desktop={
+          <>
+            <NavBreadcrumbs breadcrumbs={breadcrumbs} />
+            <div className='flex w-fit flex-row items-center justify-between gap-[74px]'>
+              {SocialLinks}
+              <AccountInfo />
+            </div>
+          </>
+        }
+      />
     </div>
   );
 };

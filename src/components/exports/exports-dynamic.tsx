@@ -14,4 +14,8 @@ const DynamicLayoutFlow = dynamic(() => import('@components/layouts/layout-flow'
   ssr: false,
 });
 
-export { DynamicLayoutFlow, DynamicSideBar, IsReferralProgram };
+const DynamicDescWorkProgram = dynamic(() => import('@components/slices/desc-work-program').then((mod) => mod.DescWorkProgram), {
+  ssr: false,
+});
+
+export { DynamicDescWorkProgram, DynamicLayoutFlow, DynamicSideBar, IsReferralProgram };

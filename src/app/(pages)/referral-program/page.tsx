@@ -1,5 +1,4 @@
-import { IsReferralProgram } from '@/components/exports/exports-dynamic';
-import { DescWorkProgram } from '@/components/slices/desc-work-program';
+import { DynamicDescWorkProgram, IsReferralProgram } from '@/components/exports/exports-dynamic';
 import { ReferralLink } from '@/components/slices/refferal-link';
 import { PageFlow } from '@components/layouts/page-flow';
 
@@ -23,7 +22,7 @@ const ReferralDescription = () => (
       участник может стать реферером — пригласить других пользователей и получать бонусы за их активность.
     </p>
 
-    <DescWorkProgram />
+    <DynamicDescWorkProgram />
   </div>
 );
 
