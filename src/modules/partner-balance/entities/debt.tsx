@@ -1,7 +1,7 @@
 'use client';
 import HelperIcon from '@assets/svg/helper-symbol.svg';
-import { PayAllOrdersBtn } from '@modules/table-statistics/features/pay-all-orders-btn';
 import { useAccount } from '@shared/hooks/api/useAccount';
+import { LazyPayAllOrdersBtn } from '../exports/exports-lazy';
 import { useDebt } from '../hooks/api/usePaymentStats';
 
 export const Debt = () => {
@@ -18,7 +18,7 @@ export const Debt = () => {
         {!account?.user_id && !debt && <p className='text-lg font-bold text-red-600'>0 Gamler</p>}
       </div>
       <div className='flex flex-row items-center justify-end gap-2.5'>
-        <PayAllOrdersBtn />
+        <LazyPayAllOrdersBtn />
         <HelperIcon />
       </div>
     </div>

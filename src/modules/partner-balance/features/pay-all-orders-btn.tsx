@@ -1,9 +1,9 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@components/ui/button';
 import { useAccount } from '@shared/hooks/api/useAccount';
-import { usePay } from '../hooks/api/usePay';
-import { usePayAllOrders } from '../hooks/api/usePayOrder';
-import { usePaymentOrder } from '../hooks/api/usePaymentOrders';
+import { usePay } from '../../table-statistics/hooks/api/usePay';
+import { usePayAllOrders } from '../../table-statistics/hooks/api/usePayOrder';
+import { usePaymentOrder } from '../../table-statistics/hooks/api/usePaymentOrders';
 
 export const PayAllOrdersBtn = () => {
   const { data: account } = useAccount();

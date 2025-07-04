@@ -8,7 +8,6 @@ import Column from 'antd/es/table/Column';
 import type { SorterResult } from 'antd/es/table/interface';
 import type { FC } from 'react';
 import { useState } from 'react';
-import { LazyPayAllOrdersBtn } from '../exports/exports-lazy';
 import { PayModal } from '../features/pay-modal';
 import { useDeletePaymentOrder, type DeletePaymentOrderFn } from '../hooks/api/useDeletePaymentOrder';
 import type { CreateCellFn } from '../hooks/api/usePay';
@@ -24,7 +23,7 @@ export type DebtTableDataType = {
   debt_amount: number;
   refferal: string;
   refferer_id: number;
-  tr_hash: string;
+  tr_hash: string | undefined;
 };
 
 type TableParams = {
@@ -44,7 +43,6 @@ export const DebtTable = () => {
     data: paymentOrders,
     isLoading: isLoadingPaymentOrders,
     isError: isErrorPaymentOrders,
-    error: errorPaymentOrders,
     isSuccess: isSuccessPaymentOrders,
   } = usePaymentOrder(account?.user_id ?? 0);
 
@@ -65,6 +63,7 @@ export const DebtTable = () => {
     onOpen: modalDisclosureControl.onOpen,
     onClose: modalDisclosureControl.onClose,
   });
+
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -83,53 +82,44 @@ export const DebtTable = () => {
     <div className='custom-scroll'>
       <PayModal isOpen={modalDisclosureControl.isOpen} />
       {isSuccessPaymentOrders && debt_table_data && (
-        <>
-          <div className='mb-4 hidden flex-row items-center gap-2.5 sm:flex'>
-            <LazyPayAllOrdersBtn />
-            <p className='text-sm text-gray-700'>
-              Чтобы погасить все задолженности сразу, нажмите кнопку “Погасить все”. Или выберите реферала и оплатите каждую транзакцию отдельно
-            </p>
-          </div>
-          <Table<DebtTableDataType>
-            dataSource={debt_table_data}
-            onChange={handleTableChange}
-            pagination={tableParams.pagination}
-            rowKey='order_id'
-            className='table-scroll'>
-            <Column<DebtTableDataType> title='Количество билетов' dataIndex='tickets' sorter={(a, b) => a.tickets - b.tickets} key='tickets' />
-            <Column<DebtTableDataType> title='Дата' dataIndex='date' sorter={(a, b) => a.date.localeCompare(b.date)} key='date' />
-            <Column<DebtTableDataType>
-              title='Сумма задолженности'
-              dataIndex='debt_amount'
-              sorter={(a, b) => a.debt_amount - b.debt_amount}
-              key='debt_amount'
-            />
-            <Column<DebtTableDataType> title='Реферал' dataIndex='refferal' key='refferal' />
-            <Column<DebtTableDataType>
-              title={isPending ? 'Ожидание...' : isSuccess ? 'Выполнено' : 'Действие'}
-              dataIndex='action'
-              render={(_, record) => (
-                <ActionColumn
-                  record={record}
-                  payOrder={payOrder}
-                  createCell={createCell}
-                  deleteOrder={deleteOrder}
-                  address={address ?? ''}
-                  onOpenModal={modalDisclosureControl.onOpen}
-                />
-              )}
-              key='action'
-            />
-          </Table>
-        </>
+        <Table<DebtTableDataType>
+          dataSource={debt_table_data}
+          onChange={handleTableChange}
+          pagination={tableParams.pagination}
+          rowKey='order_id'
+          className='table-scroll'>
+          <Column<DebtTableDataType> title='Количество билетов' dataIndex='tickets' sorter={(a, b) => a.tickets - b.tickets} key='tickets' />
+          <Column<DebtTableDataType> title='Дата' dataIndex='date' sorter={(a, b) => a.date.localeCompare(b.date)} key='date' />
+          <Column<DebtTableDataType>
+            title='Сумма задолженности'
+            dataIndex='debt_amount'
+            sorter={(a, b) => a.debt_amount - b.debt_amount}
+            key='debt_amount'
+          />
+          <Column<DebtTableDataType> title='Реферал' dataIndex='refferal' key='refferal' />
+          <Column<DebtTableDataType>
+            title={isPending ? 'Ожидание...' : isSuccess ? 'Выполнено' : 'Действие'}
+            dataIndex='action'
+            render={(_, record) => (
+              <ActionColumn
+                record={record}
+                payOrder={payOrder}
+                createCell={createCell}
+                deleteOrder={deleteOrder}
+                address={address ?? ''}
+                onOpenModal={modalDisclosureControl.onOpen}
+              />
+            )}
+            key='action'
+          />
+        </Table>
       )}
-      {isLoadingPaymentOrders && (
+      {(isLoadingPaymentOrders || isErrorPaymentOrders) && (
         <>
           <Skeleton className='mb-4 h-9 w-[200px]' />
           <TableSkeleton rows={3} columns={5} />
         </>
       )}
-      {isErrorPaymentOrders && <p className='text-red-500'>Ошибка при загрузке задолженностей {errorPaymentOrders.message}</p>}
     </div>
   );
 };
@@ -153,7 +143,7 @@ const ActionColumn: FC<ActionColumnProps> = ({ record, payOrder, createCell, del
           onOpenModal?.();
           deleteOrder([
             {
-              tx_hash: record.tr_hash,
+              tx_hash: record.tr_hash ?? '',
               tx_query_id: Math.floor(Date.now() / 1000),
               target_address: address,
               payment_order_id: record.order_id,
