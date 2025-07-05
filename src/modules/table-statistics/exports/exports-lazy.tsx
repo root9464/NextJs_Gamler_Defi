@@ -2,6 +2,6 @@
 
 import { lazy } from 'react';
 
-const LazyPayAllOrdersBtn = lazy(() => import('../features/pay-all-orders-btn').then((mod) => ({ default: mod.PayAllOrdersBtn })));
+const LazyDebtTable = lazy(() => import('../entities/debt-table').then((mod) => ({ default: mod.DebtTable })));
+export { LazyDebtTable };
 
-export { LazyPayAllOrdersBtn };

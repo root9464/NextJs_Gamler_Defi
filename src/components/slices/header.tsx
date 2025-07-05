@@ -1,113 +1,87 @@
+'use client';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useBreadcrumbs } from '@/shared/hooks/useBreadcrumbs';
 import { cn } from '@/shared/utils/tw.utils';
-import Logo from '@assets/svg/logo.svg';
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
+import { memo, type FC } from 'react';
 import { Avatar } from '../ui/avatar';
-import { Breadcrumbs } from '../ui/breadcrumbs';
 
-import FacebookIcon from '@assets/svg/facebook.svg';
-import TelegramIcon from '@assets/svg/telegram.svg';
-import VkIcon from '@assets/svg/vk.svg';
-
+import BaseAvatar from '@assets/svg/base-avatar.svg';
 import CoinIcon from '@assets/svg/coin.svg';
 import OrangeHeartIcon from '@assets/svg/heart-orange.svg';
 import HeartIcon from '@assets/svg/heart.svg';
+import Logo from '@assets/svg/logo.svg';
 
-import { useWindow } from '@/shared/hooks/useWindow';
-import BaseAvatar from '@assets/svg/base-avatar.svg';
+import { LazyMobileSheet } from '../exports/exports-lazy';
+import { IsMobileFlow } from '../layouts/is-mobile-flow';
 import { Skeleton } from '../ui/skeleton';
-import { MobileSheet } from './mobile-sheet';
+import { NavBreadcrumbs } from './breadcrumbs';
 
 type HeaderProps = {
   className?: string;
+  SocialLinks: ReactNode;
 };
 
-export const Header: FC<HeaderProps> = ({ className }) => {
+export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
   const breadcrumbs = useBreadcrumbs({
     '/referral-program': 'Реферальная программа',
   });
-  const { isMobile } = useWindow();
 
   return (
-    <div className={cn('flex h-16 w-full flex-row items-center justify-between', isMobile ? 'px-4' : 'px-16', className)}>
-      {!isMobile ? (
-        <>
-          <NavBreadcrumbs breadcrumbs={breadcrumbs} />
-          <div className='flex w-fit flex-row items-center justify-between gap-[74px]'>
-            <SocialLinks />
+    <div className={cn('flex h-16 w-full flex-row items-center justify-between px-[50px]', className)}>
+      <IsMobileFlow
+        mobile={
+          <div className='grid w-full grid-cols-[auto_1fr_auto] items-center justify-between gap-2.5'>
+            <Logo className='w-[107px]' />
             <AccountInfo />
+            <LazyMobileSheet />
           </div>
-        </>
-      ) : (
-        <div className='grid w-full grid-cols-[auto_1fr_auto] items-center justify-between gap-2.5'>
-          <Logo className='w-[107px]' />
-          <AccountInfo />
-          <MobileSheet />
-        </div>
-      )}
+        }
+        desktop={
+          <>
+            <NavBreadcrumbs breadcrumbs={breadcrumbs} />
+            <div className='flex w-fit flex-row items-center justify-between gap-[74px]'>
+              {SocialLinks}
+              <AccountInfo />
+            </div>
+          </>
+        }
+      />
     </div>
   );
 };
 
-const NavBreadcrumbs: FC<{ breadcrumbs: Record<string, string>[] }> = ({ breadcrumbs }) => (
-  <div className='flex flex-row items-center gap-6'>
-    <Logo />
-    <Breadcrumbs>
-      <Breadcrumbs.Item href='/' separator='slash' className='text-black/45 data-current:text-black'>
-        Главная
-      </Breadcrumbs.Item>
-      {breadcrumbs.map((breadcrumb) => (
-        <Breadcrumbs.Item key={breadcrumb.href} href={breadcrumb.href} separator='slash' className='text-black/45 data-current:text-black'>
-          {breadcrumb.label}
-        </Breadcrumbs.Item>
-      ))}
-    </Breadcrumbs>
-  </div>
-);
+type StatProps = {
+  icon: React.ComponentType;
+  value?: number;
+};
 
-const SocialLinks = () => (
-  <div className='grid grid-cols-[auto_auto] place-content-between content-center items-center gap-[70px]'>
-    <a href='https://t.me/gamler_bot' target='_blank' className='hover:text-uiSecondaryText text-sm whitespace-nowrap text-black/85'>
-      Напишите нам
-    </a>
-    <div className='flex flex-row items-center justify-center gap-2'>
-      <div className='h-10 w-10 justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
-        <TelegramIcon />
-      </div>
-      <div className='h-10 w-10 justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
-        <FacebookIcon />
-      </div>
-      <div className='h-10 w-10 justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
-        <VkIcon />
-      </div>
-    </div>
+const Stat: FC<StatProps> = memo(({ icon: Icon, value = 0 }) => (
+  <div className='flex h-full w-fit flex-row items-center justify-center gap-1 sm:w-full'>
+    <Icon />
+    <p className='text-sm'>{value}</p>
   </div>
-);
+));
+Stat.displayName = 'Stat';
 
-const AccountInfo = () => {
-  const { data: account, isSuccess: isSuccessAccount, isLoading: isLoadingAccount, isError: isErrorAccount } = useAccount();
+const AccountInfo: FC = () => {
+  const { data: account, isSuccess, isLoading, isError } = useAccount();
+
+  const coins = isSuccess ? account?.coins_number : 0;
+  const playerLikes = isSuccess ? account?.player_likes_number : 0;
+  const hostLikes = isSuccess ? account?.host_likes_number : 0;
+
+  const avatar = isSuccess ? account?.user_photo_url : isError ? BaseAvatar.src : null;
+
   return (
     <div className='flex w-fit flex-row items-center gap-4 sm:w-full sm:gap-6'>
-      <div className='flex h-full w-fit flex-row items-center justify-center gap-1 sm:w-full'>
-        <CoinIcon />
-        {isSuccessAccount && <p className='text-sm'>{account?.coins_number}</p>}
-        {!isSuccessAccount && <p className='text-sm'>0</p>}
-      </div>
-      <div className='flex h-full w-fit flex-row items-center justify-center gap-1.5 sm:w-full'>
-        <HeartIcon />
-        {isSuccessAccount && <p className='text-sm'>{account?.player_likes_number}</p>}
-        {!isSuccessAccount && <p className='text-sm'>0</p>}
-      </div>
-      <div className='flex h-full w-fit flex-row items-center justify-center gap-1.5 sm:w-full'>
-        <OrangeHeartIcon />
-        {isSuccessAccount && <p className='text-sm'>{account?.host_likes_number}</p>}
-        {!isSuccessAccount && <p className='text-sm'>0</p>}
-      </div>
+      <Stat icon={CoinIcon} value={coins} />
+      <Stat icon={HeartIcon} value={playerLikes} />
+      <Stat icon={OrangeHeartIcon} value={hostLikes} />
+
       <div className='ml-[6px] flex h-full w-fit flex-row items-center justify-center gap-1.5 sm:ml-0 sm:w-full'>
-        {isSuccessAccount && account && <Avatar className='h-10 w-10' src={account?.user_photo_url} />}
-        {isLoadingAccount && !isSuccessAccount && <Skeleton className='h-10 w-10 rounded-full' />}
-        {isErrorAccount && <Avatar className='h-10 w-10' src={BaseAvatar.src} />}
+        {avatar && <Avatar className='h-10 w-10' src={avatar} />}
+        {isLoading && !isSuccess && <Skeleton className='h-10 w-10 rounded-full' />}
       </div>
     </div>
   );

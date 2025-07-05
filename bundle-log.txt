@@ -1,0 +1,231 @@
+```
+export const DebtTable = () => {
+  const { data: account } = useAccount();
+  const modalDisclosureControl = useDisclosure();
+
+  const {
+    data: paymentOrders,
+    isLoading: isLoadingPaymentOrders,
+    isError: isErrorPaymentOrders,
+    error: errorPaymentOrders,
+    isSuccess: isSuccessPaymentOrders,
+  } = usePaymentOrder(account?.user_id ?? 0);
+
+  const debt_table_data = paymentOrders
+    ? paymentOrders.map((order) => ({
+        order_id: order.id,
+        tickets: order.ticket_count,
+        date: formatUnixToDate(order.created_at),
+        debt_amount: Number(order.total_amount),
+        refferer_id: order.referrer_id,
+        refferal: order.telegram,
+      }))
+    : [];
+
+  const { mutateAsync: createCell, isPending, isSuccess } = usePayOrder();
+  const { payOrder } = usePay(account?.user_id ?? 0, {
+    onOpen: modalDisclosureControl.onOpen,
+    onClose: modalDisclosureControl.onClose,
+  });
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+  });
+
+  const handleTableChange = (pagination: TablePaginationConfig) => {
+    setTableParams((prev) => ({
+      ...prev,
+      pagination,
+    }));
+  };
+
+  return (
+    <div className='custom-scroll'>
+      <PayModal isOpen={modalDisclosureControl.isOpen} />
+      {isSuccessPaymentOrders && debt_table_data && (
+        <>
+          <div className='mb-4 hidden flex-row items-center gap-2.5 sm:flex'>
+            <LazyPayAllOrdersBtn />
+            <p className='text-sm text-gray-700'>
+              Чтобы погасить все задолженности сразу, нажмите кнопку “Погасить все”. Или выберите реферала и оплатите каждую транзакцию отдельно
+            </p>
+          </div>
+          <Table
+            dataSource={debt_table_data}
+            onChange={handleTableChange}
+            pagination={tableParams.pagination}
+            rowKey='order_id'
+            className='table-scroll'>
+            <Column title='Количество билетов' dataIndex='tickets' sorter={(a, b) => a.tickets - b.tickets} key='tickets' />
+            <Column title='Дата' dataIndex='date' sorter={(a, b) => a.date.localeCompare(b.date)} key='date' />
+            <Column title='Сумма задолженности' dataIndex='debt_amount' sorter={(a, b) => a.debt_amount - b.debt_amount} key='debt_amount' />
+            <Column title='Реферал' dataIndex='refferal' key='refferal' />
+            <Column
+              title={isPending ? 'Ожидание...' : isSuccess ? 'Выполнено' : 'Действие'}
+              dataIndex='action'
+              render={(_, record) => (
+                <a
+                  key={record.order_id}
+                  className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-blue-500 underline'
+                  onClick={() => payOrder(createCell, record.order_id, { amount: record.debt_amount, reffererId: record.refferer_id })}>
+                  Погасить задолженность
+                </a>
+              )}
+              key='action'
+            />
+          </Table>
+        </>
+      )}
+      {isLoadingPaymentOrders && (
+        <>
+          <Skeleton className='mb-4 h-9 w-[200px]' />
+          <TableSkeleton rows={3} columns={5} />
+        </>
+      )}
+      {isErrorPaymentOrders && <p className='text-red-500'>Ошибка при загрузке задолженностей {errorPaymentOrders.message}</p>}
+    </div>
+  );
+};
+```
+
+```
+type CreateCellFn<T> = (id: T) => Promise<{ cell: string }>;
+
+type ModalDisclosureControl = {
+  onOpen: () => void;
+  onClose: () => void;
+};
+
+const usePay = (authorId: number, modalDisclosureControl?: ModalDisclosureControl) => {
+  const [tonConnectUI] = useTonConnectUI();
+  const address = useTonAddress();
+  const { data: jettonWallets, isError: isErrorJettonWallet } = useJettonWallet({ address });
+  if (isErrorJettonWallet) throw new Error('Error fetching jetton wallet');
+  const jettonWallet = jettonWallets?.balances.find((b) => b.jetton.symbol === 'GMLR');
+  const { mutate: deleteOrder } = useDeletePaymentOrder(authorId, modalDisclosureControl?.onClose);
+
+  const payProcess = async (cell: string, commission_count: number) => {
+    console.log('cell', cell);
+    if (!jettonWallet) return;
+    try {
+      const validUntil = Date.now() + 300000; // 3 minutes
+      const message: SendTransactionRequest = {
+        validUntil,
+        network: CHAIN.MAINNET,
+        messages: [
+          {
+            address: Address.parse(jettonWallet.wallet_address.address).toString(),
+            amount: toNano(commission_count).toString(),
+            payload: cell,
+          },
+        ],
+      };
+      const { boc } = await tonConnectUI.sendTransaction(message);
+      const trHash = Cell.fromBase64(boc).hash().toString('hex');
+      if (trHash) modalDisclosureControl?.onOpen();
+      return { trHash, validUntil, cell };
+    } catch (error) {
+      throw new Error((error as Error).message || 'Error sending transaction');
+    }
+  };
+
+  const payAllOrders = async (createCell: CreateCellFn<number>, array: Array<{ amount: number; reffererId: number }>) => {
+    if (!jettonWallet) return;
+    const { cell } = await createCell(authorId);
+    const trRes = await payProcess(cell, array.length * 0.4);
+    if (!trRes) return;
+    const { trHash, validUntil } = trRes;
+    const validData: ValidatorOrder = {
+      tx_hash: trHash,
+      tx_query_id: validUntil,
+      target_address: address,
+      status: 'pending',
+    };
+    console.log('validationOrder', validData);
+    deleteOrder([validData, { type: 'all', array }]);
+  };
+
+  const payOrder = async (createCell: CreateCellFn<string>, orderId: string, obj: { amount: number; reffererId: number }) => {
+    if (!jettonWallet) return;
+    const { cell } = await createCell(orderId);
+    const trRes = await payProcess(cell, 0.4);
+    if (!trRes) return;
+    const { trHash, validUntil } = trRes;
+    const validData: ValidatorOrder = {
+      tx_hash: trHash,
+      tx_query_id: validUntil,
+      target_address: address,
+      payment_order_id: orderId,
+      status: 'pending',
+    };
+    console.log('validationOrderSingle', validData);
+    deleteOrder([validData, { type: 'single', orderId, array: [obj] }]);
+  };
+
+  return { payAllOrders, payOrder };
+};
+
+export { usePay };
+```
+
+```
+type OnClose = () => void;
+
+const useDeletePaymentOrder = (authorId: number, onClose?: OnClose) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['delete-payment-order', authorId],
+    mutationFn: async ([order, options]: [ValidatorOrder, Options]) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000 * 10 * 6 * 2)); // 120000 = 2 minutes
+      console.log('start validator');
+      const result = await proxy.post<ValidatorOrderResponse>('/api/web3/validation/validate', order, {
+        schema: ValidatorOrderSchema,
+      });
+
+      return { result, options };
+    },
+    onSuccess: async ({ result: ValidData, options: { type, orderId, array } }) => {
+      switch (true) {
+        case ValidData.status === 'success' && type === 'all':
+          array.forEach(async (item) => {
+            await updateEarningBalance(item.reffererId, item.amount);
+          });
+          await proxy.delete<DeletePaymentOrderResponse>('/api/web3/referral/payment-orders/all', {
+            params: {
+              author_id: authorId,
+            },
+            schema: z.object({
+              message: z.string(),
+            }),
+          });
+          break;
+        case ValidData.status === 'success' && type === 'single':
+          if (!orderId) throw new Error('Order ID is required');
+          await updateEarningBalance(array[0].reffererId, array[0].amount);
+          await proxy.delete<DeletePaymentOrderResponse>(`/api/web3/referral/payment-orders`, {
+            schema: z.object({
+              message: z.string(),
+            }),
+            params: {
+              order_id: orderId,
+            },
+          });
+          break;
+        default:
+          throw new Error('Invalid delete type');
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['debt', authorId] });
+      queryClient.invalidateQueries({ queryKey: ['payment-orders', authorId] });
+      onClose?.();
+    },
+  });
+};
+
+export { useDeletePaymentOrder };
+export type { Options, ValidatorOrder };
+```
+
+теперь напиши мок который вернет вот такой обьект 

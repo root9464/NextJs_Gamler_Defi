@@ -1,4 +1,5 @@
 import { proxy } from '@/shared/lib/proxy';
+import type { UseMutateAsyncFunction } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod/v4';
 
@@ -56,7 +57,23 @@ const updateEarningBalance = async (userId: number, amount: number) => {
   return balance;
 };
 
-const useDeletePaymentOrder = (authorId: number) => {
+type OnClose = () => void;
+type DeletePaymentOrderFn = UseMutateAsyncFunction<
+  {
+    result: {
+      message: string;
+      tx_hash: string;
+      tx_id: string;
+      status: 'success' | 'pending' | 'waiting' | 'running' | 'failed';
+    };
+    options: Options;
+  },
+  Error,
+  [ValidatorOrder, Options],
+  unknown
+>;
+
+const useDeletePaymentOrder = (authorId: number, onClose?: OnClose) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['delete-payment-order', authorId],
@@ -102,9 +119,10 @@ const useDeletePaymentOrder = (authorId: number) => {
 
       queryClient.invalidateQueries({ queryKey: ['debt', authorId] });
       queryClient.invalidateQueries({ queryKey: ['payment-orders', authorId] });
+      onClose?.();
     },
   });
 };
 
 export { useDeletePaymentOrder };
-export type { Options, ValidatorOrder };
+export type { DeletePaymentOrderFn, Options, ValidatorOrder };

@@ -54,6 +54,7 @@ export const InviteTable: FC<{ address: string }> = ({ address }) => {
           dataSource={refferals_table_data.referred_users}
           onChange={handleTableChange}
           pagination={tableParams.pagination}
+          className='table-scroll'
           rowKey='user_id'>
           <Column title='Реферал' dataIndex='name' key='name' />
           <Column

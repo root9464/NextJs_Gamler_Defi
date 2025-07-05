@@ -1,18 +1,25 @@
 import { useJettonWallet } from '@hooks/api/useJettonWallet';
 import { Address, Cell, toNano } from '@ton/core';
 import { CHAIN, useTonAddress, useTonConnectUI, type SendTransactionRequest } from '@tonconnect/ui-react';
+import { useAddTransactionHash } from './useAddTransactionHash';
 import type { ValidatorOrder } from './useDeletePaymentOrder';
 import { useDeletePaymentOrder } from './useDeletePaymentOrder';
 
 type CreateCellFn<T> = (id: T) => Promise<{ cell: string }>;
 
-const usePay = (authorId: number) => {
+type ModalDisclosureControl = {
+  onOpen: () => void;
+  onClose: () => void;
+};
+
+const usePay = (authorId: number, modalDisclosureControl?: ModalDisclosureControl) => {
   const [tonConnectUI] = useTonConnectUI();
   const address = useTonAddress();
   const { data: jettonWallets, isError: isErrorJettonWallet } = useJettonWallet({ address });
   if (isErrorJettonWallet) throw new Error('Error fetching jetton wallet');
   const jettonWallet = jettonWallets?.balances.find((b) => b.jetton.symbol === 'GMLR');
-  const { mutate: deleteOrder } = useDeletePaymentOrder(authorId);
+  const { mutate: deleteOrder } = useDeletePaymentOrder(authorId, modalDisclosureControl?.onClose);
+  const { mutate: addTransactionHash } = useAddTransactionHash(authorId);
 
   const payProcess = async (cell: string, commission_count: number) => {
     console.log('cell', cell);
@@ -32,6 +39,7 @@ const usePay = (authorId: number) => {
       };
       const { boc } = await tonConnectUI.sendTransaction(message);
       const trHash = Cell.fromBase64(boc).hash().toString('hex');
+      if (trHash) modalDisclosureControl?.onOpen();
       return { trHash, validUntil, cell };
     } catch (error) {
       throw new Error((error as Error).message || 'Error sending transaction');
@@ -67,6 +75,7 @@ const usePay = (authorId: number) => {
       payment_order_id: orderId,
       status: 'pending',
     };
+    addTransactionHash({ orderId, trHash });
     console.log('validationOrderSingle', validData);
     deleteOrder([validData, { type: 'single', orderId, array: [obj] }]);
   };
@@ -75,3 +84,4 @@ const usePay = (authorId: number) => {
 };
 
 export { usePay };
+export type { CreateCellFn };
