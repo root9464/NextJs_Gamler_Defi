@@ -1,5 +1,5 @@
 import { proxy } from '@/shared/lib/proxy';
-import { userMock } from '@/shared/mocks/user.json';
+// import { userMock } from '@/shared/mocks/user.json';
 import { UserSchema } from '@/shared/types/user';
 import type { Extend } from '@/shared/types/utils';
 import type { AdditionalInformation } from '@shared/types/orders';
@@ -18,14 +18,14 @@ type Account = Extend<
 >;
 
 const fetchAccount = async () => {
-  // const userAccount = localStorage.getItem('user-logged-in');
-  const userAccountMock = validateResult(userMock, UserSchema);
+  const localAccountData = localStorage.getItem('user-logged-in');
+  const userAccount = validateResult(localAccountData, UserSchema);
 
-  const user = await proxy.get<AdditionalInformation>(`/api/web2/referral/referrer/${userAccountMock.user_id}`, {
+  const user = await proxy.get<AdditionalInformation>(`/api/web2/referral/referrer/${userAccount.user_id}`, {
     schema: AdditionalInformationSchema,
   });
 
-  const user_photo = await proxy.get<Blob>(`/api/web2/user/${userAccountMock.photo_path}`, {
+  const user_photo = await proxy.get<Blob>(`/api/web2/user/${userAccount.photo_path}`, {
     responseType: 'blob',
   });
 
@@ -34,9 +34,9 @@ const fetchAccount = async () => {
   const account: Account = {
     ...user,
     user_photo_url: user_photo_url,
-    coins_number: userAccountMock.coins_number,
-    player_likes_number: userAccountMock.player_likes_number,
-    host_likes_number: userAccountMock.host_likes_number,
+    coins_number: userAccount.coins_number,
+    player_likes_number: userAccount.player_likes_number,
+    host_likes_number: userAccount.host_likes_number,
   };
 
   return account;
