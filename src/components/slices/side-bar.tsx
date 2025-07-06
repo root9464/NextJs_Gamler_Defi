@@ -83,7 +83,7 @@ const bodyVariants: Variants = {
 
 const textVariants: Variants = {
   open: {
-    maxWidth: '100%',
+    width: '100%',
     opacity: 1,
     transition: {
       type: 'spring',
@@ -93,7 +93,7 @@ const textVariants: Variants = {
     },
   },
   closed: {
-    maxWidth: 0,
+    width: 0,
     opacity: 0,
     transition: {
       duration: 0.2,
@@ -123,8 +123,9 @@ const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
       className='flex h-full w-full flex-col items-center justify-center p-1'>
       <div className='w-full flex-1'>
         {MENU_ITEMS.map((item) => (
-          <div
+          <Link
             key={item.label}
+            href={item.href}
             className={cn('flex h-10 flex-row items-center gap-2 rounded-lg pr-4 pl-6', isActive(item.href) && 'bg-uiActiveMutedBlue')}>
             <item.icon
               className={cn(
@@ -133,11 +134,9 @@ const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
               )}
             />
             <motion.div variants={textVariants} animate={isOpen ? 'open' : 'closed'} className='overflow-hidden whitespace-nowrap'>
-              <Link className={cn('inline-block text-black/85', isActive(item.href) && 'text-uiActiveBlue')} href={item.href}>
-                {item.label}
-              </Link>
+              <span className={cn('inline-block text-black/85', isActive(item.href) && 'text-uiActiveBlue')}>{item.label}</span>
             </motion.div>
-          </div>
+          </Link>
         ))}
       </div>
     </motion.div>
