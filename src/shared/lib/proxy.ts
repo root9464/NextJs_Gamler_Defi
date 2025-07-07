@@ -39,8 +39,8 @@ class ApiProxy {
       },
       web2: {
         prefix: '/api/web2',
-        baseURL: 'https://serv.gamler.atma-dev.ru',
-        instance: axios.create({ baseURL: 'https://serv.gamler.atma-dev.ru' }),
+        baseURL: 'https://serv.gamler.online',
+        instance: axios.create({ baseURL: 'https://serv.gamler.online' }),
       },
     };
   }
