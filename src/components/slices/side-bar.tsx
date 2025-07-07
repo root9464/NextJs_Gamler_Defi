@@ -107,7 +107,7 @@ export const MENU_ITEMS = [
   { label: 'События', icon: EventsIcon, href: '/account/events/' },
   { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
   { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
-  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/referral-program' },
+  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/web3/referral-program' },
 ];
 
 const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
