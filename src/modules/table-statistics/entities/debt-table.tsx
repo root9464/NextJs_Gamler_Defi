@@ -81,7 +81,7 @@ export const DebtTable = () => {
   return (
     <div className='custom-scroll'>
       <PayModal isOpen={modalDisclosureControl.isOpen} />
-      {isSuccessPaymentOrders && debt_table_data && (
+      {isSuccessPaymentOrders && (
         <Table<DebtTableDataType>
           dataSource={debt_table_data}
           onChange={handleTableChange}

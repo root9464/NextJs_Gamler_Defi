@@ -10,16 +10,16 @@ const ReferralsSchema = BaseUserSchema.extend({
 
 type Referrals = z.infer<typeof ReferralsSchema>;
 
-const useRefferals = (wallet_address: string) =>
+const useRefferals = (authorId: number) =>
   useQuery({
-    queryKey: ['referrals-users', wallet_address],
+    queryKey: ['referrals-users', authorId],
     queryFn: async () => {
-      const refferals = await proxy.get(`/api/web2/referral/referrer/levels2/${wallet_address}`, {
+      const refferals = await proxy.get(`/api/web2/referral/referrer/levels2/${authorId}`, {
         schema: ReferralsSchema,
       });
       return refferals;
     },
-    enabled: !!wallet_address,
+    enabled: !!authorId,
     refetchInterval: 10000,
   });
 

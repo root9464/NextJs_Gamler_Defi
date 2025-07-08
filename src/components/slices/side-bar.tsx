@@ -12,7 +12,6 @@ import RefferalProgramIcon from '@assets/svg/refferal-program.svg';
 import TicketsIcon from '@assets/svg/tickets.svg';
 import TriggerSidebarIcon from '@assets/svg/trigger-sidebar.svg';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 type SideBarProps = {
@@ -64,6 +63,15 @@ type SideBarBodyProps = {
   isOpen: boolean;
 };
 
+export const MENU_ITEMS = [
+  { label: 'Размещенные игры', icon: MyPlayersIcon, href: '/account/published_games/' },
+  { label: 'Мои игры', icon: MyGamesIcon, href: '/account/my-games/' },
+  { label: 'События', icon: EventsIcon, href: '/account/events/' },
+  { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
+  { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
+  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/referral-program' },
+];
+
 const bodyVariants: Variants = {
   open: {
     x: 0,
@@ -77,6 +85,26 @@ const bodyVariants: Variants = {
   closed: {
     transition: {
       duration: 0.2,
+    },
+  },
+};
+
+const linkVariants: Variants = {
+  open: {
+    paddingLeft: '1.5rem',
+    paddingRight: '1rem',
+    transition: {
+      type: 'spring',
+      stiffness: 150,
+      damping: 20,
+      delay: 0.2,
+    },
+  },
+  closed: {
+    paddingLeft: '1.5rem',
+    paddingRight: '1.5rem',
+    transition: {
+      duration: 0.1,
     },
   },
 };
@@ -96,24 +124,14 @@ const textVariants: Variants = {
     width: 0,
     opacity: 0,
     transition: {
-      duration: 0.2,
+      duration: 0.15,
     },
   },
 };
 
-export const MENU_ITEMS = [
-  { label: 'Размещенные игры', icon: MyPlayersIcon, href: '/account/published_games/' },
-  { label: 'Мои игры', icon: MyGamesIcon, href: '/account/my-games/' },
-  { label: 'События', icon: EventsIcon, href: '/account/events/' },
-  { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
-  { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
-  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/web3/referral-program' },
-];
-
 const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
-  console.log(isOpen);
 
   return (
     <motion.div
@@ -123,24 +141,26 @@ const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
       className='flex h-full w-full flex-col items-center justify-center p-1'>
       <div className='flex w-full flex-1 flex-col gap-1'>
         {MENU_ITEMS.map((item) => (
-          <Link
+          <motion.a
             key={item.label}
             href={item.href}
-            className={cn('flex h-10 flex-row items-center gap-2 rounded-lg pr-4 pl-6', isActive(item.href) && 'bg-uiActiveMutedBlue')}>
+            variants={linkVariants}
+            initial='open'
+            animate={isOpen ? 'open' : 'closed'}
+            className={cn(
+              'flex h-10 w-full flex-row items-center gap-2 rounded-lg transition-all duration-200',
+              isActive(item.href) && 'bg-uiActiveMutedBlue',
+            )}>
             <item.icon
               className={cn(
                 'h-[14px] w-[14px] shrink-0 bg-transparent fill-black/85',
                 isActive(item.href) && 'fill-uiActiveBlue bg-uiActiveMutedBlue',
               )}
             />
-            <motion.div
-              variants={textVariants}
-              animate={isOpen ? 'open' : 'closed'}
-              initial='open'
-              className='overflow-hidden whitespace-nowrap'>
-              <span className={cn('inline-block text-sm text-black/85', isActive(item.href) && 'text-uiActiveBlue')}>{item.label}</span>
+            <motion.div variants={textVariants} animate={isOpen ? 'open' : 'closed'} className='overflow-hidden whitespace-nowrap'>
+              <span className={cn('text-sm text-black/85', isActive(item.href) && 'text-uiActiveBlue')}>{item.label}</span>
             </motion.div>
-          </Link>
+          </motion.a>
         ))}
       </div>
     </motion.div>

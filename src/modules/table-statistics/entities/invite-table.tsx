@@ -1,7 +1,8 @@
+import { useAccount } from '@/shared/hooks/api/useAccount';
 import { Table, type GetProp, type TablePaginationConfig, type TableProps } from 'antd';
 import Column from 'antd/es/table/Column';
 import type { SorterResult } from 'antd/es/table/interface';
-import { useState, type FC } from 'react';
+import { useState } from 'react';
 import { trimUserData } from '../helpers/serialyze';
 import { useRefferals } from '../hooks/api/useRefferals';
 import { TableSkeleton } from '../slices/table-skeleton';
@@ -23,14 +24,15 @@ type TableParams = {
   filters?: Parameters<GetProp<TableProps<InviteTableType>, 'onChange'>>[1];
 };
 
-export const InviteTable: FC<{ address: string }> = ({ address }) => {
+export const InviteTable = () => {
+  const { data: account } = useAccount();
   const {
     data: refferals,
     isLoading: isLoadingRefferals,
     isError: isErrorRefferals,
     error: errorRefferals,
     isSuccess: isSuccessRefferals,
-  } = useRefferals(address);
+  } = useRefferals(account?.user_id ?? 0);
   const refferals_table_data = refferals && trimUserData(refferals);
 
   const [tableParams, setTableParams] = useState<TableParams>({
