@@ -31,7 +31,7 @@ const usePayAllOrders = () => {
   return useMutation({
     mutationKey: ['pay-all-orders', address],
     mutationFn: async (authorId: number) =>
-      proxy.get('/api/web3/referral/payment-orders/all', {
+      proxy.get('/api/web3/referral/payment-orders/pay-all', {
         schema: PaymentOrderSchema,
         params: {
           author_id: authorId,

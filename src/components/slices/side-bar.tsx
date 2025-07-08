@@ -51,7 +51,7 @@ export const SideBar: FC<SideBarProps> = ({ classNames, className, isOpen, onOpe
   <motion.div
     animate={isOpen ? 'open' : 'closed'}
     variants={sidebarVariants}
-    initial='closed'
+    initial='open'
     className={cn('bg-uiPrimaryBg h-full shadow-black/10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]', className)}>
     <div className='flex h-full flex-col justify-between gap-3'>
       <SideBarBody isOpen={isOpen} />
@@ -107,7 +107,7 @@ export const MENU_ITEMS = [
   { label: 'События', icon: EventsIcon, href: '/account/events/' },
   { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
   { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
-  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/web3/referral-program' },
+  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/referral-program' },
 ];
 
 const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
@@ -118,10 +118,10 @@ const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
   return (
     <motion.div
       variants={bodyVariants}
-      initial='closed'
+      initial='open'
       animate={isOpen ? 'open' : 'closed'}
       className='flex h-full w-full flex-col items-center justify-center p-1'>
-      <div className='w-full flex-1'>
+      <div className='w-full flex-1 gap-1 flex flex-col'>
         {MENU_ITEMS.map((item) => (
           <Link
             key={item.label}
@@ -133,8 +133,12 @@ const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
                 isActive(item.href) && 'fill-uiActiveBlue bg-uiActiveMutedBlue',
               )}
             />
-            <motion.div variants={textVariants} animate={isOpen ? 'open' : 'closed'} className='overflow-hidden whitespace-nowrap'>
-              <span className={cn('inline-block text-black/85', isActive(item.href) && 'text-uiActiveBlue')}>{item.label}</span>
+            <motion.div
+              variants={textVariants}
+              animate={isOpen ? 'open' : 'closed'}
+              initial='open'
+              className='overflow-hidden whitespace-nowrap'>
+              <span className={cn('inline-block text-sm text-black/85', isActive(item.href) && 'text-uiActiveBlue')}>{item.label}</span>
             </motion.div>
           </Link>
         ))}

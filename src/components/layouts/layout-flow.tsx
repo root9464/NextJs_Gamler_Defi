@@ -17,7 +17,10 @@ type LayoutFlowProps = {
 
 export const LayoutFlow: FC<LayoutFlowProps> = ({ children, classNames }) => {
   const { isMobile } = useWindow();
-  const { isOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpenChange } = useDisclosure({
+    defaultOpen: true,
+  });
+
   return (
     <div className='flex flex-1 flex-row'>
       <LayoutGroup>

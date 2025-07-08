@@ -1,4 +1,7 @@
-@theme {
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+@theme inline {
+  --font-roboto: "Roboto", sans-serif;
   --color-epta: rgb(255, 0, 153);
 
   --color-uiPrimaryBg: var(--uiPrimaryBg);

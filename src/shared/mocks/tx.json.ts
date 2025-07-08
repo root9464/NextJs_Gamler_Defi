@@ -1,6 +1,0 @@
-export const tx = {
-  tx_hash: 'd21aff73cb980b54ebd8b5f75b62e23573c8c182ec2a1eed0e8364716c7270db',
-  tx_query_id: 1747614761,
-  target_address: 'UQB5R9D1IgxFtQI9riU0mbsflkUKJu6ux8iZO0d43Vsp198X',
-  status: 'pending',
-};
