@@ -1,10 +1,9 @@
 'use client';
-import { useAccount } from '@/shared/hooks/api/useAccount';
-import { useBreadcrumbs } from '@/shared/hooks/useBreadcrumbs';
-import { cn } from '@/shared/utils/tw.utils';
+import { useAccount } from '@shared/hooks/api/useAccount';
+import { useBreadcrumbs } from '@shared/hooks/useBreadcrumbs';
+import { cn } from '@shared/utils/tw.utils';
 import type { ReactNode } from 'react';
 import { memo, type FC } from 'react';
-import { Avatar } from '../ui/avatar';
 
 import BaseAvatar from '@assets/svg/base-avatar.svg';
 import CoinIcon from '@assets/svg/coin.svg';
@@ -12,10 +11,13 @@ import OrangeHeartIcon from '@assets/svg/heart-orange.svg';
 import HeartIcon from '@assets/svg/heart.svg';
 import Logo from '@assets/svg/logo.svg';
 
+import { NavBreadcrumbs } from '../slices/breadcrumbs';
+
+import { Avatar } from '@ui/avatar';
+import { Skeleton } from '@ui/skeleton';
+
 import { LazyMobileSheet } from '../exports/exports-lazy';
 import { IsMobileFlow } from '../layouts/is-mobile-flow';
-import { Skeleton } from '../ui/skeleton';
-import { NavBreadcrumbs } from './breadcrumbs';
 
 type HeaderProps = {
   className?: string;
