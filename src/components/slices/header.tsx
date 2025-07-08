@@ -28,7 +28,7 @@ export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
   });
 
   return (
-    <div className={cn('flex h-16 w-full flex-row items-center justify-between pr-[65px] pl-[50px]', className)}>
+    <div className={cn('flex h-[64px] w-full flex-row items-center justify-between pr-[65px] pl-[50px]', className)}>
       <IsMobileFlow
         mobile={
           <div className='grid w-full grid-cols-[auto_1fr_auto] items-center justify-between gap-2.5'>
@@ -40,7 +40,7 @@ export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
         desktop={
           <>
             <NavBreadcrumbs breadcrumbs={breadcrumbs} />
-            <div className='flex w-[721px] flex-row items-center justify-between'>
+            <div className='flex flex-row items-center justify-between gap-[4vw]'>
               {SocialLinks}
               <AccountInfo />
             </div>

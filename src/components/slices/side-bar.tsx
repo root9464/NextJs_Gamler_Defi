@@ -28,7 +28,7 @@ type SideBarProps = {
 
 const sidebarVariants: Variants = {
   open: {
-    width: '284px',
+    width: '15.2vw',
     transition: {
       type: 'spring',
       stiffness: 200,
@@ -37,7 +37,7 @@ const sidebarVariants: Variants = {
     },
   },
   closed: {
-    width: '72px',
+    width: '80px',
     transition: {
       type: 'spring',
       stiffness: 200,
@@ -107,7 +107,7 @@ export const MENU_ITEMS = [
   { label: 'События', icon: EventsIcon, href: '/account/events/' },
   { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
   { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
-  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/referral-program' },
+  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/web3/referral-program' },
 ];
 
 const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
@@ -121,7 +121,7 @@ const SideBarBody: FC<SideBarBodyProps> = ({ isOpen }) => {
       initial='open'
       animate={isOpen ? 'open' : 'closed'}
       className='flex h-full w-full flex-col items-center justify-center p-1'>
-      <div className='w-full flex-1 gap-1 flex flex-col'>
+      <div className='flex w-full flex-1 flex-col gap-1'>
         {MENU_ITEMS.map((item) => (
           <Link
             key={item.label}
