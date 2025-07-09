@@ -1,3 +1,4 @@
+'use client'
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
