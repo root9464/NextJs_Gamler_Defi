@@ -33,7 +33,11 @@ const BreadcrumbsItem = ({ href, separator = true, className, ...props }: Breadc
     <Breadcrumb {...props} className={composeTailwindRenderProps(className, 'flex items-center gap-2 text-sm')}>
       {({ isCurrent }) => (
         <>
-          <Link href={href} {...props} />
+          <Link
+            className='mx-[-4px] h-[22px] rounded-sm px-1 text-sm/loose leading-[22px] text-black/45 hover:bg-[#0000000f] hover:text-black/85 data-current:text-black'
+            href={href}
+            {...props}
+          />
           {!isCurrent && separator !== false && <Separator separator={separatorValue} />}
         </>
       )}

@@ -1,3 +1,4 @@
+'use client'
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
@@ -81,7 +82,7 @@ export const DebtTable = () => {
   return (
     <div className='custom-scroll'>
       <PayModal isOpen={modalDisclosureControl.isOpen} />
-      {isSuccessPaymentOrders && debt_table_data && (
+      {isSuccessPaymentOrders && (
         <Table<DebtTableDataType>
           dataSource={debt_table_data}
           onChange={handleTableChange}

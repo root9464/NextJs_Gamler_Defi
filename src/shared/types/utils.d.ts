@@ -17,3 +17,7 @@ export type Extend<A extends SomeObject, B extends SomeObject> = Flatten<
         [K in keyof B]: B[K];
       }
 >;
+
+export type ExtendMany<Types extends SomeObject[]> = Types extends [infer First, infer Second, ...infer Rest]
+  ? ExtendMany<[Extend<Extract<First, SomeObject>, Extract<Second, SomeObject>>, ...Extract<Rest, SomeObject[]>]>
+  : Types[0];

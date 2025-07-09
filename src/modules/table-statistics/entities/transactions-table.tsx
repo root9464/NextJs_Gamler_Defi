@@ -1,7 +1,8 @@
+import { useTonAddress } from '@tonconnect/ui-react';
 import { Table, type GetProp, type TablePaginationConfig, type TableProps } from 'antd';
 import Column from 'antd/es/table/Column';
 import type { SorterResult } from 'antd/es/table/interface';
-import { useState, type FC } from 'react';
+import { useState } from 'react';
 import { filterFrogeTransfers } from '../helpers/serialyze';
 import { useGetTransactions } from '../hooks/api/useGetTransactions';
 import { TableSkeleton } from '../slices/table-skeleton';
@@ -20,7 +21,9 @@ type TableParams = {
   filters?: Parameters<GetProp<TableProps<TransactionsTableDataType>, 'onChange'>>[1];
 };
 
-export const TransactionsTable: FC<{ address: string }> = ({ address }) => {
+export const TransactionsTable = () => {
+  const address = useTonAddress();
+
   const {
     data: transactions,
     isLoading: isLoadingTransactions,

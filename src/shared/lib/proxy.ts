@@ -32,15 +32,15 @@ class ApiProxy {
       },
       web3: {
         prefix: '/api/web3',
-        baseURL: 'https://serv.gamler.online/web3/api',
-        instance: axios.create({ baseURL: 'https://serv.gamler.online/web3/api' }),
-        // baseURL: 'http://127.0.0.1:6069/api',
-        // instance: axios.create({ baseURL: 'http://127.0.0.1:6069/api' }),
+        // baseURL: 'https://serv.gamler.online/web3/api',
+        // instance: axios.create({ baseURL: 'https://serv.gamler.online/web3/api' }),
+        baseURL: 'http://127.0.0.1:6069/api',
+        instance: axios.create({ baseURL: 'http://127.0.0.1:6069/api' }),
       },
       web2: {
         prefix: '/api/web2',
-        baseURL: 'https://serv.gamler.atma-dev.ru',
-        instance: axios.create({ baseURL: 'https://serv.gamler.atma-dev.ru' }),
+        baseURL: 'https://serv.gamler.online',
+        instance: axios.create({ baseURL: 'https://serv.gamler.online' }),
       },
     };
   }

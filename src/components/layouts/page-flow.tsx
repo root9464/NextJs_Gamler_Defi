@@ -1,7 +1,7 @@
 import { cn } from '@shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
 import { DynamicLayoutFlow } from '../exports/exports-dynamic';
-import { Header } from '../slices/header';
+import { Header } from '../flows/header';
 import { SocialLinks } from '../slices/social-links';
 
 type PageFlowProps = {
