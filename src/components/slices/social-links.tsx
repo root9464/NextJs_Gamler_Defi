@@ -8,15 +8,17 @@ export const SocialLinks = () => (
       Напишите нам
     </a>
     <div className='flex flex-row items-center justify-center gap-1'>
-      <div className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
+      <a href='https://t.me/gamleronline' className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
         <TelegramIcon />
-      </div>
-      <div className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
+      </a>
+      <a
+        href='https://www.facebook.com/gamler.online'
+        className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
         <FacebookIcon />
-      </div>
-      <div className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
+      </a>
+      <a href='https://vk.com/gamler' className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
         <VkIcon />
-      </div>
+      </a>
     </div>
   </div>
 );

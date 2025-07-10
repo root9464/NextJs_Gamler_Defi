@@ -78,7 +78,7 @@ const useDeletePaymentOrder = (authorId: number, onClose?: OnClose) => {
   return useMutation({
     mutationKey: ['delete-payment-order', authorId],
     mutationFn: async ([order, options]: [ValidatorOrder, Options]) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000 * 10 * 6 * 2)); // 120000 = 2 minutes
+      await new Promise((resolve) => setTimeout(resolve, 1000 * 10 * 6 * 1.5)); // 120000 = 2 minutes
       console.log('start validator');
       const result = await proxy.post<ValidatorOrderResponse>('/api/web3/validation/validate', order, {
         schema: ValidatorOrderSchema,

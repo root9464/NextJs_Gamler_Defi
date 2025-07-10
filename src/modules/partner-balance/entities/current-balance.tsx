@@ -24,8 +24,8 @@ export const CurrentBalance = () => {
             {(Number(jettonWallet?.balance) / 10 ** jettonWallet?.jetton.decimals).toFixed(2)} Gamler
           </p>
         )}
-        {isLoadingJettonWallets && <Skeleton className='h-9 w-[140px]' />}
-        {isErrorJettonWallets && <p className='text-lg font-bold text-black/85'>Ошибка загрузки баланса</p>}
+        {isSuccessJettonWallets && !jettonWallet && <p className='text-lg font-bold text-black/85'>0 Gamler</p>}
+        {(isLoadingJettonWallets || isErrorJettonWallets) && <Skeleton className='h-9 w-[140px]' />}
         {!address && !jettonWallet && <p className='text-lg font-bold text-black/85'>0 Gamler</p>}
       </div>
       <div className='flex flex-row items-center justify-end gap-2.5'>

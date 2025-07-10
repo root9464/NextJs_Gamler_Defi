@@ -27,13 +27,12 @@ type TableParams = {
 export const InviteTable = () => {
   const { data: account } = useAccount();
   const {
-    data: refferals,
+    data: referrals,
     isLoading: isLoadingRefferals,
     isError: isErrorRefferals,
-    error: errorRefferals,
     isSuccess: isSuccessRefferals,
   } = useRefferals(account?.user_id ?? 0);
-  const refferals_table_data = refferals && trimUserData(refferals);
+  const referrals_table_data = referrals ? trimUserData(referrals) : { referred_users: [] };
 
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -51,9 +50,9 @@ export const InviteTable = () => {
 
   return (
     <>
-      {isSuccessRefferals && refferals_table_data && (
+      {isSuccessRefferals && referrals_table_data?.referred_users ? (
         <Table
-          dataSource={refferals_table_data.referred_users}
+          dataSource={referrals_table_data.referred_users}
           onChange={handleTableChange}
           pagination={tableParams.pagination}
           className='table-scroll'
@@ -73,9 +72,12 @@ export const InviteTable = () => {
             key='createdAt'
           />
         </Table>
+      ) : (
+        <p className='font-black/85 text-sm'>
+          Здесь появятся люди, которых вы пригласили. Пока список пуст — начните приглашать и зарабатывайте вознаграждения!
+        </p>
       )}
-      {isLoadingRefferals && <TableSkeleton rows={3} columns={4} />}
-      {isErrorRefferals && <p>Ошибка при загрузке рефералов {errorRefferals.message}</p>}
+      {(isLoadingRefferals || isErrorRefferals) && <TableSkeleton rows={3} columns={4} />}
     </>
   );
 };

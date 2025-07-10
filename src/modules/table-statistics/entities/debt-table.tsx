@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
@@ -37,6 +37,7 @@ type TableParams = {
 export const DebtTable = () => {
   const { data: account } = useAccount();
   const modalDisclosureControl = useDisclosure();
+  console.log(modalDisclosureControl, 'modalDisclosureControl in DebtTable');
   const address = useTonAddress();
   const { mutateAsync: deleteOrder } = useDeletePaymentOrder(account?.user_id ?? 0, modalDisclosureControl.onClose);
 
@@ -82,7 +83,7 @@ export const DebtTable = () => {
   return (
     <div className='custom-scroll'>
       <PayModal isOpen={modalDisclosureControl.isOpen} />
-      {isSuccessPaymentOrders && (
+      {isSuccessPaymentOrders && debt_table_data.length > 0 ? (
         <Table<DebtTableDataType>
           dataSource={debt_table_data}
           onChange={handleTableChange}
@@ -114,7 +115,10 @@ export const DebtTable = () => {
             key='action'
           />
         </Table>
+      ) : (
+        <p className='font-black/85 text-sm'>Список задолженностей пуст</p>
       )}
+
       {(isLoadingPaymentOrders || isErrorPaymentOrders) && (
         <>
           <Skeleton className='mb-4 h-9 w-[200px]' />
@@ -163,7 +167,11 @@ const ActionColumn: FC<ActionColumnProps> = ({ record, payOrder, createCell, del
       <a
         key={record.order_id}
         className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-blue-500 underline'
-        onClick={() => payOrder(createCell, record.order_id, { amount: record.debt_amount, reffererId: record.refferer_id })}>
+        onClick={() => {
+          console.log('click in Погасить задолженность');
+          console.log(record, 'record in ActionColumn');
+          payOrder(createCell, record.order_id, { amount: record.debt_amount, reffererId: record.refferer_id });
+        }}>
         Погасить задолженность
       </a>
     )}
