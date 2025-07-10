@@ -117,9 +117,9 @@ const useDeletePaymentOrder = (authorId: number, onClose?: OnClose) => {
           throw new Error('Invalid delete type');
       }
 
+      onClose?.();
       queryClient.invalidateQueries({ queryKey: ['debt', authorId] });
       queryClient.invalidateQueries({ queryKey: ['payment-orders', authorId] });
-      onClose?.();
     },
   });
 };
