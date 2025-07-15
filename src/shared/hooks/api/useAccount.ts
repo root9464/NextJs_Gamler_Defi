@@ -19,9 +19,9 @@ type Account = Extend<
 >;
 
 const fetchAccount = async () => {
-  // const localAccountData = localStorage.getItem('user-logged-in');
-  const userAccount = validateResult(localAccountData, UserSchema);
-  console.log(userAccount);
+  const localAccountData = localStorage.getItem('user-logged-in');
+  const userAccount = validateResult(JSON.parse(localAccountData || '{}'), UserSchema);
+  // console.log(userAccount);
 
   const user = await proxy.get<AdditionalInformation>(`/api/web2/referral/referrer/${userAccount.user_id}`, {
     schema: AdditionalInformationSchema,
