@@ -1,6 +1,5 @@
 import { proxy } from '@/shared/lib/proxy';
-// import { userMock } from '@/shared/mocks/user.json';
-import localAccountData from '@/shared/mocks/user.json';
+// import localAccountData from '@/shared/mocks/user.json';
 import { UserSchema } from '@/shared/types/user';
 import type { Extend } from '@/shared/types/utils';
 import type { AdditionalInformation } from '@shared/types/orders';
