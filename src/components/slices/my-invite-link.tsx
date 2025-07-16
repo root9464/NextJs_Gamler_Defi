@@ -8,7 +8,6 @@ export const MyInviteLink = () => {
   const pathname = usePathname();
   const domain = window.location.href.split(pathname)[0];
   const link = `${domain}/signup?refferer_id=${account?.user_id}`;
-  console.log(account, 'account in my invite link');
 
   return (
     <div className='flex w-full flex-col gap-2 sm:w-[511px]'>
