@@ -36,7 +36,7 @@ const trimUserData = (user: Referrals, level: number = 0): TrimmedUser => {
 };
 
 const isFrogeJettonTransfer = (action: Action): action is Extract<Action, { type: 'JettonTransfer' }> =>
-  isJettonTransfer(action) && action.JettonTransfer.jetton.symbol === 'FROGE';
+  isJettonTransfer(action) && action.JettonTransfer.jetton.symbol === 'GMLR';
 
 function filterFrogeTransfers(data: ResponseGetTrHistory) {
   return data.events.flatMap((event) =>

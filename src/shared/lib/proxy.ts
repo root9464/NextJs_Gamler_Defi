@@ -28,7 +28,12 @@ class ApiProxy {
       ton: {
         prefix: '/api/ton',
         baseURL: 'https://tonapi.io/v2',
-        instance: axios.create({ baseURL: 'https://tonapi.io/v2' }),
+        instance: axios.create({
+          baseURL: 'https://tonapi.io/v2',
+          // headers: {
+          //   Authorization: `Bearer ${process.env.NEXT_PUBLIC_TON_API_KEY}`,
+          // },
+        }),
       },
       web3: {
         prefix: '/api/web3',
