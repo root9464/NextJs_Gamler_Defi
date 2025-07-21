@@ -22,10 +22,12 @@ export const LayoutFlow: FC<LayoutFlowProps> = ({ children, classNames }) => {
   });
 
   return (
-    <div className='flex flex-1 flex-row'>
+    <div className='flex h-full flex-1 flex-row'>
       <LayoutGroup>
-        {!isMobile && <DynamicSideBar className={cn('h-full w-[285px]', classNames?.sidebar)} isOpen={isOpen} onOpenChange={onOpenChange} />}
-        <motion.div layout className={cn('h-full flex-1', classNames?.content)}>
+        {!isMobile && (
+          <DynamicSideBar className={cn('sticky top-0 h-full w-[285px]', classNames?.sidebar)} isOpen={isOpen} onOpenChange={onOpenChange} />
+        )}
+        <motion.div layout className={cn('h-full flex-1 overflow-y-auto', classNames?.content)}>
           {children}
         </motion.div>
       </LayoutGroup>

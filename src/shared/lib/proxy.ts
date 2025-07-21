@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
 import type { z } from 'zod/v4';
 import type { Extend } from '../types/utils';
 import { validateResult } from '../utils/zod.utils';
 
-type ProxyInstance = 'ton' | 'web3' | 'web2';
+type ProxyInstance = 'ton' | 'web3' | 'web2' | 'coffee';
 
 type ProxyConfig = {
   prefix: string;
-  baseURL: string;
-  instance: AxiosInstance;
+  instance: AxiosRequestConfig;
 };
 
 type FetchDataOptions<T> = Extend<
@@ -27,37 +25,37 @@ class ApiProxy {
     this.proxyConfigs = {
       ton: {
         prefix: '/api/ton',
-        baseURL: 'https://tonapi.io/v2',
-        instance: axios.create({
+        instance: {
           baseURL: 'https://tonapi.io/v2',
           // headers: {
           //   Authorization: `Bearer ${process.env.NEXT_PUBLIC_TON_API_KEY}`,
           // },
-        }),
+        },
       },
       web3: {
         prefix: '/api/web3',
-        baseURL: 'https://serv.gamler.online/web3/api',
-        instance: axios.create({ baseURL: 'https://serv.gamler.online/web3/api' }),
+        instance: { baseURL: 'https://serv.gamler.online/web3/api' },
         // baseURL: 'http://127.0.0.1:6069/api',
-        // instance: axios.create({ baseURL: 'http://127.0.0.1:6069/api' }),
+        // instance: { baseURL: 'http://127.0.0.1:6069/api' }),
       },
       web2: {
         prefix: '/api/web2',
-        baseURL: 'https://serv.gamler.online',
-        instance: axios.create({ baseURL: 'https://serv.gamler.online' }),
+        instance: { baseURL: 'https://serv.gamler.online' },
+      },
+      coffee: {
+        prefix: '/api/coffee',
+        instance: { baseURL: 'https://backend.swap.coffee/v1' },
       },
     };
   }
 
   private normalizeUrl(url: string, providedInstance?: AxiosInstance): [string, AxiosInstance] {
-    for (const [_, config] of Object.entries(this.proxyConfigs) as [ProxyInstance, ProxyConfig][]) {
+    for (const [, config] of Object.entries(this.proxyConfigs) as [ProxyInstance, ProxyConfig][]) {
       if (url.startsWith(config.prefix)) {
-        const instance = providedInstance && providedInstance.defaults.baseURL === config.baseURL ? providedInstance : config.instance;
-        return [url.replace(config.prefix, ''), instance];
+        return [url.replace(config.prefix, ''), providedInstance ?? axios.create(config.instance)];
       }
     }
-    return [url, providedInstance || axios];
+    return [url, providedInstance ?? axios.create()];
   }
 
   private async request<T>({ schema, ...config }: FetchDataOptions<T>, providedInstance?: AxiosInstance): Promise<T> {

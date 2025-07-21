@@ -15,7 +15,7 @@ type PageFlowProps = {
 
 export const PageFlow: FC<Readonly<PageFlowProps>> = ({ children, classNames }) => {
   return (
-    <div className={cn('flex h-fit w-full flex-col sm:h-full', classNames?.header)}>
+    <div className={cn('flex h-full w-full flex-col', classNames?.header)}>
       <Header className={classNames?.header} SocialLinks={<SocialLinks />} />
       <DynamicLayoutFlow classNames={classNames}>{children}</DynamicLayoutFlow>
     </div>

@@ -6,7 +6,7 @@ export default function TestPage() {
   return (
     <PageFlow
       classNames={{
-        content: 'flex h-fit w-full flex-col gap-8 py-4 px-[30px] md:pl-6 md:pr-[60px]',
+        content: 'flex max-h-[calc(100vh-64px)] w-full flex-col gap-8 py-4 px-[30px] md:pl-6 md:pr-[60px]',
       }}>
       <ReferralDescription />
       <IsReferralProgram Notification={<Notification />} ReferralLink={<ReferralLink />} />

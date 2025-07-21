@@ -31,7 +31,10 @@ export const TransactionsTable = () => {
     isSuccess: isSuccessTransactions,
   } = useGetTransactions(address ?? '');
 
-  const transactions_table_data = transactions ? filterFrogeTransfers(transactions) : [];
+ const transactions_table_data = transactions
+   ? Array.from(new Map(filterFrogeTransfers(transactions).map((item) => [item.id, item])).values())
+    : [];
+  
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
