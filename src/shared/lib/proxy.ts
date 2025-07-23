@@ -4,7 +4,7 @@ import type { z } from 'zod/v4';
 import type { Extend } from '../types/utils';
 import { validateResult } from '../utils/zod.utils';
 
-type ProxyInstance = 'ton' | 'web3' | 'web2' | 'coffee';
+type ProxyInstance = 'ton' | 'web3' | 'web2' | 'coffee_server' | 'coffee_client';
 
 type ProxyConfig = {
   prefix: string;
@@ -42,9 +42,13 @@ class ApiProxy {
         prefix: '/api/web2',
         instance: { baseURL: 'https://serv.gamler.online' },
       },
-      coffee: {
-        prefix: '/api/coffee',
+      coffee_server: {
+        prefix: '/api/coffee_server',
         instance: { baseURL: 'https://backend.swap.coffee/v1' },
+      },
+      coffee_client: {
+        prefix: '/api/coffee_client',
+        instance: { baseURL: 'https://tokens.swap.coffee/api/v2' },
       },
     };
   }

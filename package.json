@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.2",
+    "@hookform/resolvers": "^5.1.1",
     "@intentui/icons": "^1.11.0",
     "@next/bundle-analyzer": "^15.3.4",
     "@next/eslint-plugin-next": "^15.3.4",
@@ -41,6 +42,7 @@
     "react": "^19.0.0",
     "react-aria-components": "^1.10.1",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.60.0",
     "rxjs": "^7.8.2",
     "tailwind-merge": "^3.3.1",
     "tailwind-variants": "^1.0.0",

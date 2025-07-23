@@ -18,11 +18,14 @@ import { Skeleton } from '@ui/skeleton';
 
 import { LazyMobileSheet } from '../exports/exports-lazy';
 import { IsMobileFlow } from '../layouts/is-mobile-flow';
+import { BalanceInHeader } from '../slices/balance-in-header';
 
 type HeaderProps = {
   className?: string;
   SocialLinks: ReactNode;
 };
+
+const excludedPaths = ['/exchanger'];
 
 export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
   const breadcrumbs = useBreadcrumbs({
@@ -41,7 +44,10 @@ export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
         }
         desktop={
           <>
-            <NavBreadcrumbs breadcrumbs={breadcrumbs} />
+            <div className='flex flex-row items-center gap-6'>
+              <BalanceInHeader excludedPaths={excludedPaths} />
+              <NavBreadcrumbs breadcrumbs={breadcrumbs} />
+            </div>
             <div className='flex flex-row items-center justify-between gap-[4vw]'>
               {SocialLinks}
               <AccountInfo />
