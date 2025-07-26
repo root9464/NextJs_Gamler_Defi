@@ -1,5 +1,5 @@
 'use client';
-import { LazyPartnerBalanceModule } from '@/modules/partner-balance/exports/exports-lazy';
+import { DynamicPartnerBalanceModule } from '@/modules/partner-balance/exports/exports';
 import { TableStatisticsModule } from '@/modules/table-statistics/module';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useUpdateAddress } from '@/shared/hooks/api/useUpdateAddress';
@@ -20,7 +20,7 @@ export const IsReferralProgram: FC<IsReferralProgramProps> = ({ Notification, Re
   return (
     <>
       {!address && Notification}
-      <LazyPartnerBalanceModule />
+      <DynamicPartnerBalanceModule />
       {ReferralLink}
       {isSuccessAccount && hasAddress && account.referral_program_choice && <TableStatisticsModule />}
     </>

@@ -8,10 +8,9 @@ import Logo from '@assets/svg/logo.svg';
 
 import { NavBreadcrumbs } from '../slices/breadcrumbs';
 
-import { LazyMobileSheet } from '../exports/exports-lazy';
+import { DynamicBalanceInHeader, DynamicMobileSheet } from '../exports/exports';
 import { IsMobileFlow } from '../layouts/is-mobile-flow';
 import { AccountInfo } from '../slices/account-info';
-import { BalanceInHeader } from '../slices/balance-in-header';
 
 type HeaderProps = {
   className?: string;
@@ -32,13 +31,13 @@ export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
           <div className='grid w-full grid-cols-[auto_1fr_auto] items-center justify-between gap-2.5'>
             <Logo className='w-[107px]' />
             <AccountInfo />
-            <LazyMobileSheet />
+            <DynamicMobileSheet />
           </div>
         }
         desktop={
           <>
             <div className='flex flex-row items-center gap-6'>
-              <BalanceInHeader excludedPaths={excludedPaths} />
+              <DynamicBalanceInHeader excludedPaths={excludedPaths} />
               <NavBreadcrumbs breadcrumbs={breadcrumbs} />
             </div>
             <div className='flex flex-row items-center justify-between gap-[4vw]'>

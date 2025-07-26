@@ -1,7 +1,7 @@
 import FacebookIcon from '@assets/svg/facebook.svg';
 import TelegramIcon from '@assets/svg/telegram.svg';
 import VkIcon from '@assets/svg/vk.svg';
-import { DynamicWalletConnectButton } from '../exports/exports-dynamic';
+import { DynamicWalletConnectButton } from '../exports/exports';
 
 export const SocialLinks = () => (
   <div className='grid grid-cols-[0.445fr_0.555fr] place-content-between content-center items-center gap-[3.7vw]'>

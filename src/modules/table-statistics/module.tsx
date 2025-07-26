@@ -1,7 +1,7 @@
 'use client';
 
 import { Tab, TabList, TabPanel, Tabs } from '@ui/tabs';
-import { LazyPayAllOrdersBtn } from '../partner-balance/exports/exports-lazy';
+import { DynamicPayAllOrdersBtn } from '../partner-balance/exports/exports';
 import { DebtTable } from './entities/debt-table';
 import { InviteTable } from './entities/invite-table';
 import { TransactionsTable } from './entities/transactions-table';
@@ -22,7 +22,7 @@ export const TableStatisticsModule = () => (
       </TabPanel>
       <TabPanel id='3' className='flex h-fit flex-col gap-4'>
         <div className='mb-4 hidden flex-row items-center gap-2.5 sm:flex'>
-          <LazyPayAllOrdersBtn />
+          <DynamicPayAllOrdersBtn />
           <p className='text-sm text-gray-700'>
             Чтобы погасить все задолженности сразу, нажмите кнопку “Погасить все”. Или выберите реферала и оплатите каждую транзакцию отдельно
           </p>

@@ -1,4 +1,4 @@
-import { DynamicSwapInterface } from './exports/exports-dynamic';
+import { DynamicSwapInterface } from './exports/exports';
 
 export const SwapModule = () => (
   <div className='flex h-fit w-[359px] flex-col gap-3 bg-[#F6FFED] p-4'>

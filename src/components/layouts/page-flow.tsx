@@ -1,6 +1,6 @@
 import { cn } from '@shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
-import { DynamicLayoutFlow } from '../exports/exports-dynamic';
+import { DynamicLayoutFlow } from '../exports/exports';
 import { Header } from '../flows/header';
 import { SocialLinks } from '../slices/social-links';
 

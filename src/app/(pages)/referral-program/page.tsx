@@ -1,4 +1,4 @@
-import { DynamicDescWorkProgram, IsReferralProgram } from '@/components/exports/exports-dynamic';
+import { DynamicDescWorkProgram, IsReferralProgram } from '@/components/exports/exports';
 import { ReferralLink } from '@/components/slices/refferal-link';
 import { PageFlow } from '@components/layouts/page-flow';
 

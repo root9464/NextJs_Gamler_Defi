@@ -5,7 +5,7 @@ import { useWindow } from '@/shared/hooks/useWindow';
 import { cn } from '@/shared/utils/tw.utils';
 import { LayoutGroup, motion } from 'motion/react';
 import { type FC, type ReactNode } from 'react';
-import { DynamicSideBar } from '../exports/exports-dynamic';
+import { DynamicSideBar } from '../exports/exports';
 
 type LayoutFlowProps = {
   children: ReactNode;
