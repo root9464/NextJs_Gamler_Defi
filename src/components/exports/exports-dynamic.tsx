@@ -18,4 +18,8 @@ const DynamicDescWorkProgram = dynamic(() => import('@components/slices/desc-wor
   ssr: false,
 });
 
-export { DynamicDescWorkProgram, DynamicLayoutFlow, DynamicSideBar, IsReferralProgram };
+const DynamicWalletConnectButton = dynamic(() => import('@components/features/connect-wallet-button').then((mod) => mod.WalletConnectButton), {
+  ssr: false,
+});
+
+export { DynamicDescWorkProgram, DynamicLayoutFlow, DynamicSideBar, DynamicWalletConnectButton, IsReferralProgram };

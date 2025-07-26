@@ -56,6 +56,7 @@ export const TransactionsTable = () => {
           dataSource={transactions_table_data}
           onChange={handleTableChange}
           pagination={tableParams.pagination}
+          showSorterTooltip={false}
           rowKey='id'
           className='table-scroll'>
           <Column title='Дата' dataIndex='time' key='time' />

@@ -13,7 +13,7 @@ export default function ExchangerPage() {
   );
 }
 
-export const DexDescription = () => {
+const DexDescription = () => {
   return (
     <div className='flex flex-col gap-2.5'>
       <h2 className='heading-1'>Обменник</h2>

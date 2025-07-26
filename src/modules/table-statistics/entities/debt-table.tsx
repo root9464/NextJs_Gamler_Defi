@@ -88,6 +88,7 @@ export const DebtTable = () => {
           dataSource={debt_table_data}
           onChange={handleTableChange}
           pagination={tableParams.pagination}
+          showSorterTooltip={false}
           rowKey='order_id'
           className='table-scroll'>
           <Column<DebtTableDataType> title='Количество билетов' dataIndex='tickets' sorter={(a, b) => a.tickets - b.tickets} key='tickets' />

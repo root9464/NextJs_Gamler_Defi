@@ -54,6 +54,7 @@ export const SwapInput: FC<SwapInputProps> = ({ type, amount, maxAmount, setSwap
           max={maxAmount}
           type='number'
           disabled={type === 'receive'}
+          value={amount}
           {...register('amount', {
             valueAsNumber: true,
             onChange: (e: ChangeEvent<HTMLInputElement>) => handleAmountChange(Number(e.target.value)),

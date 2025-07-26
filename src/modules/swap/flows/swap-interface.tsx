@@ -9,20 +9,20 @@ import { useTonAddress } from '@tonconnect/ui-react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect } from 'react';
 import { RollStats } from '../features/roll-stats';
-import { getDistributionRoute } from '../helpers/helpers';
-import { usePavingRoute } from '../hook/api/usePavingRoute';
-import { useSwap } from '../hook/api/useSwap';
+import { SwapButton } from '../features/swap-button';
 import { SwapInput } from '../slices/swap-input';
 import { setSelectTokenAtom, updateSelectTokenAtom } from '../store/select-token';
-import { drivenSwapStateAtom, swapStateAtom, updateSwapStateAtom } from '../store/swap-store';
+import { swapRouteAtom } from '../store/swap-route';
+import { setSwapStateAtom, swapStateAtom, updateSwapStateAtom } from '../store/swap-store';
 
 export const SwapInterface = () => {
   const address = useTonAddress();
   const swapState = useAtomValue(swapStateAtom);
-  const updateSwapState = useSetAtom(updateSwapStateAtom);
-  const drivenSwapState = useSetAtom(drivenSwapStateAtom);
-  const updateSelectToken = useSetAtom(updateSelectTokenAtom);
+  const setSwapState = useSetAtom(setSwapStateAtom);
   const setSelectToken = useSetAtom(setSelectTokenAtom);
+  const updateSwapState = useSetAtom(updateSwapStateAtom);
+  const updateSelectToken = useSetAtom(updateSelectTokenAtom);
+  const swapRoute = useAtomValue(swapRouteAtom);
 
   const {
     data: jettonWallets,
@@ -32,6 +32,8 @@ export const SwapInterface = () => {
   } = useJettonWallet({ address: address ?? '' });
   const gamlerJettonWallet = jettonWallets?.balances.find((balance) => balance.jetton.symbol === 'GMLR');
   const gamlerInBalance = Number(gamlerJettonWallet?.balance) / 10 ** (gamlerJettonWallet?.jetton.decimals ?? 0);
+  const gamlerJettonAddress =
+    gamlerJettonWallet && gamlerJettonWallet.wallet_address ? Address.parse(gamlerJettonWallet.jetton.address).toString() : '';
 
   const {
     data: rawTonUserBalance,
@@ -57,10 +59,12 @@ export const SwapInterface = () => {
 
   useEffect(() => {
     if (!isSuccessJettonWallets || !isSuccessTonUserBalance) return;
-    drivenSwapState({
+    setSwapState({
       send: 'native',
-      amount: tonUserBalance,
+      receive: gamlerJettonAddress,
+      amount: 0,
     });
+
     setSelectToken({
       type: 'send',
       token: {
@@ -82,16 +86,11 @@ export const SwapInterface = () => {
         address: Address.parse(gamlerJettonWallet?.jetton.address ?? '').toString() ?? '',
       },
     });
-    drivenSwapState({
-      receive: Address.parse(gamlerJettonWallet?.jetton.address ?? '').toString() ?? '',
-      amount: gamlerInBalance,
-    });
-  }, [address, isSuccessTonUserBalance, drivenSwapState, tonUserBalance, gamlerJettonWallet]);
+  }, [address, isSuccessTonUserBalance, tonUserBalance, gamlerJettonWallet]);
 
-  const { data: pavingRoute } = usePavingRoute(swapState.send, swapState.receive, swapState.amount);
-  const { pathData } = getDistributionRoute(pavingRoute?.paths ?? []);
-  const { data: swap } = useSwap(pathData.paths, 0.5, address ?? '');
-  console.log(swap);
+  console.log(swapRoute.output_amount.toFixed(4), 'swapRoute.output_amount.toFixed(4)');
+  
+
   return (
     <div className='flex flex-col gap-3'>
       {isSuccessTonUserBalance && tonUserBalance && (
@@ -104,8 +103,11 @@ export const SwapInterface = () => {
       )}
       {(isErrorTonUserBalance || isLoadingTonUserBalance) && <Skeleton className='h-8 w-full' />}
       <RollStats swapTokens={swapTokens} />
-      {isSuccessJettonWallets && gamlerJettonWallet && <SwapInput type='receive' amount={0} maxAmount={0} setSwapState={updateSwapState} />}
+      {isSuccessJettonWallets && gamlerJettonWallet && (
+        <SwapInput type='receive' amount={Number(swapRoute.output_amount.toFixed(4))} maxAmount={0} setSwapState={updateSwapState} />
+      )}
       {(isErrorJettonWallets || isLoadingJettonWallets) && <Skeleton className='h-8 w-full' />}
+      <SwapButton />
     </div>
   );
 };

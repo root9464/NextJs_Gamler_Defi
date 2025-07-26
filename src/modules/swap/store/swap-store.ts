@@ -6,11 +6,13 @@ type SwapState = {
   amount: number;
 };
 
-const swapStateAtom = atom<SwapState>({
-  send: 'native',
+const INITIAL_STATE = {
+  send: '',
   receive: '',
   amount: 0,
-});
+};
+
+const swapStateAtom = atom<SwapState>(INITIAL_STATE);
 
 const setSwapStateAtom = atom(null, (_, set, state: SwapState) => {
   set(swapStateAtom, state);

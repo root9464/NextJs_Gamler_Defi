@@ -85,28 +85,23 @@ export const DescWorkProgram = () => {
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           {REFERRAL_PROGRAM_DATA.map((item, index) => (
             <div key={index} className='flex flex-col gap-3 text-black/85'>
-              <h2 className='text-base leading-6 font-medium'>{item.title}</h2>
-              {item.content.map((content, i) => {
-                if (typeof content === 'string') {
-                  return (
-                    <p key={i} className='text-sm leading-[22px]'>
-                      {content}
-                    </p>
-                  );
-                } else if (content.type === 'list') {
-                  return (
-                    <>
-                      <h3 className='text-sm leading-[22px]'>{content.title}</h3>
-                      <ul key={i} className='list-disc pl-5 text-sm leading-[22px]'>
-                        {content.items.map((listItem, j) => (
-                          <li key={j}>{listItem}</li>
-                        ))}
-                      </ul>
-                    </>
-                  );
-                }
-                return null;
-              })}
+              <h2 className='text-base leading-6 font-bold'>{item.title}</h2>
+              {item.content.map((content, i) =>
+                typeof content === 'string' ? (
+                  <p key={i} className='text-sm leading-[22px]'>
+                    {content}
+                  </p>
+                ) : content.type === 'list' ? (
+                  <>
+                    <h3 className='text-sm leading-[22px]'>{content.title}</h3>
+                    <ul key={i} className='list-disc pl-5 text-sm leading-[22px]'>
+                      {content.items.map((listItem, j) => (
+                        <li key={j}>{listItem}</li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null,
+              )}
             </div>
           ))}
         </Modal.Body>

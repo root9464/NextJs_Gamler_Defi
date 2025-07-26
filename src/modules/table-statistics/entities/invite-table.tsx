@@ -56,6 +56,7 @@ export const InviteTable = () => {
           onChange={handleTableChange}
           pagination={tableParams.pagination}
           className='table-scroll'
+          showSorterTooltip={false}
           rowKey='user_id'>
           <Column title='Реферал' dataIndex='name' key='name' />
           <Column
