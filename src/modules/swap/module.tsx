@@ -1,3 +1,4 @@
+import { SwapStats } from './entities/swap-stats';
 import { DynamicSwapInterface } from './exports/exports';
 
 export const SwapModule = () => (
@@ -5,5 +6,6 @@ export const SwapModule = () => (
     <h2 className='text-lg font-medium'>Конвертация:</h2>
     <h3 className='text-sm font-medium'>Вы отправляете:</h3>
     <DynamicSwapInterface />
+    <SwapStats />
   </div>
 );
