@@ -14,7 +14,7 @@ export const SwapStats = () => {
   } = usePavingRoute(swapState.send, swapState.receive, 1);
   return (
     <div>
-      <h2 className='text-xs text-black/85'>Текущий курс:</h2>
+      <h2 className='text-sm font-medium text-black/85'>Текущий курс:</h2>
       {isSuccessPavingRoute && pavingRoute && (
         <p className='text-sm text-black/60'>
           {pavingRoute.input_amount} {pavingRoute.input_token.metadata.symbol} = {pavingRoute.output_amount.toFixed(4)}{' '}
