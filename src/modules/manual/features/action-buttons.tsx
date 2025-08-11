@@ -12,9 +12,11 @@ export const ActionButtons = () => {
           Назад
         </Button>
       )}
-      <Button intent='primary' onClick={() => setProgress((prev) => ({ ...prev, step: prev.step + 1 }))}>
-        Выполнил
-      </Button>
+      {currentStepState.step < 10 &&(
+        <Button intent='primary' onClick={() => setProgress((prev) => ({ ...prev, step: prev.step + 1 }))}>
+          Выполнил
+        </Button>
+      )}
     </div>
   );
 };
