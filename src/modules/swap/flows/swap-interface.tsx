@@ -90,7 +90,6 @@ export const SwapInterface = () => {
 
   console.log(swapRoute.output_amount.toFixed(4), 'swapRoute.output_amount.toFixed(4)');
   
-
   return (
     <div className='flex flex-col gap-3'>
       {isSuccessTonUserBalance && tonUserBalance && (
