@@ -8,7 +8,7 @@ import Logo from '@assets/svg/logo.svg';
 
 import { NavBreadcrumbs } from '../slices/breadcrumbs';
 
-import { DynamicBalanceInHeader, DynamicMobileSheet } from '../exports/exports';
+import { DynamicMobileSheet } from '../exports/exports';
 import { IsMobileFlow } from '../layouts/is-mobile-flow';
 import { AccountInfo } from '../slices/account-info';
 
@@ -16,8 +16,6 @@ type HeaderProps = {
   className?: string;
   SocialLinks: ReactNode;
 };
-
-const excludedPaths = ['/exchanger'];
 
 export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
   const breadcrumbs = useBreadcrumbs({
@@ -37,7 +35,7 @@ export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
         desktop={
           <>
             <div className='flex flex-row items-center gap-6'>
-              <DynamicBalanceInHeader excludedPaths={excludedPaths} />
+              <Logo />
               <NavBreadcrumbs breadcrumbs={breadcrumbs} />
             </div>
             <div className='flex flex-row items-center justify-between gap-[4vw]'>

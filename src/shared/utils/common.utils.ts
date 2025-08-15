@@ -9,4 +9,7 @@ const formatUnixToDate = (unixTimestamp: number): string => {
   return `${day}.${month}.${year}`;
 };
 
-export { copyClipboard, formatUnixToDate };
+const isEqual = <T extends Record<string, unknown>>(current: T, initial: T): boolean =>
+  Object.keys(initial).every((key) => JSON.stringify(current[key]) === JSON.stringify(initial[key]));
+
+export { copyClipboard, formatUnixToDate, isEqual };

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { ChangeEvent, FC } from 'react';
+import { useEffect, type ChangeEvent, type FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod/v4';
 import { type SwapState } from '../store/swap-store';
@@ -11,7 +11,7 @@ import { getSelectedTokenAtom } from '../store/select-token';
 
 type SwapInputProps = {
   type: 'send' | 'receive';
-  amount: number;
+  amount?: number;
   maxAmount: number;
   setSwapState: (updateFn: (prevState: SwapState) => Partial<SwapState>) => void;
 };
@@ -23,13 +23,17 @@ const InputShema = z.object({
 type InputForm = z.infer<typeof InputShema>;
 
 export const SwapInput: FC<SwapInputProps> = ({ type, amount, maxAmount, setSwapState }) => {
-  const { register, setError, clearErrors } = useForm<InputForm>({
+  const { register, setError, clearErrors, setValue } = useForm<InputForm>({
     resolver: zodResolver(InputShema),
     defaultValues: {
       amount,
     },
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    setValue('amount', amount ?? 0, { shouldValidate: true });
+  }, [amount, setValue]);
 
   const selectedTokenFn = useAtomValue(getSelectedTokenAtom);
   const selectedToken = selectedTokenFn(type);
@@ -62,14 +66,19 @@ export const SwapInput: FC<SwapInputProps> = ({ type, amount, maxAmount, setSwap
         />
         <div
           className={cn(
-            'flex h-8 w-[103px] flex-row items-center gap-2.5 rounded-[50px] p-1',
+            'flex h-8 w-[133px] flex-row items-center gap-2.5 rounded-[50px] p-1',
             type === 'send' ? 'bg-uiActiveBlue text-white' : 'bg-[#F5F5F5] text-black/85',
           )}>
           {selectedToken && (
-            <>
+            <div className='flex flex-row gap-1'>
               <img src={selectedToken.image} alt={selectedToken.symbol} className='size-6' />
-              <p className='text-base font-medium'>{selectedToken.symbol}</p>
-            </>
+              <p className='text-base font-medium'>
+                {selectedToken.symbol}
+              </p>
+              <p className='text-base font-medium'>
+                {maxAmount}
+              </p>
+            </div>
           )}
         </div>
       </div>

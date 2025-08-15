@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
@@ -62,7 +63,7 @@ export const SwapInterface = () => {
     setSwapState({
       send: 'native',
       receive: gamlerJettonAddress,
-      amount: 0,
+      amount: 1,
     });
 
     setSelectToken({
@@ -88,23 +89,43 @@ export const SwapInterface = () => {
     });
   }, [address, isSuccessTonUserBalance, tonUserBalance, gamlerJettonWallet]);
 
-  console.log(swapRoute.output_amount.toFixed(4), 'swapRoute.output_amount.toFixed(4)');
-  
-
   return (
     <div className='flex flex-col gap-3'>
-      {isSuccessTonUserBalance && tonUserBalance && (
-        <SwapInput
-          type='send'
-          amount={swapState.amount}
-          maxAmount={swapState.send === 'native' ? tonUserBalance : (gamlerInBalance ?? 0)}
-          setSwapState={updateSwapState}
-        />
+      {isSuccessTonUserBalance && (
+        <>
+          <div className='flex flex-row gap-2'>
+            <h3 className='text-sm font-medium'>Вы отправляете:</h3>
+            <button
+              className='text-uiActiveBlue w-fit cursor-pointer underline'
+              onClick={() =>
+                updateSwapState((_prev) => ({
+                  amount: swapState.send === 'native' && tonUserBalance > 0 ? tonUserBalance : 0.24,
+                }))
+              }>
+              Max
+            </button>
+          </div>
+
+          <SwapInput
+            type='send'
+            amount={swapState.amount}
+            maxAmount={swapState.send === 'native' ? tonUserBalance : 0.24}
+            setSwapState={updateSwapState}
+          />
+        </>
       )}
-      {(isErrorTonUserBalance || isLoadingTonUserBalance) && <Skeleton className='h-8 w-full' />}
+      {(isErrorTonUserBalance || isLoadingTonUserBalance) && <p>чето не так</p>}
       <RollStats swapTokens={swapTokens} />
       {isSuccessJettonWallets && gamlerJettonWallet && (
-        <SwapInput type='receive' amount={Number(swapRoute.output_amount.toFixed(4))} maxAmount={0} setSwapState={updateSwapState} />
+        <>
+          <h3 className='text-sm font-medium'>Вы получаете:</h3>
+          <SwapInput
+            type='receive'
+            amount={Number(swapRoute.output_amount.toFixed(4))}
+            maxAmount={gamlerInBalance}
+            setSwapState={updateSwapState}
+          />
+        </>
       )}
       {(isErrorJettonWallets || isLoadingJettonWallets) && <Skeleton className='h-8 w-full' />}
       <SwapButton />

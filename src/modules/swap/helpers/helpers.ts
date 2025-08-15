@@ -1,4 +1,7 @@
+import { isEqual } from '@/shared/utils/common.utils';
 import type { Path } from '../hook/api/usePavingRoute';
+import type { SwapResponseBasic } from '../store/swap-route';
+import { SWAP_ROUTE_INITIAL } from '../store/swap-route';
 
 const getDistributionRoute = (paths: Path[]): { pathString: string; pathData: { paths: Path[] } } => {
   if (!paths || paths.length === 0) {
@@ -46,4 +49,6 @@ const calculateMinReceived = (outputAmount: number, slippageTolerance: number) =
   return minimumReceived.toFixed(2);
 };
 
-export { calculateMinReceived, getDistributionRoute };
+const isSwapRouteEmpty = (swapRoute: SwapResponseBasic): boolean => isEqual(swapRoute, SWAP_ROUTE_INITIAL);
+
+export { calculateMinReceived, getDistributionRoute, isSwapRouteEmpty };
