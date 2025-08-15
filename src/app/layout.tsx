@@ -1,3 +1,4 @@
+import { PageFlow } from '@/components/layouts/page-flow';
 import { GlobalProvider } from '@/components/providers/global';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
@@ -15,7 +16,14 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang='en'>
       <body>
-        <GlobalProvider>{children}</GlobalProvider>
+        <GlobalProvider>
+          <PageFlow
+            classNames={{
+              content: 'flex max-h-[calc(100vh-64px)] w-full flex-col gap-8 py-4 px-[30px] md:pl-6 md:pr-[60px]',
+            }}>
+            {children}
+          </PageFlow>
+        </GlobalProvider>
       </body>
     </html>
   );
