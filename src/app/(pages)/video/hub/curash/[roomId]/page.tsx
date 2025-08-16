@@ -1,9 +1,5 @@
-'use client';
-import { idRoom } from '@/modules/video-hub/store/hub-id';
-import { useAtomValue } from 'jotai';
+import { HubModule } from '@/modules/video-hub/hub/module';
 
-export default function Curash() {
-  const currentId = useAtomValue(idRoom);
-  console.log(currentId, 'roomId');
-  return <div>Curash</div>;
+export default function CurashPage() {
+  return <HubModule />;
 }
