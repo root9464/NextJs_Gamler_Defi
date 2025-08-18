@@ -72,12 +72,8 @@ export const SwapInput: FC<SwapInputProps> = ({ type, amount, maxAmount, setSwap
           {selectedToken && (
             <div className='flex flex-row gap-1'>
               <img src={selectedToken.image} alt={selectedToken.symbol} className='size-6' />
-              <p className='text-base font-medium'>
-                {selectedToken.symbol}
-              </p>
-              <p className='text-base font-medium'>
-                {maxAmount}
-              </p>
+              <p className='text-base font-medium'>{selectedToken.symbol}</p>
+              <p className='text-base font-medium'>{maxAmount.toFixed(2)}</p>
             </div>
           )}
         </div>

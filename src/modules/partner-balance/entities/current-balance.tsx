@@ -39,7 +39,7 @@ export const CurrentBalance = () => {
       <div className='flex flex-row items-center justify-end gap-2.5'>
         <Tooltip isDisabled={!isDebt}>
           <Tooltip.Trigger>
-            <Link className={buttonStyles({ intent: 'outline', size: 'sm', isDisabled: isDebt })} href='/exchanger'>
+            <Link className={buttonStyles({ intent: 'outline', size: 'sm', isDisabled: isDebt })} href='/web3/exchanger'>
               Вывести
             </Link>
           </Tooltip.Trigger>

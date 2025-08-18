@@ -15,7 +15,7 @@ export const PartnerBalanceModule = () => (
       </div>
       <div className='flex flex-row items-center gap-2.5 px-5 sm:px-0'>
         <WalletConnectButton />
-        <Link href='/manual'>
+        <Link href='/web3/manual'>
           <HelperIcon />
         </Link>
       </div>

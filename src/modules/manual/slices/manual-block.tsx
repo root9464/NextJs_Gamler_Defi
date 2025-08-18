@@ -118,7 +118,7 @@ export const ManualBlock = () => {
             {currentStep.images.map((image, index) => (
               <Image
                 key={index}
-                src={image.src}
+                src={image}
                 width={image.width}
                 height={image.height}
                 alt={currentStep.title}
