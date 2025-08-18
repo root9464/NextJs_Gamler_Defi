@@ -99,7 +99,7 @@ export const SwapInterface = () => {
               className='text-uiActiveBlue w-fit cursor-pointer underline'
               onClick={() =>
                 updateSwapState((_prev) => ({
-                  amount: swapState.send === 'native' && tonUserBalance > 0 ? tonUserBalance : 0.24,
+                  amount: swapState.send === 'native' && tonUserBalance > 0 ? tonUserBalance : gamlerInBalance,
                 }))
               }>
               Max
@@ -109,7 +109,7 @@ export const SwapInterface = () => {
           <SwapInput
             type='send'
             amount={swapState.amount}
-            maxAmount={swapState.send === 'native' ? tonUserBalance : 0.24}
+            maxAmount={swapState.send === 'native' ? tonUserBalance : gamlerInBalance}
             setSwapState={updateSwapState}
           />
         </>
