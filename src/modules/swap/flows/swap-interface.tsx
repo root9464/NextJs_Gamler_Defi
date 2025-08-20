@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
@@ -92,40 +91,22 @@ export const SwapInterface = () => {
   return (
     <div className='flex flex-col gap-3'>
       {isSuccessTonUserBalance && (
-        <>
-          <div className='flex flex-row gap-2'>
-            <h3 className='text-sm font-medium'>Вы отправляете:</h3>
-            <button
-              className='text-uiActiveBlue w-fit cursor-pointer underline'
-              onClick={() =>
-                updateSwapState((_prev) => ({
-                  amount: swapState.send === 'native' && tonUserBalance > 0 ? tonUserBalance : gamlerInBalance,
-                }))
-              }>
-              Max
-            </button>
-          </div>
-
-          <SwapInput
-            type='send'
-            amount={swapState.amount}
-            maxAmount={swapState.send === 'native' ? tonUserBalance : gamlerInBalance}
-            setSwapState={updateSwapState}
-          />
-        </>
+        <SwapInput
+          type='send'
+          amount={swapState.amount}
+          maxAmount={swapState.send === 'native' ? tonUserBalance : gamlerInBalance}
+          setSwapState={updateSwapState}
+        />
       )}
       {(isErrorTonUserBalance || isLoadingTonUserBalance) && <p>чето не так</p>}
       <RollStats swapTokens={swapTokens} />
       {isSuccessJettonWallets && gamlerJettonWallet && (
-        <>
-          <h3 className='text-sm font-medium'>Вы получаете:</h3>
-          <SwapInput
-            type='receive'
-            amount={Number(swapRoute.output_amount.toFixed(4))}
-            maxAmount={gamlerInBalance}
-            setSwapState={updateSwapState}
-          />
-        </>
+        <SwapInput
+          type='receive'
+          amount={Number(swapRoute.output_amount.toFixed(4))}
+          maxAmount={swapState.send === 'native' ? gamlerInBalance : tonUserBalance}
+          setSwapState={updateSwapState}
+        />
       )}
       {(isErrorJettonWallets || isLoadingJettonWallets) && <Skeleton className='h-8 w-full' />}
       <SwapButton />

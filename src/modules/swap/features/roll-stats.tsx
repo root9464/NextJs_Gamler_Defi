@@ -1,4 +1,6 @@
+'use client';
 import SwapArrow from '@assets/svg/swap-arrow.svg';
+import { motion } from 'motion/react';
 import type { FC } from 'react';
 
 type RollStatsProps = {
@@ -7,8 +9,12 @@ type RollStatsProps = {
 
 export const RollStats: FC<RollStatsProps> = ({ swapTokens }) => {
   return (
-    <div className='flex size-[30px] items-center justify-center rounded-full bg-[#FFBB05]' onClick={swapTokens}>
+    <motion.div
+      className='flex size-[30px] items-center justify-center rounded-full bg-[#FFBB05] cursor-pointer'
+      whileHover={{ rotate: 180 }}
+      transition={{ duration: 0.15, ease: 'easeInOut' }}
+      onClick={swapTokens}>
       <SwapArrow />
-    </div>
+    </motion.div>
   );
 };

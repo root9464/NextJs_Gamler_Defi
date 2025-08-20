@@ -36,7 +36,9 @@ export const SwapStats = () => {
       <div className='flex flex-row gap-1'>
         <h2 className='text-sm font-medium text-black/85'>Вы получите:</h2>
         {!isEmpty && swapRoute && isSuccessDollarRate && (
-          <p className='text-sm text-black/60'>≈ {(swapRoute.output_usd * dollarRate.rub).toFixed(2)} Рублей</p>
+          <p className='text-sm text-black/60'>
+            {swapRoute.output_usd.toFixed(2)} Долларов ≈ {(swapRoute.output_usd * dollarRate.rub).toFixed(2)} Рублей
+          </p>
         )}
       </div>
     </div>

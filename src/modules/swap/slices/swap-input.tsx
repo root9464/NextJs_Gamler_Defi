@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, type ChangeEvent, type FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod/v4';
-import { type SwapState } from '../store/swap-store';
+import { updateSwapStateAtom, type SwapState } from '../store/swap-store';
 
 import { cn } from '@/shared/utils/tw.utils';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { getSelectedTokenAtom } from '../store/select-token';
 
 type SwapInputProps = {
@@ -39,44 +40,72 @@ export const SwapInput: FC<SwapInputProps> = ({ type, amount, maxAmount, setSwap
   const selectedToken = selectedTokenFn(type);
 
   const handleAmountChange = (value: number) => {
+    const sanitizedValue = Math.max(0, value);
     if (type === 'send') {
-      if (maxAmount !== undefined && value > Number(maxAmount))
+      if (maxAmount !== undefined && sanitizedValue > maxAmount) {
         setError('amount', {
           type: 'manual',
           message: 'Amount exceeds maximum available balance',
         });
-      clearErrors('amount');
-      setSwapState((prevState) => ({ ...prevState, amount: value }));
+      } else {
+        clearErrors('amount');
+      }
+      setValue('amount', sanitizedValue, { shouldValidate: true });
+      setSwapState((prevState) => ({ ...prevState, amount: sanitizedValue }));
     }
   };
 
+  const updateSwapState = useSetAtom(updateSwapStateAtom);
+
   return (
-    <div className='flex w-full flex-col gap-3'>
-      <div className='flex h-fit w-full flex-row items-center justify-between gap-2.5'>
+    <div className='flex w-full flex-col gap-1'>
+      <div className='flex w-full flex-row items-center justify-between'>
+        {type === 'send' ? (
+          <div className='flex flex-row gap-1'>
+            <h3 className='text-sm font-medium'>Вы отправляете:</h3>
+            <button
+              className='text-uiActiveBlue w-fit cursor-pointer underline'
+              onClick={() =>
+                updateSwapState((_prev) => ({
+                  amount: maxAmount,
+                }))
+              }>
+              Max
+            </button>
+          </div>
+        ) : (
+          <h3 className='text-sm font-medium'>Вы получаете:</h3>
+        )}
+        <p className='self-end text-base font-medium'>{maxAmount.toFixed(2)}</p>
+      </div>
+      <div className='flex h-fit w-full flex-row items-end justify-between gap-2.5'>
         <input
-          className='rounded-md border border-[#D9D9D9] bg-white p-1.5 outline-none'
-          max={maxAmount}
+          className='[appearance:textfield] rounded-md border border-[#D9D9D9] bg-white p-1.5 outline-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden'
           type='number'
-          disabled={type === 'receive'}
           {...(type === 'receive' ? { value: amount } : {})}
           {...register('amount', {
             valueAsNumber: true,
-            onChange: (e: ChangeEvent<HTMLInputElement>) => handleAmountChange(Number(e.target.value)),
+            min: 0,
+            max: maxAmount,
+            disabled: type === 'receive',
+            onChange: (e: ChangeEvent<HTMLInputElement>) => {
+              const rawValue = e.target.value;
+              const value = rawValue === '' ? 0 : Number(rawValue);
+              handleAmountChange(value);
+            },
           })}
         />
-        <div
-          className={cn(
-            'flex h-8 w-[133px] flex-row items-center gap-2.5 rounded-[50px] p-1',
-            type === 'send' ? 'bg-uiActiveBlue text-white' : 'bg-[#F5F5F5] text-black/85',
-          )}>
-          {selectedToken && (
-            <div className='flex flex-row gap-1'>
-              <img src={selectedToken.image} alt={selectedToken.symbol} className='size-6' />
-              <p className='text-base font-medium'>{selectedToken.symbol}</p>
-              <p className='text-base font-medium'>{maxAmount.toFixed(2)}</p>
-            </div>
-          )}
-        </div>
+
+        {selectedToken && (
+          <div
+            className={cn(
+              'flex h-8 w-fit flex-row items-center gap-2.5 rounded-[50px] pr-1.5 pl-1',
+              type === 'send' ? 'bg-uiActiveBlue text-white' : 'bg-[#F5F5F5] text-black/85',
+            )}>
+            <img src={selectedToken.image} alt={selectedToken.symbol} className='size-6' />
+            <p className='text-base font-medium'>{selectedToken.symbol}</p>
+          </div>
+        )}
       </div>
     </div>
   );
