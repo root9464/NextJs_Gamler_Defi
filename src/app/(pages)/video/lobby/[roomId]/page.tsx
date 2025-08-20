@@ -1,5 +1,17 @@
 import { LobbyModule } from '@/modules/video-hub/lobby/module';
 
-export default function LobbyPage() {
-  return <LobbyModule />;
+type LobbyPageProps = {
+  params: {
+    roomId: string;
+  };
+  searchParams: {
+    gameType?: string;
+  };
+};
+
+export default function LobbyPage({ params, searchParams }: LobbyPageProps) {
+  const { roomId } = params;
+  const { gameType } = searchParams;
+
+  return <LobbyModule roomId={roomId} gameType={gameType} />;
 }

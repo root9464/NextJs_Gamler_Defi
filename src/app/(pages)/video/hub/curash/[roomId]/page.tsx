@@ -1,5 +1,5 @@
-import { HubModule } from '@/modules/video-hub/hub/module';
+import { CurashModule } from '@/modules/video-hub/hub/curash/module';
 
 export default function CurashPage() {
-  return <HubModule />;
+  return <CurashModule />;
 }

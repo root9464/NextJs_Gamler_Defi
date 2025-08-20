@@ -1,6 +1,3 @@
-'use client';
-import { setIdRoom } from '@/modules/video-hub/lobby/store/hub-id';
-import { useSetAtom } from 'jotai';
 import Link from 'next/link';
 import type { FC } from 'react';
 
@@ -10,30 +7,40 @@ type TestCardProps = {
 
 export default function EventsPage() {
   return (
-    <div className='flex flex-col gap-[40px]'>
+    <div className='flex flex-col gap-10 p-10'>
       <Description />
-      <TestCard roomId={1} />
+      <div className='flex gap-10'>
+        <TestCardAcceptence roomId={1} />
+        <TestCardCurash roomId={2} />
+      </div>
     </div>
   );
 }
 
-const TestCard: FC<TestCardProps> = ({ roomId }) => {
-  console.log(roomId, 'roomId');
-  const linkTo = `/video/lobby/${roomId}`;
-  const setRoomId = useSetAtom(setIdRoom);
+const TestCardAcceptence: FC<TestCardProps> = ({ roomId }) => {
+  const gameType = 'acceptence';
+  const linkTo = `/video/lobby/${roomId}?gameType=${gameType}`;
 
   return (
-    <Link
-      onClick={() => setRoomId(roomId)}
-      href={linkTo}
-      className='flex h-[150px] w-[250px] items-center justify-center rounded-4xl bg-amber-600'>
-      тестовая игра
+    <Link href={linkTo} className='flex h-[150px] w-[250px] items-center justify-center rounded-4xl bg-pink-600'>
+      тестовая игра принятие
+    </Link>
+  );
+};
+
+const TestCardCurash: FC<TestCardProps> = ({ roomId }) => {
+  const gameType = 'curash';
+  const linkTo = `/video/lobby/${roomId}?gameType=${gameType}`;
+
+  return (
+    <Link href={linkTo} className='flex h-[150px] w-[250px] items-center justify-center rounded-4xl bg-green-600'>
+      тестовая игра кураж
     </Link>
   );
 };
 
 const Description = () => (
-  <div className='flex h-fit w-full flex-col gap-2.5 sm:w-[900px]'>
+  <div className='flex h-fit w-full flex-col gap-2.5 sm:w-225'>
     <h2 className='heading-1'>События</h2>
     <p className='title-1'>Раздел, где вы можете добавить событие и анонсировать игру с вашим участием</p>
   </div>

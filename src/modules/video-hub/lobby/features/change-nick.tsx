@@ -31,8 +31,8 @@ export const ChangeNick = () => {
               <p className='text-[18px]'>morteit</p>
               <div
                 onClick={() => setOpen((prev) => !prev)}
-                className='text-[] flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-full border-[1px] border-[#D9D9D9] text-blue-400 hover:text-black'>
-                <ChangeIco />
+                className='flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-full border-[1px] border-[#D9D9D9] text-blue-400 hover:text-black'>
+                <ChangeIco className='fill-[#1890FF]' />
               </div>
             </div>
           )}

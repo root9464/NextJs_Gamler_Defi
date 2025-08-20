@@ -43,10 +43,10 @@ export const LobbyCamera = () => {
       )}
       <div className='absolute bottom-[30px] flex h-[38px] w-[94px] items-center justify-between'>
         <button className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-full bg-[#292b2c] text-white hover:bg-[white] hover:text-blue-400'>
-          <MicroIco />
+          <MicroIco className='fill-white hover:fill-[#1890FF]' />
         </button>
         <button className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-full bg-[#292b2c] text-white hover:bg-[white] hover:text-blue-400'>
-          <VideoIco />
+          <VideoIco className='fill-white hover:fill-[#1890FF]' />
         </button>
       </div>
     </div>
