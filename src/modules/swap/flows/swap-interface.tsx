@@ -4,6 +4,7 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { useJettonWallet } from '@/shared/hooks/api/useJettonWallet';
 import { useTon } from '@/shared/hooks/api/useTon';
+import { ENVs } from '@/shared/lib/envs';
 import { Address } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
 import { useAtomValue, useSetAtom } from 'jotai';
@@ -80,13 +81,13 @@ export const SwapInterface = () => {
       type: 'receive',
       token: {
         id: 2,
-        symbol: gamlerJettonWallet?.jetton.symbol ?? '',
-        decimals: gamlerJettonWallet?.jetton.decimals ?? 0,
+        symbol: 'GMLR',
+        decimals: 9,
         image: 'https://serv.gamler.online/web3/api/ton/image/logo.svg',
-        address: Address.parse(gamlerJettonWallet?.jetton.address ?? '').toString() ?? '',
+        address: ENVs.client.NEXT_PUBLIC_JETTON_MASTER,
       },
     });
-  }, [address, isSuccessTonUserBalance, tonUserBalance, gamlerJettonWallet]);
+  }, [address, isSuccessJettonWallets, isSuccessTonUserBalance]);
 
   return (
     <div className='flex flex-col gap-3'>

@@ -20,6 +20,7 @@ type HeaderProps = {
 export const Header: FC<HeaderProps> = ({ className, SocialLinks }) => {
   const breadcrumbs = useBreadcrumbs({
     '/referral-program': 'Реферальная программа',
+    '/exchanger': 'Обменник'
   });
 
   return (
