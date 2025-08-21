@@ -19,9 +19,11 @@ export const BalanceInHeader = () => {
     <div className='flex h-full w-fit flex-row items-center justify-end gap-2.5 sm:ml-0 sm:w-full'>
       <DynamicWalletConnectButton />
       {isSuccessJettonWallets && jettonWallet && (
-        <p className='text-sm font-bold'>{(Number(jettonWallet?.balance) / 10 ** jettonWallet?.jetton.decimals).toFixed(2)} Gamler</p>
+        <p className='max-mobile:text-wrap text-sm font-bold text-nowrap'>
+          {(Number(jettonWallet?.balance) / 10 ** jettonWallet?.jetton.decimals).toFixed(2)} Gamler
+        </p>
       )}
-      {isSuccessJettonWallets && !jettonWallet && <p className='text-base font-bold'>0 Gamler</p>}
+      {isSuccessJettonWallets && !jettonWallet && <p className='max-mobile:text-wrap text-base font-bold text-nowrap'>0 Gamler</p>}
       {(isLoadingJettonWallets || isErrorJettonWallets) && <Skeleton className='h-8 w-[100px]' />}
     </div>
   );

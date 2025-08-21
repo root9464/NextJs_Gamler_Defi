@@ -6,7 +6,7 @@ import { DynamicBalanceInHeader } from '../exports/exports';
 export const SocialLinks = () => (
   <div className='grid grid-cols-[auto_0.555fr] place-content-between content-center items-center gap-[3.7vw]'>
     <DynamicBalanceInHeader />
-    <div className='flex flex-row items-center justify-center gap-1'>
+    <div className='hidden flex-row items-center justify-center gap-1 min-[1200px]:flex'>
       <a href='https://t.me/gamleronline' className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
         <TelegramIcon />
       </a>
