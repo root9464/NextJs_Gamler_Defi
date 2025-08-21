@@ -4,7 +4,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ['@ton/core', 'rxjs'],
+    optimizePackageImports: ['@ton/core'],
     gzipSize: true,
     webpackMemoryOptimizations: true,
   },
