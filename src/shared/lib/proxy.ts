@@ -27,9 +27,9 @@ class ApiProxy {
         prefix: '/api/ton',
         instance: {
           baseURL: 'https://tonapi.io/v2',
-          // headers: {
-          //   Authorization: `Bearer ${process.env.NEXT_PUBLIC_TON_API_KEY}`,
-          // },
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TON_API_KEY}`,
+          },
         },
       },
       web3: {
