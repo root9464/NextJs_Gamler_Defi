@@ -14,8 +14,8 @@ import PlusIco from '@assets/svg/plus.svg';
 
 export const ControlPanelCurash = () => {
   return (
-    <div className='h-[200px] w-[333px] rounded-[11px] border-1 border-[#183410] bg-[#171918] px-[13px] py-[18px]'>
-      <div className='flex w-full flex-col gap-[20px]'>
+    <div className='h-50 w-[333px] rounded-[11px] border-1 border-[#183410] bg-[#171918] px-[13px] py-[18px]'>
+      <div className='flex w-full flex-col gap-5'>
         <div className='flex justify-between'>
           <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
             <AllMute />
@@ -53,8 +53,8 @@ export const ControlPanelCurash = () => {
             </div>
           </div>
         </div>
-        <div className='flex items-center justify-center gap-[20px]'>
-          <div className='h-[47.5px] w-[108px] rounded-[20px] border-4 border-[#7D7B7B] bg-linear-to-r from-[#7D7B7B] to-[#010103]'></div>
+        <div className='flex items-center justify-center gap-5'>
+          <div className='rounded-5 h-[47.5px] w-[108px] border-4 border-[#7D7B7B] bg-linear-to-r from-[#7D7B7B] to-[#010103]'></div>
           <DiceIco className='h-[43px] w-[37px] cursor-pointer' />
           <div className='flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full bg-[#1890FF]'>
             <ChangeIco className='fill-white' />

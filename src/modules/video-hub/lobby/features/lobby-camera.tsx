@@ -31,11 +31,11 @@ export const LobbyCamera = () => {
   }, [mediaStream]);
 
   return (
-    <div className='relative flex h-[317px] w-full max-w-[510px] min-w-[200px] items-center justify-center'>
+    <div className='relative flex h-[317px] w-full max-w-[510px] min-w-50 items-center justify-center'>
       {showVideo ? (
         <video ref={videoRef} autoPlay playsInline muted className='h-[317px] w-[510px]' />
       ) : (
-        <div className='flex h-[317px] w-full max-w-[510px] min-w-[200px] items-center justify-center rounded-[22px] bg-[#1C1E20]'>
+        <div className='flex h-[317px] w-full max-w-[510px] min-w-50 items-center justify-center rounded-[22px] bg-[#1C1E20]'>
           <div className='flex h-[70px] w-[70px] items-center justify-center rounded-full bg-white'>
             <p className='text-[32px] font-medium text-black'>?</p>
           </div>

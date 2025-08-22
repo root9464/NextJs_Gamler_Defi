@@ -16,8 +16,8 @@ export const CurashModule = () => {
   const constraintsRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className='flex h-max w-full gap-[25px] bg-black px-[20px] py-[25px] text-white'>
-      <div className='flex w-[688px] flex-col gap-[20px]'>
+    <div className='flex h-max w-full gap-[25px] bg-black px-5 py-[25px] text-white'>
+      <div className='flex w-[688px] flex-col gap-5'>
         <div className='flex w-[688px] justify-between'>
           <ControlPanelCurash />
           <WebCameraCurash />
@@ -34,7 +34,7 @@ export const CurashModule = () => {
           </motion.div>
         </motion.div>
       </div>
-      <div className='flex flex-wrap content-start gap-[24px]'>
+      <div className='flex flex-wrap content-start gap-6'>
         {Array.from({ length: 4 }).map((_, index) => (
           <WebWrapperCurash key={index} />
         ))}
