@@ -6,12 +6,13 @@ import type { FC } from 'react';
 
 type LobbyButtonProps = {
   className?: string;
-  gameType: string | undefined;
+  gameType: string;
   roomId: string;
 };
 
 export const LobbyButton: FC<LobbyButtonProps> = ({ className, gameType, roomId }) => {
   const linkTo = `/video/hub/${gameType}/${roomId}`;
+  console.log(linkTo);
 
   return (
     <Link className={cn(buttonStyles({ intent: 'outline', size: 'sm' }), className)} href={linkTo}>

@@ -4,10 +4,10 @@ import { LobbyCamera } from '@/modules/video-hub/lobby/features/lobby-camera';
 import type { FC } from 'react';
 import { LobbyButton } from './features/lobby-button';
 
-interface LobbyModuleProps {
+type LobbyModuleProps = {
   roomId: string;
-  gameType: string | undefined;
-}
+  gameType: string;
+};
 
 export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
   return (

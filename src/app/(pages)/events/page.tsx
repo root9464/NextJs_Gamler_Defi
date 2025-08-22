@@ -19,7 +19,7 @@ export default function EventsPage() {
 
 const TestCardAcceptence: FC<TestCardProps> = ({ roomId }) => {
   const gameType = 'acceptence';
-  const linkTo = `/video/lobby/${roomId}?gameType=${gameType}`;
+  const linkTo = `/video/lobby/${gameType}/${roomId}`;
 
   return (
     <Link href={linkTo} className='flex h-[150px] w-[250px] items-center justify-center rounded-4xl bg-pink-600'>
@@ -30,7 +30,7 @@ const TestCardAcceptence: FC<TestCardProps> = ({ roomId }) => {
 
 const TestCardCurash: FC<TestCardProps> = ({ roomId }) => {
   const gameType = 'curash';
-  const linkTo = `/video/lobby/${roomId}?gameType=${gameType}`;
+  const linkTo = `/video/lobby/${gameType}/${roomId}`;
 
   return (
     <Link href={linkTo} className='flex h-[150px] w-[250px] items-center justify-center rounded-4xl bg-green-600'>

@@ -1,4 +1,4 @@
-import { AcceptanceModule } from '@/modules/video-hub/hub/acceptance/module';
+import { AcceptanceModule } from '@/modules/video-hub/scene/acceptance/module';
 
 export default function AcceptencePage() {
   return <AcceptanceModule />;

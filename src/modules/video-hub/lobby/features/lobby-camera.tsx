@@ -1,7 +1,7 @@
 'use client';
+import { useUserMedia } from '@/modules/video-hub/lobby/hooks/useUserMedia';
 import MicroIco from '@assets/svg/micro.svg';
 import VideoIco from '@assets/svg/video.svg';
-import { useUserMedia } from '@modules/video-hub/lobby/hooks/useUserMefia';
 import { useEffect, useRef } from 'react';
 
 export const LobbyCamera = () => {
