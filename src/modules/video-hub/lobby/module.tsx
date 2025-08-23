@@ -2,6 +2,7 @@ import { ChangeNick } from '@/modules/video-hub/lobby/features/change-nick';
 import { DeviceStatusChecker } from '@/modules/video-hub/lobby/features/device-status-checker';
 import { LobbyCamera } from '@/modules/video-hub/lobby/features/lobby-camera';
 import type { FC } from 'react';
+import { ChangeTrick } from './features/change-tick';
 import { LobbyButton } from './features/lobby-button';
 
 type LobbyModuleProps = {
@@ -10,6 +11,7 @@ type LobbyModuleProps = {
 };
 
 export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
+  console.log(roomId, gameType);
   return (
     <div className='m-auto flex max-w-200 flex-col items-center gap-[5px]'>
       <div className='flex max-w-175 flex-col gap-[30px] text-center'>
@@ -20,7 +22,10 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
       </div>
       <div className='mt-[27px] flex w-full gap-5 pt-[10px]'>
         <LobbyCamera />
-        <ChangeNick />
+        <div className='flex flex-col'>
+          <ChangeNick />
+          <ChangeTrick />
+        </div>
       </div>
       <div className='h-[43px] w-full'>
         <DeviceStatusChecker />
