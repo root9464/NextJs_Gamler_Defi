@@ -23,7 +23,6 @@ export const useUserMedia = (options: UseUserMediaOptions = {}) => {
       return null;
     }
 
-    // Сохраняем ссылку на текущий промис до начала асинхронных операций
     const currentStartingPromise = startingRef.current;
 
     if (stream) {
@@ -41,7 +40,6 @@ export const useUserMedia = (options: UseUserMediaOptions = {}) => {
     const p = navigator.mediaDevices
       .getUserMedia(constraints)
       .then((s) => {
-        // Проверяем, не был ли запрос отменен в процессе
         if (startingRef.current === p) {
           console.log('Медиапоток получен успешно');
           setStream(s);
@@ -68,8 +66,6 @@ export const useUserMedia = (options: UseUserMediaOptions = {}) => {
 
   const stop = useCallback(() => {
     console.log('Остановка медиапотока');
-
-    // Сбрасываем промис запроса
     startingRef.current = null;
 
     if (stream) {
