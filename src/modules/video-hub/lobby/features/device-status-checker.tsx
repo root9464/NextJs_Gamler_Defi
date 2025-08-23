@@ -9,25 +9,14 @@ const DEVICE_NAMES = {
   API_NOT_SUPPORTED: 'API не поддерживается',
 };
 
-type DeviceStatus = {
-  available: boolean;
-  name: string;
-};
-
-type DevicesState = {
-  audioOutput: DeviceStatus;
-  audioInput: DeviceStatus;
-  videoInput: DeviceStatus;
-};
-
-const INITIAL_DEVICES_STATE: DevicesState = {
+const INITIAL_DEVICES_STATE = {
   audioOutput: { available: false, name: DEVICE_NAMES.NOT_DETERMINED },
   audioInput: { available: false, name: DEVICE_NAMES.NOT_DETERMINED },
   videoInput: { available: false, name: DEVICE_NAMES.NOT_DETERMINED },
 };
 
 export const DeviceStatusChecker = () => {
-  const [devices, setDevices] = useState<DevicesState>(INITIAL_DEVICES_STATE);
+  const [devices, setDevices] = useState(INITIAL_DEVICES_STATE);
 
   const updateDeviceStates = useCallback((deviceList: MediaDeviceInfo[]) => {
     const audioOutput = deviceList.find((device) => device.kind === 'audiooutput');

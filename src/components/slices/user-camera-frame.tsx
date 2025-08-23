@@ -1,8 +1,9 @@
-import HeartIco from '@/assets/svg/hearthub.svg';
-import InfoIco from '@/assets/svg/info.svg';
-import MuteIco from '@/assets/svg/mute.svg';
 
-export const Camera = () => {
+import HeartIcon from '@/assets/svg/hearthub.svg';
+import InfoIcon from '@/assets/svg/info.svg';
+import MuteIcon from '@/assets/svg/mute.svg';
+
+export const UserCameraFrame = () => {
   return (
     <div className='relative flex h-50 w-[332px] flex-col justify-between rounded-[11px] bg-red-300 px-[15px] py-[18px]'>
       <div className='flex w-full justify-between'>
@@ -10,7 +11,7 @@ export const Camera = () => {
           <p>1:00</p>
         </div>
         <div className='flex h-[35px] w-[35px] items-center justify-center rounded-full bg-[#222226]/50'>
-          <MuteIco />
+          <MuteIcon />
         </div>
       </div>
       {/* <video src='' /> */}
@@ -18,13 +19,13 @@ export const Camera = () => {
         <h1>Игрок 1</h1>
         <div className='flex gap-2.5'>
           <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-[#222226]'>
-            <InfoIco />
+            <InfoIcon />
           </div>
           <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-[#222226]'>
-            <HeartIco />
+            <HeartIcon />
           </div>
         </div>
       </div>
     </div>
   );
-};
+}

@@ -1,11 +1,30 @@
 'use client';
-import { PaymentDebtModal } from '@/modules/partner-balance/slices/payment-debt-modal';
+import { Wrapper } from '@/modules/games/curash/flow/wrapper';
+import { ControlPanel } from '@/modules/video-hub/scene/flow/control-panel';
+import { GameModule } from '@/modules/video-hub/scene/module';
+
+import AllMuteIcon from '@/assets/svg/allmute.svg';
+import { GameField } from '@/modules/games/curash/features/game-field';
 
 export default function Home() {
   return (
     <>
-      <h1>main page</h1>
-      <PaymentDebtModal />
+      <GameModule
+        controlPanel={
+          <ControlPanel
+            isAdmin={true}
+            additionalActions={
+              <>
+                <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
+                  <AllMuteIcon />
+                </div>
+              </>
+            }
+          />
+        }
+        UserWrapper={Wrapper}
+        gameField={<GameField />}
+      />
     </>
   );
 }

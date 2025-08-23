@@ -13,7 +13,7 @@ type MediaState = {
   error: Error | null;
 };
 
-export const useUserMedia = (options: UseUserMediaOptions = {}) => {
+export const useMedia = (options: UseUserMediaOptions = {}) => {
   const { videoConstraints = true, audioConstraints = true } = options;
 
   const [mediaState, setMediaState] = useState<MediaState>({

@@ -1,5 +1,5 @@
 'use client';
-import ChangeIco from '@/assets/svg/change.svg';
+import ChangeIcon from '@/assets/svg/change.svg';
 import { useState } from 'react';
 
 export const ChangeNickname = () => {
@@ -32,20 +32,10 @@ export const ChangeNickname = () => {
               <div
                 onClick={() => setOpen((prev) => !prev)}
                 className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-[1px] border-[#D9D9D9] text-blue-400 hover:text-black'>
-                <ChangeIco className='fill-[#1890FF]' />
+                <ChangeIcon className='fill-[#1890FF]' />
               </div>
             </div>
           )}
-        </div>
-      </div>
-      <div>
-        <h2 className='text-[18px] font-medium text-[#3f4149]'>Ваша фишка в игре:</h2>
-        <div className='flex items-center gap-[10px] pt-5'>
-          <div className='h-8 w-8 rounded-full bg-black' />
-          <div className='flex cursor-pointer items-center justify-center text-blue-400 hover:text-black'>
-            {/* <img src='' alt='' /> */}
-            <p>Сменить фишку</p>
-          </div>
         </div>
       </div>
     </div>

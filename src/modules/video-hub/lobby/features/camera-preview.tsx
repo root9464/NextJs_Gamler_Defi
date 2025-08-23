@@ -1,11 +1,11 @@
 'use client';
-import { useUserMedia } from '@/modules/video-hub/lobby/hooks/useUserMedia';
+import { useMedia } from '@/shared/hooks/useMedia';
 import MicroIco from '@assets/svg/micro.svg';
 import VideoIco from '@assets/svg/video.svg';
 import { useEffect, useRef } from 'react';
 
 export const CameraPreview = () => {
-  const { stream, videoTrack, audioTrack, start, toggleAudio, toggleVideo, isSupported, error } = useUserMedia({
+  const { stream, videoTrack, audioTrack, start, toggleAudio, toggleVideo, isSupported, error } = useMedia({
     videoConstraints: { facingMode: 'user' },
     audioConstraints: true,
   });
