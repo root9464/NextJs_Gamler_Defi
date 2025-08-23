@@ -23,16 +23,15 @@ export const useUserMedia = (options: UseUserMediaOptions = {}) => {
       return null;
     }
 
-    const currentStartingPromise = startingRef.current;
-
     if (stream) {
       console.log('Медиапоток уже активен');
       return stream;
     }
 
-    if (currentStartingPromise) {
+    const currentPromise = startingRef.current;
+    if (currentPromise) {
       console.log('Получение медиапотока уже в процессе');
-      return currentStartingPromise;
+      return currentPromise;
     }
 
     console.log('Запрос медиапотока с constraints:', constraints);
@@ -40,21 +39,22 @@ export const useUserMedia = (options: UseUserMediaOptions = {}) => {
     const p = navigator.mediaDevices
       .getUserMedia(constraints)
       .then((s) => {
-        if (startingRef.current === p) {
-          console.log('Медиапоток получен успешно');
-          setStream(s);
-          startingRef.current = null;
-        } else {
-          console.log('Полученный поток был отменен, останавливаем треки');
+        if (startingRef.current !== p) {
+          console.log('Запрос потока устарел, останавливаем полученные треки');
           s.getTracks().forEach((track) => track.stop());
+          return s;
         }
+
+        console.log('Медиапоток получен успешно');
+        setStream(s);
+        setError(null);
+        startingRef.current = null;
         return s;
       })
       .catch((e: unknown) => {
         if (startingRef.current === p) {
-          const errorMessage = (e as Error)?.message || 'Ошибка получения медиа';
-          console.error('Ошибка:', errorMessage);
-          setError(errorMessage);
+          console.error('Ошибка получения медиапотока:', (e as Error)?.message || 'Ошибка получения медиа');
+          setError((e as Error)?.message || 'Ошибка получения медиа');
           startingRef.current = null;
         }
         throw e;
@@ -66,13 +66,12 @@ export const useUserMedia = (options: UseUserMediaOptions = {}) => {
 
   const stop = useCallback(() => {
     console.log('Остановка медиапотока');
-    startingRef.current = null;
-
     if (stream) {
       const tracks = stream.getTracks();
       console.log(`Останавливаем ${tracks.length} треков`);
 
       tracks.forEach((track) => {
+        console.log(`Останавливаем ${track.kind} трек`);
         track.stop();
       });
 
@@ -85,44 +84,51 @@ export const useUserMedia = (options: UseUserMediaOptions = {}) => {
   }, [stream]);
 
   const toggleAudio = useCallback(() => {
-    const track = stream?.getAudioTracks()[0];
-    if (!track) {
-      console.log('Аудио трек не найден');
+    const audioTracks = stream?.getAudioTracks();
+    if (!audioTracks || audioTracks.length === 0) {
+      console.log('Аудио треки не найдены');
       return false;
     }
 
-    const newState = !track.enabled;
-    track.enabled = newState;
+    const newState = !audioTracks[0].enabled;
+    audioTracks.forEach((track) => {
+      track.enabled = newState;
+    });
+
     console.log(`Аудио ${newState ? 'включено' : 'выключено'}`);
     return newState;
   }, [stream]);
 
   const toggleVideo = useCallback(() => {
-    const track = stream?.getVideoTracks()[0];
-    if (!track) {
-      console.log('Видео трек не найден');
+    const videoTracks = stream?.getVideoTracks();
+    if (!videoTracks || videoTracks.length === 0) {
+      console.log('Видео треки не найдены');
       return false;
     }
 
-    const newState = !track.enabled;
-    track.enabled = newState;
+    const newState = !videoTracks[0].enabled;
+    videoTracks.forEach((track) => {
+      track.enabled = newState;
+    });
+
     console.log(`Видео ${newState ? 'включено' : 'выключено'}`);
     return newState;
   }, [stream]);
 
   const audioEnabled = useMemo(() => {
-    return stream?.getAudioTracks().every((t) => t.enabled) ?? false;
+    return stream?.getAudioTracks().some((t) => t.enabled) ?? false;
   }, [stream]);
 
   const videoEnabled = useMemo(() => {
-    return stream?.getVideoTracks().every((t) => t.enabled) ?? false;
+    return stream?.getVideoTracks().some((t) => t.enabled) ?? false;
   }, [stream]);
 
-  console.log('Текущее состояние:', {
-    stream: stream ? 'активен' : 'не активен',
+  console.log('Текущее состояние useUserMedia:', {
+    hasStream: !!stream,
     audioEnabled,
     videoEnabled,
-    error,
+    hasError: !!error,
+    isRequestPending: !!startingRef.current,
   });
 
   return {
