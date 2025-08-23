@@ -9,8 +9,8 @@ const LobbyParamsSchema = z.object({
 
 type LobbyPageProps = z.infer<typeof LobbyParamsSchema>;
 
-export default function LobbyPage({ params }: { params: LobbyPageProps }) {
-  const { id, type  } = validateResult(params, LobbyParamsSchema);
+export default async function LobbyPage({ params }: { params: Promise<LobbyPageProps> }) {
+  const { type, id } = validateResult(await params, LobbyParamsSchema);
 
   return <LobbyModule roomId={id} gameType={type} />;
 }
