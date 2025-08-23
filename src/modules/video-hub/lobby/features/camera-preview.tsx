@@ -2,38 +2,34 @@
 import { useUserMedia } from '@/modules/video-hub/lobby/hooks/useUserMedia';
 import MicroIco from '@assets/svg/micro.svg';
 import VideoIco from '@assets/svg/video.svg';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const CameraPreview = () => {
-  const { stream, start, stop, toggleAudio, toggleVideo, audioEnabled, videoEnabled, isSupported, error } = useUserMedia({
-    constraints: { video: { facingMode: 'user' }, audio: true },
+  const { stream, videoTrack, audioTrack, start, toggleAudio, toggleVideo, isSupported, error } = useUserMedia({
+    videoConstraints: { facingMode: 'user' },
+    audioConstraints: true,
   });
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    start();
-    return () => stop();
-  }, [start, stop]);
+  const videoEnabled = !!videoTrack;
+  const audioEnabled = !!audioTrack;
 
   useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    if (stream && videoEnabled) {
-      el.srcObject = stream;
-      el.muted = true;
-      const p = el.play();
-      if (p && typeof p.then === 'function') p.catch(() => {});
-    } else {
-      el.srcObject = null;
-    }
-  }, [stream, videoEnabled]);
+    if (isSupported && !stream) start().catch(console.error);
+  }, [isSupported, stream, start]);
 
-  const showVideo = useMemo(() => Boolean(stream && videoEnabled), [stream, videoEnabled]);
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) videoElement.srcObject = stream;
+  }, [stream]);
+
+  const handleToggleVideo = () => toggleVideo().catch(console.error);
+  const handleToggleAudio = () => toggleAudio().catch(console.error);
 
   return (
     <div className='relative flex h-[317px] w-full max-w-[510px] min-w-50 items-center justify-center'>
-      {showVideo ? (
+      {videoEnabled ? (
         <video ref={videoRef} autoPlay playsInline muted className='h-[317px] w-[510px] rounded-[22px] object-cover' />
       ) : (
         <div className='flex h-[317px] w-full max-w-[510px] min-w-50 items-center justify-center rounded-[22px] bg-[#1C1E20]'>
@@ -45,14 +41,14 @@ export const CameraPreview = () => {
 
       <div className='absolute bottom-[30px] flex h-[38px] w-[94px] items-center justify-between'>
         <button
-          onClick={toggleAudio}
+          onClick={handleToggleAudio}
           aria-pressed={audioEnabled}
           title={audioEnabled ? 'Выключить микрофон' : 'Включить микрофон'}
           className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-full bg-[#292b2c] text-white hover:bg-white hover:text-blue-400'>
           <MicroIco className={`${audioEnabled ? 'fill-white' : 'fill-[#FF4D4F]'} hover:fill-[#1890FF]`} />
         </button>
         <button
-          onClick={toggleVideo}
+          onClick={handleToggleVideo}
           aria-pressed={videoEnabled}
           title={videoEnabled ? 'Выключить камеру' : 'Включить камеру'}
           className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-full bg-[#292b2c] text-white hover:bg-white hover:text-blue-400'>

@@ -1,145 +1,180 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+'use client';
+import { useCallback, useEffect, useState } from 'react';
 
 type UseUserMediaOptions = {
-  constraints?: MediaStreamConstraints;
+  videoConstraints?: MediaTrackConstraints | boolean;
+  audioConstraints?: MediaTrackConstraints | boolean;
+};
+
+type MediaState = {
+  stream: MediaStream | null;
+  videoTrack: MediaStreamTrack | null;
+  audioTrack: MediaStreamTrack | null;
+  error: Error | null;
 };
 
 export const useUserMedia = (options: UseUserMediaOptions = {}) => {
-  const { constraints = { video: { facingMode: 'user' }, audio: true } } = options;
+  const { videoConstraints = true, audioConstraints = true } = options;
 
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const startingRef = useRef<Promise<MediaStream> | null>(null);
-  const isSupported = typeof window !== 'undefined' && typeof navigator !== 'undefined' && !!navigator.mediaDevices?.getUserMedia;
-
-  console.log('useUserMedia инициализирован', { isSupported });
-
-  const start = useCallback(async () => {
-    console.log('Запуск получения медиапотока');
-
-    if (!isSupported) {
-      console.error('MediaDevices API не поддерживается');
-      setError('MediaDevices API не поддерживается');
-      return null;
-    }
-
-    if (stream) {
-      console.log('Медиапоток уже активен');
-      return stream;
-    }
-
-    const currentPromise = startingRef.current;
-    if (currentPromise) {
-      console.log('Получение медиапотока уже в процессе');
-      return currentPromise;
-    }
-
-    console.log('Запрос медиапотока с constraints:', constraints);
-
-    const p = navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then((s) => {
-        if (startingRef.current !== p) {
-          console.log('Запрос потока устарел, останавливаем полученные треки');
-          s.getTracks().forEach((track) => track.stop());
-          return s;
-        }
-
-        console.log('Медиапоток получен успешно');
-        setStream(s);
-        setError(null);
-        startingRef.current = null;
-        return s;
-      })
-      .catch((e: unknown) => {
-        if (startingRef.current === p) {
-          console.error('Ошибка получения медиапотока:', (e as Error)?.message || 'Ошибка получения медиа');
-          setError((e as Error)?.message || 'Ошибка получения медиа');
-          startingRef.current = null;
-        }
-        throw e;
-      });
-
-    startingRef.current = p;
-    return p;
-  }, [constraints, isSupported, stream]);
-
-  const stop = useCallback(() => {
-    console.log('Остановка медиапотока');
-    if (stream) {
-      const tracks = stream.getTracks();
-      console.log(`Останавливаем ${tracks.length} треков`);
-
-      tracks.forEach((track) => {
-        console.log(`Останавливаем ${track.kind} трек`);
-        track.stop();
-      });
-
-      setStream(null);
-      setError(null);
-      console.log('Медиапоток остановлен');
-    } else {
-      console.log('Нет активного медиапотока');
-    }
-  }, [stream]);
-
-  const toggleAudio = useCallback(() => {
-    const audioTracks = stream?.getAudioTracks();
-    if (!audioTracks || audioTracks.length === 0) {
-      console.log('Аудио треки не найдены');
-      return false;
-    }
-
-    const newState = !audioTracks[0].enabled;
-    audioTracks.forEach((track) => {
-      track.enabled = newState;
-    });
-
-    console.log(`Аудио ${newState ? 'включено' : 'выключено'}`);
-    return newState;
-  }, [stream]);
-
-  const toggleVideo = useCallback(() => {
-    const videoTracks = stream?.getVideoTracks();
-    if (!videoTracks || videoTracks.length === 0) {
-      console.log('Видео треки не найдены');
-      return false;
-    }
-
-    const newState = !videoTracks[0].enabled;
-    videoTracks.forEach((track) => {
-      track.enabled = newState;
-    });
-
-    console.log(`Видео ${newState ? 'включено' : 'выключено'}`);
-    return newState;
-  }, [stream]);
-
-  const audioEnabled = useMemo(() => {
-    return stream?.getAudioTracks().some((t) => t.enabled) ?? false;
-  }, [stream]);
-
-  const videoEnabled = useMemo(() => {
-    return stream?.getVideoTracks().some((t) => t.enabled) ?? false;
-  }, [stream]);
-
-  console.log('Текущее состояние useUserMedia:', {
-    hasStream: !!stream,
-    audioEnabled,
-    videoEnabled,
-    hasError: !!error,
-    isRequestPending: !!startingRef.current,
+  const [mediaState, setMediaState] = useState<MediaState>({
+    stream: null,
+    videoTrack: null,
+    audioTrack: null,
+    error: null,
   });
 
+  const isSupported = typeof window !== 'undefined' && !!navigator.mediaDevices?.getUserMedia;
+
+  const start = useCallback(async () => {
+    console.log('[useUserMedia] start called');
+    if (!isSupported) {
+      const error = new Error('MediaDevices API не поддерживается');
+      console.error(`[useUserMedia] ${error.message}`);
+      setMediaState((prev) => ({ ...prev, error }));
+      throw error;
+    }
+
+    if (mediaState.stream) {
+      console.log('[useUserMedia] Stream already exists');
+      return mediaState.stream;
+    }
+
+    try {
+      const constraints = { video: videoConstraints, audio: audioConstraints };
+      console.log('[useUserMedia] Requesting media with constraints:', constraints);
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      console.log('[useUserMedia] Media stream obtained successfully');
+
+      const videoTracks = stream.getVideoTracks();
+      const audioTracks = stream.getAudioTracks();
+      console.log(`[useUserMedia] Tracks found: Video=${videoTracks.length}, Audio=${audioTracks.length}`);
+
+      setMediaState({
+        stream,
+        videoTrack: videoTracks[0] || null,
+        audioTrack: audioTracks[0] || null,
+        error: null,
+      });
+      return stream;
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error('An unknown error occurred');
+      console.error('[useUserMedia] Error in start():', error);
+      setMediaState((prev) => ({ ...prev, error }));
+      throw error;
+    }
+  }, [isSupported, audioConstraints, videoConstraints, mediaState.stream]);
+
+  const stop = useCallback(() => {
+    console.log('[useUserMedia] stop called');
+    if (!mediaState.stream) {
+      console.log('[useUserMedia] No stream to stop');
+      return;
+    }
+    mediaState.stream.getTracks().forEach((track) => {
+      console.log(`[useUserMedia] Stopping track: ${track.kind} (${track.id})`);
+      track.stop();
+    });
+    setMediaState({ stream: null, videoTrack: null, audioTrack: null, error: null });
+  }, [mediaState.stream]);
+
+  const toggleVideo = useCallback(async () => {
+    console.log('[useUserMedia] toggleVideo called');
+    const { videoTrack, audioTrack } = mediaState;
+
+    if (videoTrack) {
+      console.log(`[useUserMedia] Turning video OFF. Stopping track: ${videoTrack.id}`);
+      videoTrack.stop();
+
+      const newStream = new MediaStream(audioTrack ? [audioTrack] : []);
+      setMediaState((prev) => ({
+        ...prev,
+        stream: newStream,
+        videoTrack: null,
+      }));
+      console.log('[useUserMedia] Video turned OFF. New stream created without video track.');
+    } else {
+      console.log('[useUserMedia] Turning video ON. Requesting new video track.');
+      try {
+        const videoStream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
+        const newVideoTrack = videoStream.getVideoTracks()[0];
+
+        if (!newVideoTrack) {
+          throw new Error('Failed to get new video track.');
+        }
+        console.log(`[useUserMedia] New video track obtained: ${newVideoTrack.id}`);
+
+        const existingTracks = audioTrack ? [audioTrack] : [];
+        const newStream = new MediaStream([...existingTracks, newVideoTrack]);
+
+        setMediaState((prev) => ({
+          ...prev,
+          stream: newStream,
+          videoTrack: newVideoTrack,
+        }));
+        console.log('[useUserMedia] Video turned ON. New stream created with added video track.');
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error('An unknown error occurred');
+        console.error('[useUserMedia] Error getting new video track:', error);
+        setMediaState((prev) => ({ ...prev, error }));
+      }
+    }
+  }, [mediaState, videoConstraints]);
+
+  const toggleAudio = useCallback(async () => {
+    console.log('[useUserMedia] toggleAudio called');
+    const { videoTrack, audioTrack } = mediaState;
+
+    if (audioTrack) {
+      console.log(`[useUserMedia] Turning audio OFF. Stopping track: ${audioTrack.id}`);
+      audioTrack.stop();
+
+      const newStream = new MediaStream(videoTrack ? [videoTrack] : []);
+      setMediaState((prev) => ({
+        ...prev,
+        stream: newStream,
+        audioTrack: null,
+      }));
+      console.log('[useUserMedia] Audio turned OFF. New stream created without audio track.');
+    } else {
+      console.log('[useUserMedia] Turning audio ON. Requesting new audio track.');
+      try {
+        const audioStream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
+        const newAudioTrack = audioStream.getAudioTracks()[0];
+
+        if (!newAudioTrack) {
+          throw new Error('Failed to get new audio track.');
+        }
+        console.log(`[useUserMedia] New audio track obtained: ${newAudioTrack.id}`);
+
+        const existingTracks = videoTrack ? [videoTrack] : [];
+        const newStream = new MediaStream([...existingTracks, newAudioTrack]);
+
+        setMediaState((prev) => ({
+          ...prev,
+          stream: newStream,
+          audioTrack: newAudioTrack,
+        }));
+        console.log('[useUserMedia] Audio turned ON. New stream created with added audio track.');
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error('An unknown error occurred');
+        console.error('[useUserMedia] Error getting new audio track:', error);
+        setMediaState((prev) => ({ ...prev, error }));
+      }
+    }
+  }, [mediaState, audioConstraints]);
+
+  useEffect(() => {
+    return () => {
+      stop();
+    };
+  }, [stop]);
+
   return {
-    stream,
+    ...mediaState,
     start,
     stop,
     toggleAudio,
     toggleVideo,
-    audioEnabled,
-    videoEnabled,
     isSupported,
-    error,
   };
 };
