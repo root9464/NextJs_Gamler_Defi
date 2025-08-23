@@ -2,7 +2,7 @@
 import ChangeIco from '@/assets/svg/change.svg';
 import { useState } from 'react';
 
-export const ChangeNick = () => {
+export const ChangeNickname = () => {
   const [open, setOpen] = useState(false);
 
   return (

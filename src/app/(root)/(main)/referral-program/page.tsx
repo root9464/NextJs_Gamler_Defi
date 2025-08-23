@@ -1,16 +1,12 @@
 import { DynamicDescWorkProgram, IsReferralProgram } from '@/components/exports/exports';
 import { ReferralLink } from '@/components/slices/refferal-link';
-import { PageFlow } from '@components/layouts/page-flow';
 
 export default function TestPage() {
   return (
-    <PageFlow
-      classNames={{
-        content: 'flex max-h-[calc(100vh-64px)] w-full flex-col gap-8 py-4 px-[30px] md:pl-6 md:pr-[60px]',
-      }}>
+    <>
       <ReferralDescription />
       <IsReferralProgram Notification={<Notification />} ReferralLink={<ReferralLink />} />
-    </PageFlow>
+    </>
   );
 }
 

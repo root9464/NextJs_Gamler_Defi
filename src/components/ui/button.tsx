@@ -63,7 +63,15 @@ const buttonStyles = tv({
       false: 'rounded-sm',
     },
     isDisabled: {
-      true: 'inset-ring-0 opacity-50 forced-colors:text-black/25 bg-uiButtonBg text-black/25 border-black/25 shadow-[0_2px_0px_0px_rgba(0,0,0,0.016)] cursor-not-allowed',
+      true: [
+        'opacity-50 forced-colors:text-black/25 bg-uiButtonBg text-black/25 border-black/25',
+        'cursor-not-allowed',
+        'shadow-none',
+        'hover:bg-[initial] hover:text-[initial] hover:border-[initial]',
+        'focus:outline-none focus-visible:outline-none focus-visible:ring-0',
+        'active:bg-[initial] active:text-[initial]',
+        '*:data-[slot=icon]:text-black/25',
+      ],
     },
     isPending: {
       true: 'opacity-50',
@@ -78,6 +86,14 @@ const buttonStyles = tv({
     {
       size: ['xs', 'sq-xs'],
       className: 'rounded-md *:data-[slot=icon]:size-3',
+    },
+    {
+      intent: 'outline',
+      isDisabled: true,
+      className: [
+        'bg-uiPrimaryBg border-black/25 text-black/25',
+        'hover:bg-uiPrimaryBg hover:border-black/25 hover:text-black/25',
+      ],
     },
   ],
 });

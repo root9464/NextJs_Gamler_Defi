@@ -1,5 +1,4 @@
 'use client';
-
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { cn } from '@/shared/utils/tw.utils';
 import { Avatar } from '@ui/avatar';
@@ -19,9 +18,9 @@ type StatProps = {
 };
 
 const Stat: FC<StatProps> = memo(({ icon: Icon, value = 0, className }) => (
-  <div className={cn('mr-[5px] ml-[15px] flex h-full w-[55px] flex-row items-center gap-[5px] sm:w-full', className)}>
+  <div className={cn('mobile:w-[55px] mr-[5px] ml-[10px] flex h-full w-[50px] flex-row items-center gap-[4px]', className)}>
     <Icon />
-    <p className='text-sm'>{value}</p>
+    <p className='mobile:text-sm text-xs'>{value}</p>
   </div>
 ));
 Stat.displayName = 'Stat';
@@ -36,14 +35,15 @@ export const AccountInfo: FC = () => {
   const avatar = isSuccess ? account?.user_photo_url : isError ? BaseAvatar.src : null;
 
   return (
-    <div className='flex h-full w-fit flex-row items-center justify-between sm:w-[289px] sm:gap-0'>
-      <Stat icon={CoinIcon} value={coins} />
-      <Stat icon={HeartIcon} value={playerLikes} />
-      <Stat icon={OrangeHeartIcon} value={hostLikes} />
-
-      <div className='ml-6 flex h-full w-fit flex-row items-center justify-end sm:ml-0 sm:w-full'>
-        {avatar && <Avatar className='h-[38px] w-[38px]' src={avatar} />}
-        {(isLoading || !isSuccess || isError) && <Skeleton className='h-10 w-10 rounded-full' />}
+    <div className='mobile:max-w-[289px] mobile:gap-0 flex h-full w-full max-w-[180px] flex-row items-center justify-between gap-1'>
+      <div className='flex flex-row items-center'>
+        <Stat icon={CoinIcon} value={coins} />
+        <Stat icon={HeartIcon} value={playerLikes} />
+        <Stat icon={OrangeHeartIcon} value={hostLikes} />
+      </div>
+      <div className='mobile:ml-6 ml-2 flex h-full w-fit flex-row items-center justify-end'>
+        {avatar && <Avatar className='mobile:h-[38px] mobile:w-[38px] h-[32px] w-[32px]' />}
+        {(isLoading || !isSuccess || isError) && <Skeleton className='mobile:h-10 mobile:w-10 h-8 w-8 rounded-full' />}
       </div>
     </div>
   );

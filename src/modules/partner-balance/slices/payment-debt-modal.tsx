@@ -1,6 +1,4 @@
 'use client';
-import { useWindow } from '@/shared/hooks/useWindow';
-import { cn } from '@/shared/utils/tw.utils';
 import { useDisclosure } from '@hooks/useDisclosure';
 import { Button } from '@ui/button';
 import { Modal } from '@ui/modal';
@@ -30,8 +28,8 @@ const debtInstructions = [
   {
     title: 'Нажмите “Подтвердить” транзакцию',
     description: [
-      'На сайте Gamler на странице “Партнерская программа” появится модальное окно, с просьбой не покидать страницу (и не обновлять ее), пока транзакция не завершится.',
-      'Дождитесь, пока модальное окно само не скроется. Когда модальное окно скроется - значит погашение задолженности прошло успешно.',
+      'На сайте Gamler на странице “Партнерская программа” появится модальное окно с просьбой не покидать страницу (и не обновлять ее), пока транзакция не завершится.',
+      'Дождитесь, пока модальное окно скроется. Когда модальное окно скроется - погашение задолженности прошло успешно.',
     ],
   },
   {
@@ -48,13 +46,12 @@ const debtInstructions = [
 
 export const PaymentDebtModal = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { isMobile } = useWindow();
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger onClick={onOpen} className='cursor-pointer bg-transparent'>
         <HelperIcon />
       </Modal.Trigger>
-      <Modal.Content size='full' className={cn(isMobile ? 'absolute top-0 h-full rounded-none' : 'relative rounded-2xl')}>
+      <Modal.Content size='xl'>
         <Modal.Header />
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-3 text-black/85'>

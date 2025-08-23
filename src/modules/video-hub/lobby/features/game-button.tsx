@@ -4,16 +4,14 @@ import { cn } from '@/shared/utils/tw.utils';
 import Link from 'next/link';
 import type { FC } from 'react';
 
-type LobbyButtonProps = {
+type GameButtonProps = {
   className?: string;
   gameType: string;
   roomId: string;
 };
 
-export const LobbyButton: FC<LobbyButtonProps> = ({ className, gameType, roomId }) => {
+export const GameButton: FC<GameButtonProps> = ({ className, gameType, roomId }) => {
   const linkTo = `/video/hub/${gameType}/${roomId}`;
-  console.log(linkTo);
-
   return (
     <Link className={cn(buttonStyles({ intent: 'outline', size: 'sm' }), className)} href={linkTo}>
       Продолжить

@@ -53,7 +53,7 @@
 
 @layer components {
   .heading-1 {
-    @apply text-lg font-medium text-black/85;
+    @apply text-lg font-semibold text-black/85;
   }
 
   .title-1 {

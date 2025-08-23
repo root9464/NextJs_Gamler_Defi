@@ -46,7 +46,7 @@ const useTonPrice = () =>
   useQuery({
     queryKey: ['ton'],
     queryFn: async () => {
-      const response = await proxy.get<Jettons>('/api/coffee_client/tokens/address/UQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJKZ');
+      const response = await proxy.get<Jettons>('/api/coffee_client/v2/tokens/address/UQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJKZ');
       return response;
     },
 

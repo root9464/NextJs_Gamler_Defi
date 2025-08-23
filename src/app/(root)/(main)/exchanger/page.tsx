@@ -1,15 +1,11 @@
-import { PageFlow } from '@/components/layouts/page-flow';
 import { SwapModule } from '@/modules/swap/module';
 
 export default function ExchangerPage() {
   return (
-    <PageFlow
-      classNames={{
-        content: 'flex max-h-[calc(100vh-64px)] w-full flex-col gap-8 py-4 px-[30px] md:pl-6 md:pr-[60px]',
-      }}>
+    <>
       <DexDescription />
       <SwapModule />
-    </PageFlow>
+    </>
   );
 }
 

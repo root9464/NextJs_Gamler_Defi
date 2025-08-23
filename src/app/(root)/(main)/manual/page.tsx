@@ -1,15 +1,11 @@
-import { PageFlow } from '@/components/layouts/page-flow';
 import { ManualModule } from '@/modules/manual/module';
 
 export default function ManualPage() {
   return (
-    <PageFlow
-      classNames={{
-        content: 'flex max-h-[calc(100vh-64px)] w-full flex-col gap-8 py-4 px-[30px] md:pl-6 md:pr-[60px]',
-      }}>
+    <>
       <ManualDescription />
       <ManualModule />
-    </PageFlow>
+    </>
   );
 }
 

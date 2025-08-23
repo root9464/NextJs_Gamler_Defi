@@ -48,7 +48,7 @@ class ApiProxy {
       },
       coffee_client: {
         prefix: '/api/coffee_client',
-        instance: { baseURL: 'https://tokens.swap.coffee/api/v2' },
+        instance: { baseURL: 'https://tokens.swap.coffee/api' },
       },
     };
   }

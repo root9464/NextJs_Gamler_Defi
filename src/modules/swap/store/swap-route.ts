@@ -3,7 +3,7 @@ import type { SwapResponse } from '../hook/api/usePavingRoute';
 
 type SwapResponseBasic = Omit<SwapResponse, 'recommended_gas' | 'price_impact' | 'savings' | 'estimated_cashback_usd'>;
 
-const INITIAL_STATE: SwapResponseBasic = {
+const SWAP_ROUTE_INITIAL: SwapResponseBasic = {
   input_token: {
     address: { blockchain: '', address: '' },
     metadata: { name: '', symbol: '', decimals: 0, listed: false, image_url: '' },
@@ -19,8 +19,9 @@ const INITIAL_STATE: SwapResponseBasic = {
   paths: [],
 };
 
-const swapRouteAtom = atom<SwapResponseBasic>(INITIAL_STATE);
+const swapRouteAtom = atom<SwapResponseBasic>(SWAP_ROUTE_INITIAL);
 
-const resetSwapRouteAtom = atom(null, (_, set) => set(swapRouteAtom, INITIAL_STATE));
+const resetSwapRouteAtom = atom(null, (_, set) => set(swapRouteAtom, SWAP_ROUTE_INITIAL));
 
-export { resetSwapRouteAtom, swapRouteAtom };
+export { resetSwapRouteAtom, SWAP_ROUTE_INITIAL, swapRouteAtom };
+export type { SwapResponseBasic };

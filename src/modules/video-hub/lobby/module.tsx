@@ -1,9 +1,8 @@
-import { ChangeNick } from '@/modules/video-hub/lobby/features/change-nick';
-import { DeviceStatusChecker } from '@/modules/video-hub/lobby/features/device-status-checker';
-import { LobbyCamera } from '@/modules/video-hub/lobby/features/lobby-camera';
+import { CameraPreview } from '@/modules/video-hub/lobby/features/camera-preview';
+import { ChangeNickname } from '@/modules/video-hub/lobby/features/change-nickname';
 import type { FC } from 'react';
-import { ChangeTrick } from './features/change-tick';
-import { LobbyButton } from './features/lobby-button';
+import { DeviceStatusChecker } from './features/device-status-checker';
+import { GameButton } from './features/game-button';
 
 type LobbyModuleProps = {
   roomId: string;
@@ -21,20 +20,13 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
         </p>
       </div>
       <div className='mt-[27px] flex w-full gap-5 pt-[10px]'>
-        <LobbyCamera />
-        <div className='flex flex-col'>
-          <ChangeNick />
-          <ChangeTrick />
-        </div>
+        <CameraPreview />
+        <ChangeNickname />
       </div>
       <div className='h-[43px] w-full'>
         <DeviceStatusChecker />
       </div>
-      <LobbyButton
-        className='mt-10 h-8 w-75 bg-[#1677ff] text-white hover:bg-[#4096ff] hover:text-[white]'
-        roomId={roomId}
-        gameType={gameType}
-      />
+      <GameButton className='mt-10 h-8 w-75' roomId={roomId} gameType={gameType} />
     </div>
   );
 };
