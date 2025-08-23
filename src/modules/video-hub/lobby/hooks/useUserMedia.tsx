@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 type UseUserMediaOptions = {
   videoConstraints?: MediaTrackConstraints | boolean;
@@ -162,12 +162,6 @@ export const useUserMedia = (options: UseUserMediaOptions = {}) => {
       }
     }
   }, [mediaState, audioConstraints]);
-
-  useEffect(() => {
-    return () => {
-      stop();
-    };
-  }, [stop]);
 
   return {
     ...mediaState,
