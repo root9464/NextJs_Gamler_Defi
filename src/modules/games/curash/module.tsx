@@ -1,12 +1,12 @@
 import AllMuteIcon from '@/assets/svg/allmute.svg';
 import { ControlPanel } from '@/modules/video-hub/scene/flow/control-panel';
-import { GameModule } from '@/modules/video-hub/scene/module';
+import { SceneModule } from '@/modules/video-hub/scene/module';
 import { GameField } from './features/game-field';
 import { Wrapper } from './flow/wrapper';
 
 export const CurashModule = () => {
   return (
-    <GameModule
+    <SceneModule
       controlPanel={
         <ControlPanel
           isAdmin={true}

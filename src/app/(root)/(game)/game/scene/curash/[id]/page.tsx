@@ -1,4 +1,4 @@
-import { CurashModule } from '@/modules/video-hub/games/curash/module';
+import { CurashModule } from '@/modules/games/curash/module';
 
 export default function CurashPage() {
   return <CurashModule />;

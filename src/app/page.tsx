@@ -1,7 +1,7 @@
 'use client';
 import { Wrapper } from '@/modules/games/curash/flow/wrapper';
 import { ControlPanel } from '@/modules/video-hub/scene/flow/control-panel';
-import { GameModule } from '@/modules/video-hub/scene/module';
+import { SceneModule } from '@/modules/video-hub/scene/module';
 
 import AllMuteIcon from '@/assets/svg/allmute.svg';
 import { GameField } from '@/modules/games/curash/features/game-field';
@@ -9,7 +9,7 @@ import { GameField } from '@/modules/games/curash/features/game-field';
 export default function Home() {
   return (
     <>
-      <GameModule
+      <SceneModule
         controlPanel={
           <ControlPanel
             isAdmin={true}

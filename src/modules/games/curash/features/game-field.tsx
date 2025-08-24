@@ -10,7 +10,7 @@ export const GameField = () => {
 
   return (
     <motion.div className='relative h-full' ref={constraintsRef}>
-      <Image src={Curash} alt='ntf' className='h-full' />
+      <Image src={Curash} alt='ntf' className='aspect-[689/1369] h-full w-full object-contain' />
       <motion.div drag dragConstraints={constraintsRef} dragElastic={0} dragMomentum={false} className='absolute top-6 left-6 cursor-pointer'>
         <CoinIco />
       </motion.div>
