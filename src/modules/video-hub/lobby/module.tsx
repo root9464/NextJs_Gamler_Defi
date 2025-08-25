@@ -1,6 +1,7 @@
 import { CameraPreview } from '@/modules/video-hub/lobby/features/camera-preview';
 import { ChangeNickname } from '@/modules/video-hub/lobby/features/change-nickname';
 import type { FC } from 'react';
+import { ChangeTrick } from './features/change-tick';
 import { DeviceStatusChecker } from './features/device-status-checker';
 import { GameButton } from './features/game-button';
 
@@ -21,7 +22,10 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
       </div>
       <div className='mt-[27px] flex w-full gap-5 pt-[10px]'>
         <CameraPreview />
-        <ChangeNickname />
+        <div className='flex flex-col'>
+          <ChangeNickname />
+          <ChangeTrick />
+        </div>
       </div>
       <div className='h-[43px] w-full'>
         <DeviceStatusChecker />

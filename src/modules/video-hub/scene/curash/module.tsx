@@ -13,7 +13,7 @@ export const CurashModule = () => {
         </div>
         <GameField />
       </div>
-      <div className='flex flex-wrap content-start gap-6'>
+      <div className='flex h-svh flex-wrap content-start gap-6 overflow-auto'>
         {/*мап массива где видеокамера и карточки*/}
         {Array.from({ length: 4 }).map((_, index) => (
           <WrapperCurash key={index} />

@@ -11,7 +11,7 @@ type GameButtonProps = {
 };
 
 export const GameButton: FC<GameButtonProps> = ({ className, gameType, roomId }) => {
-  const linkTo = `/video/hub/${gameType}/${roomId}`;
+  const linkTo = `/game/scene/${gameType}/${roomId}`;
   return (
     <Link className={cn(buttonStyles({ intent: 'outline', size: 'sm' }), className)} href={linkTo}>
       Продолжить

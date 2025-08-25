@@ -1,0 +1,48 @@
+import MoneyIco from '@/assets/svg/money.svg';
+import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/modal';
+import { useDisclosure } from '@/shared/hooks/useDisclosure';
+
+export const CoinModal2 = () => {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  return (
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal.Trigger
+        onClick={onOpen}
+        className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] bg-[#005C2F] text-sm text-white'>
+        <MoneyIco />
+        <p>0 +</p>
+      </Modal.Trigger>
+      <Modal.Content className=''>
+        <Modal.Header>Управление монетами</Modal.Header>
+        <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
+          <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-[10px]'>
+              <h2>Количество игровых монет</h2>
+              <input
+                type='number'
+                className='h-[32px] w-[90px] rounded-xs border-2 border-[#ADC6FF] bg-[#F0F5FF] px-2 py-1 text-sm shadow-[#ADC6FF] outline-none focus:border-[#1890FF] focus:shadow-[0_0_5px]'
+              />
+            </div>
+            <div className='flex flex-col gap-[10px]'>
+              <h2>Игрок</h2>
+              <div className='flex w-full gap-[10px]'>
+                <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
+                <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
+                <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>
+          <Button onClick={onClose} className='w-full font-normal text-[#1890FF] sm:w-fit' intent='plain'>
+            Отменить
+          </Button>
+          <Button onClick={onClose} className='w-full font-normal sm:w-fit' intent='primary'>
+            Выдать
+          </Button>
+        </Modal.Footer>
+      </Modal.Content>
+    </Modal>
+  );
+};
