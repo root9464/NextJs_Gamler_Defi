@@ -1,5 +1,5 @@
 import { CameraPreview } from '@/modules/video-hub/lobby/features/camera-preview';
-import { ChangeNickname } from '@/modules/video-hub/lobby/features/change-nickname';
+import { UserGameSettings } from '@/modules/video-hub/lobby/flow/user-game-settings';
 import type { FC } from 'react';
 import { DeviceStatusChecker } from './features/device-status-checker';
 import { GameButton } from './features/game-button';
@@ -9,22 +9,29 @@ type LobbyModuleProps = {
   gameType: string;
 };
 
+const Description = () => (
+  <div className='flex max-w-175 flex-col gap-4 text-center'>
+    <h1 className='text-4xl font-medium'>Подключиться к игре</h1>
+    <p className='text-lg font-normal'>Проверьте камеру и звук перед началом. Убедитесь, что вас хорошо видно и слышно.</p>
+  </div>
+);
+
 export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
   return (
-    <div className='m-auto flex max-w-200 flex-col items-center gap-[5px]'>
-      <div className='flex max-w-175 flex-col gap-[30px] text-center'>
-        <h1 className='text-[38px] font-medium text-[#3f4149]'>Подключиться к игре</h1>
-        <p className='text-[18px] font-normal text-[#3f4149]'>
-          Проверьте камеру и звук перед началом. Убедитесь, что вас хорошо видно и слышно.
-        </p>
-      </div>
-      <div className='mt-[27px] flex w-full gap-5 pt-[10px]'>
+    <div className='m-auto flex w-full flex-col items-center justify-center gap-5'>
+      <Description />
+      <div className='max-desktop-xs:flex-col flex w-full flex-row justify-center gap-5 pt-2.5'>
         <CameraPreview />
-        <ChangeNickname />
+        <UserGameSettings
+          flows={
+            <div className='max-desktop-xs:items-center flex w-full flex-col gap-2.5'>
+              <h2 className='max-desktop-xs:text-center text-lg font-semibold'>Ваша фишка в игре:</h2>
+              <div className='flex flex-row items-center gap-2.5'>ffff</div>
+            </div>
+          }
+        />
       </div>
-      <div className='h-[43px] w-full'>
-        <DeviceStatusChecker />
-      </div>
+      <DeviceStatusChecker />
       <GameButton className='mt-10 h-8 w-75' roomId={roomId} gameType={gameType} />
     </div>
   );

@@ -3,6 +3,7 @@ import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactElement, ReactNode } from 'react';
 import type { ControlPanelProps } from './flow/control-panel';
 import { ControlPanel } from './flow/control-panel';
+import { MobileHeader } from './flow/mobile-header';
 
 type SceneModuleProps = {
   controlPanel: ReactElement<ControlPanelProps>;
@@ -13,21 +14,13 @@ type SceneModuleProps = {
 export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, UserWrapper }) => {
   return (
     <div className='flex h-min w-full flex-row gap-[25px] bg-black px-5 py-[25px] text-white'>
-      <div className='relative flex h-fit w-[688px] flex-col gap-5 max-[1100px]:w-full'>
-        <div className='flex w-full justify-between max-[1100px]:hidden'>
+      <div className='max-desktop-xs:w-full relative flex h-fit w-[688px] flex-col gap-5'>
+        <div className='max-desktop-xs:hidden flex w-full justify-between gap-6'>
           <ControlPanel {...controlPanel.props} />
           <UserCameraFrame />
         </div>
 
-        <div
-          className={cn(
-            'sticky top-0 z-[1] h-60 w-full px-4 py-3',
-            'bg-neutral-800/50 backdrop-blur-[120px]',
-            'rounded-br-2xl rounded-bl-2xl border border-white/10',
-            'min-[1100px]:hidden',
-          )}>
-          header
-        </div>
+        <MobileHeader />
 
         {gameField}
 
@@ -41,7 +34,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, Use
           footer
         </div>
       </div>
-      <div className='flex max-h-[1587px] w-full flex-wrap content-start gap-6 overflow-y-auto max-[1100px]:hidden'>
+      <div className='max-desktop-xs:hidden flex max-h-[1587px] w-full flex-wrap content-start gap-6 overflow-y-auto'>
         {/*мап массива где видеокамера и карточки*/}
         {Array.from({ length: 34 }).map((_, index) => (
           <UserWrapper key={index} />

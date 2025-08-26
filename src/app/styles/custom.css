@@ -34,7 +34,7 @@
 
   --breakpoint-desktop: 1440px;
   --breakpoint-desktop-sm: 1200px;
-
+  --breakpoint-desktop-xs: 1100px;
   --breakpoint-mobile: 810px;
 }
 

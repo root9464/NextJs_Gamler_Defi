@@ -1,95 +1,65 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { cn } from '@/shared/utils/tw.utils';
+import { useEffect, useState } from 'react';
 
-const DEVICE_NAMES = {
-  NOT_DETERMINED: 'Не определено',
-  DEFAULT_AUDIO_OUTPUT: 'Системные динамики',
-  NO_AUDIO_INPUT: 'Микрофон не найден',
-  NO_VIDEO_INPUT: 'Камера не найдена',
-  API_NOT_SUPPORTED: 'API не поддерживается',
+type DeviceKind = 'audiooutput' | 'audioinput' | 'videoinput';
+
+type DeviceState = {
+  kind: DeviceKind;
+  label: string;
+  available: boolean;
 };
 
-const INITIAL_DEVICES_STATE = {
-  audioOutput: { available: false, name: DEVICE_NAMES.NOT_DETERMINED },
-  audioInput: { available: false, name: DEVICE_NAMES.NOT_DETERMINED },
-  videoInput: { available: false, name: DEVICE_NAMES.NOT_DETERMINED },
+type DevicesState = Record<DeviceKind, DeviceState>;
+
+const DEFAULT_STATE: DevicesState = {
+  audiooutput: { kind: 'audiooutput', label: 'Системные динамики', available: false },
+  audioinput: { kind: 'audioinput', label: 'Микрофон не найден', available: false },
+  videoinput: { kind: 'videoinput', label: 'Камера не найдена', available: false },
 };
 
 export const DeviceStatusChecker = () => {
-  const [devices, setDevices] = useState(INITIAL_DEVICES_STATE);
-
-  const updateDeviceStates = useCallback((deviceList: MediaDeviceInfo[]) => {
-    const audioOutput = deviceList.find((device) => device.kind === 'audiooutput');
-    const audioInput = deviceList.find((device) => device.kind === 'audioinput');
-    const videoInput = deviceList.find((device) => device.kind === 'videoinput');
-
-    setDevices({
-      audioOutput: {
-        available: !!audioOutput,
-        name: audioOutput?.label || DEVICE_NAMES.DEFAULT_AUDIO_OUTPUT,
-      },
-      audioInput: {
-        available: !!audioInput,
-        name: audioInput?.label || DEVICE_NAMES.NO_AUDIO_INPUT,
-      },
-      videoInput: {
-        available: !!videoInput,
-        name: videoInput?.label || DEVICE_NAMES.NO_VIDEO_INPUT,
-      },
-    });
-  }, []);
-
-  const checkDevices = useCallback(async () => {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-      console.error('MediaDevices API не поддерживается в этом браузере.');
-      setDevices({
-        audioOutput: { available: false, name: DEVICE_NAMES.API_NOT_SUPPORTED },
-        audioInput: { available: false, name: DEVICE_NAMES.API_NOT_SUPPORTED },
-        videoInput: { available: false, name: DEVICE_NAMES.API_NOT_SUPPORTED },
-      });
-      return;
-    }
-
-    let stream: MediaStream | undefined;
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: true,
-      });
-    } catch (error) {
-      console.log('[Warn] Ошибка доступа к медиа-устройствам (возможно, доступ запрещен):', error);
-    } finally {
-      const deviceList = await navigator.mediaDevices.enumerateDevices();
-      updateDeviceStates(deviceList);
-
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-    }
-  }, [updateDeviceStates]);
+  const [devices, setDevices] = useState<DevicesState>(DEFAULT_STATE);
 
   useEffect(() => {
-    checkDevices();
-    navigator.mediaDevices.addEventListener('devicechange', checkDevices);
-    return () => {
-      navigator.mediaDevices.removeEventListener('devicechange', checkDevices);
+    const update = async () => {
+      if (!navigator.mediaDevices?.enumerateDevices) return;
+      let stream: MediaStream | null = null;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+        const ids = stream
+          .getTracks()
+          .map((t) => t.getSettings().deviceId)
+          .filter(Boolean);
+        const list = await navigator.mediaDevices.enumerateDevices();
+        const next = { ...DEFAULT_STATE };
+        list.forEach((d) => {
+          if (d.kind in next && ids.includes(d.deviceId)) {
+            next[d.kind as DeviceKind] = {
+              kind: d.kind as DeviceKind,
+              label: d.label || DEFAULT_STATE[d.kind as DeviceKind].label,
+              available: true,
+            };
+          }
+        });
+        setDevices(next);
+      } finally {
+        stream?.getTracks().forEach((t) => t.stop());
+      }
     };
-  }, [checkDevices]);
+    update();
+    navigator.mediaDevices.addEventListener('devicechange', update);
+    return () => navigator.mediaDevices.removeEventListener('devicechange', update);
+  }, []);
 
   return (
-    <div className='flex justify-between'>
-      <div className='flex flex-col'>
-        <span className='font-medium'>Динамики:</span>
-        <p>{devices.audioOutput.name}</p>
-      </div>
-      <div className='flex flex-col'>
-        <span className='font-medium'>Микрофон:</span>
-        <p>{devices.audioInput.name}</p>
-      </div>
-      <div className='flex flex-col'>
-        <span className='font-medium'>Камера:</span>
-        <p>{devices.videoInput.name}</p>
-      </div>
+    <div className={cn('flex h-max w-full flex-row justify-center gap-14', 'max-desktop-xs:grid')}>
+      {(['audiooutput', 'audioinput', 'videoinput'] as const).map((type) => (
+        <div key={type} className='max-desktop-xs:items-center flex flex-col'>
+          <span className='font-bold'>{type === 'audiooutput' ? 'Динамики' : type === 'audioinput' ? 'Микрофон' : 'Камера'}</span>
+          <p>{devices[type].label}</p>
+        </div>
+      ))}
     </div>
   );
 };
