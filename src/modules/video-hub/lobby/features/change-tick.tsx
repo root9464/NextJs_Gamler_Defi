@@ -1,36 +1,35 @@
 'use client';
+import { trickAtom } from '@/modules/video-hub/scene/curash/store/trick-store';
 import TrickIco from '@assets/svg/trick-curash.svg';
-import { useState } from 'react';
+import { useAtom } from 'jotai';
 
 const colorPalette = [
-  { main: '#FFD1DC', highlight: '#FF69B4', shadow: '#C71585' },
-  { main: '#B0E0E6', highlight: '#4682B4', shadow: '#00008B' },
-  { main: '#98FB98', highlight: '#3CB371', shadow: '#006400' },
-  { main: '#E6E6FA', highlight: '#9370DB', shadow: '#483D8B' },
-  { main: '#FFF266', highlight: '#FF9F05', shadow: '#E87500' },
-  { main: '#D3D3D3', highlight: '#A9A9A9', shadow: '#2F4F4F' },
-  { main: '#AFEEEE', highlight: '#48D1CC', shadow: '#008B8B' },
-  { main: '#F5DEB3', highlight: '#D2B48C', shadow: '#8B4513' },
-  { main: '#C7C3FF', highlight: '#7B68EE', shadow: '#4B0082' },
-  { main: '#FFDF00', highlight: '#FFC400', shadow: '#CD7F32' },
+  { main: '#FFC0CB', highlight: '#FF69B4' },
+  { main: '#B0E0E6', highlight: '#4682B4' },
+  { main: '#98FB98', highlight: '#3CB371' },
+  { main: '#E6E6FA', highlight: '#9370DB' },
+  { main: '#FFF266', highlight: '#FF9F05' },
+  { main: '#D3D3D3', highlight: '#A9A9A9' },
+  { main: '#AFEEEE', highlight: '#48D1CC' },
+  { main: '#F5DEB3', highlight: '#D2B48C' },
+  { main: '#C7C3FF', highlight: '#7B68EE' },
+  { main: '#FFDF00', highlight: '#FFC400' },
 ];
 
 export const ChangeTrick = () => {
-  const [chipColors, setChipColors] = useState(colorPalette[4]);
-  console.log(chipColors);
+  const [value, setValue] = useAtom(trickAtom);
 
   const handleChangeColor = () => {
     const randomIndex = Math.floor(Math.random() * colorPalette.length);
     const newColors = colorPalette[randomIndex];
-
-    setChipColors(newColors);
+    setValue(newColors);
   };
 
   return (
     <div>
       <h2 className='text-[18px] font-medium text-[#3f4149]'>Ваша фишка в игре:</h2>
       <div className='flex items-center gap-[10px] pt-5'>
-        <TrickIco />
+        <TrickIco className={`[--stop-color-1:${value.main}] [--stop-color-2:${value.highlight}] h-[59px] w-[53px]`} />
         <div onClick={handleChangeColor} className='flex cursor-pointer items-center justify-center text-blue-400 hover:text-black'>
           <p>Сменить фишку</p>
         </div>
