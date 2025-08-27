@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from 'react';
-import { ActionButtons } from './action-buttons';
 import { ChangeTimer } from '../features/change-timer';
 import { UserActions } from '../features/user-actions';
 import { Timer } from '../slices/timer';
+import { ActionButtons } from './action-buttons';
 
 export type ControlPanelProps = {
   adminActions: ReactNode;
@@ -22,7 +22,7 @@ export const ControlPanel: FC<Partial<ControlPanelProps>> = ({ adminActions, add
         <div className='flex items-center justify-center gap-5'>
           {isAdmin ? <ChangeTimer /> : <Timer />}
           {panelActions}
-          {isAdmin && adminPanelActions}
+          {isAdmin && <>{adminPanelActions}</>}
         </div>
       </div>
     </div>
