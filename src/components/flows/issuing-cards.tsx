@@ -31,7 +31,7 @@ export const IssuingCards: FC<UsersProps> = ({ Users }) => {
         <Modal.Header>Выдача карт игрокам</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-4'>
-            <Coloda />
+            <Deck />
             <UsersRender Users={Users} />
           </div>
         </Modal.Body>
@@ -48,7 +48,7 @@ export const IssuingCards: FC<UsersProps> = ({ Users }) => {
   );
 };
 
-const Coloda = () => {
+const Deck = () => {
   return (
     <div className='flex flex-col gap-2.5'>
       <h2 className='font-semibold'>Выберите колоду</h2>

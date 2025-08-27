@@ -1,14 +1,19 @@
-import CoinIco from '@/assets/svg/coin.svg';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
+import type { FC } from 'react';
 
-export const CoinModal = () => {
+type Props = {
+  className: string;
+  children: React.ReactNode;
+};
+
+export const CoinModal: FC<Props> = ({ className, children }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <Modal.Trigger onClick={onOpen} className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
-        <CoinIco />
+      <Modal.Trigger onClick={onOpen} className={className}>
+        {children}
       </Modal.Trigger>
       <Modal.Content className=''>
         <Modal.Header>Управление монетами</Modal.Header>

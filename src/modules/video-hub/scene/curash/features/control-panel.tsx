@@ -1,6 +1,7 @@
 'use client';
 import AllMute from '@/assets/svg/allmute.svg';
 import ArrowIco from '@/assets/svg/arrow-right.svg';
+import CoinIco from '@/assets/svg/coin.svg';
 import DiceIco from '@/assets/svg/dice.svg';
 import MenuHub from '@/assets/svg/menu-curash.svg';
 import MicroIco from '@/assets/svg/micro.svg';
@@ -32,7 +33,9 @@ export const ControlPanelCurash = () => {
           <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
             <MicroIco className='fill-black' />
           </div>
-          <CoinModal />
+          <CoinModal className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
+            <CoinIco />
+          </CoinModal>
           <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
             <MenuHub />
           </div>
