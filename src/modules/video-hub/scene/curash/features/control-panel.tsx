@@ -6,7 +6,7 @@ import DiceIco from '@/assets/svg/dice.svg';
 import MenuHub from '@/assets/svg/menu-curash.svg';
 import MicroIco from '@/assets/svg/micro.svg';
 import VideoIco from '@/assets/svg/video.svg';
-import { IssuingCards } from '@components/flows/issuing-cards';
+import { IssuingCards } from '@/modules/video-hub/scene/curash/flow/issuing-cards';
 import { CardsModal } from '../slices/cards-modal';
 import { CoinModal } from '../slices/coin-modal';
 import { DiceModal } from '../slices/dice-modal';
