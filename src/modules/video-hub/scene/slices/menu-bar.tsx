@@ -1,7 +1,7 @@
 import DiceImage from '@assets/img/dice.png';
 import CoinIcon from '@assets/svg/coin.svg';
 import Image from 'next/image';
-import { Timer } from '../features/timer';
+import { Timer } from './timer';
 
 export const MenuBar = () => {
   return (

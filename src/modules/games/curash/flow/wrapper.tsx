@@ -1,5 +1,5 @@
 import { UserCameraFrame } from '@/components/slices/user-camera-frame';
-import { CardHolder } from '../slices/cardholder';
+import { CardHolder } from './cardholder';
 
 export const Wrapper = () => {
   return (
