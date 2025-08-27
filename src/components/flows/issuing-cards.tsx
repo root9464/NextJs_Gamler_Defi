@@ -2,6 +2,11 @@ import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import PlusIco from '@assets/svg/plus.svg';
+import type { FC } from 'react';
+
+type UsersProps = {
+  Users: Array<{ id: number }>;
+};
 
 const deck = [
   { name: 'Кураж продаж (52 карт)' },
@@ -13,7 +18,7 @@ const deck = [
   { name: 'Пожелания от игры после руководителя (10 карт)' },
 ];
 
-export const IssuingCards = () => {
+export const IssuingCards: FC<UsersProps> = ({ Users }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -26,10 +31,10 @@ export const IssuingCards = () => {
         <Modal.Header>Выдача карт игрокам</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2 className='font-semibold'>Выберите колоду</h2>
               {deck.map(({ name }) => (
-                <div className='group flex cursor-pointer items-center gap-[10px]' tabIndex={0}>
+                <div className='group flex cursor-pointer items-center gap-2.5' tabIndex={0}>
                   <div className='relative flex items-center justify-center'>
                     <input
                       type='checkbox'
@@ -41,12 +46,14 @@ export const IssuingCards = () => {
                 </div>
               ))}
             </div>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2 className='font-semibold'>Выберите игрока, которому будет выдана карта</h2>
-              <div className='flex w-full gap-[10px]'>
-                <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
-                <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
-                <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
+              <div className='flex w-full gap-2.5'>
+                {Users.map(({ id }) => (
+                  <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} key={id}>
+                    {id}
+                  </div>
+                ))}
               </div>
             </div>
           </div>

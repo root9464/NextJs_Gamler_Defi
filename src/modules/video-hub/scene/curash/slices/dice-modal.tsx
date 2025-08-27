@@ -21,7 +21,7 @@ export const DiceModal = () => {
       <Modal.Content>
         <Modal.Header>Управление кубиком</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
-          <div className='flex flex-col gap-[10px]'>
+          <div className='flex flex-col gap-2.5'>
             <h2 className='font-semibold'>Выберите комбинацию броска кубика для игроков</h2>
             {deck.map(({ name, desc }) => (
               <div className='group flex cursor-pointer items-center gap-[30px]' tabIndex={0}>
@@ -35,7 +35,7 @@ export const DiceModal = () => {
                   </div>
                   <p>{name}</p>
                 </div>
-                <div className='flex gap-[10px]'>
+                <div className='flex gap-2.5'>
                   <DiceIco className='h-[23px] w-[20px]' />
                   <p>{desc}</p>
                 </div>

@@ -34,7 +34,7 @@ export const ControlPanelAcceptance = () => {
             <ExitIco />
           </div>
         </div>
-        <div className='flex h-[39px] items-center justify-center gap-[10px]'>
+        <div className='flex h-[39px] items-center justify-center gap-2.5'>
           <p>Игрок</p>
           <ArrowIco />
           <div className='flex flex-col gap-[5px]'>

@@ -16,17 +16,17 @@ export const CoinModal2 = () => {
       <Modal.Content className=''>
         <Modal.Header>Управление монетами</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
-          <div className='flex flex-col gap-[10px]'>
-            <div className='flex flex-col gap-[10px]'>
+          <div className='flex flex-col gap-2.5'>
+            <div className='flex flex-col gap-2.5'>
               <h2>Количество игровых монет</h2>
               <input
                 type='number'
                 className='h-[32px] w-[90px] rounded-xs border-2 border-[#ADC6FF] bg-[#F0F5FF] px-2 py-1 text-sm shadow-[#ADC6FF] outline-none focus:border-[#1890FF] focus:shadow-[0_0_5px]'
               />
             </div>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2>Игрок</h2>
-              <div className='flex w-full gap-[10px]'>
+              <div className='flex w-full gap-2.5'>
                 <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
                 <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
                 <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />

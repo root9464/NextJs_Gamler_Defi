@@ -14,13 +14,13 @@ export const UserAllCard = () => {
       <Modal.Content>
         <Modal.Header className='pb-[0px]'>Карты игрока</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 pt-[22px] pb-[17px]'>
-          <div className='flex flex-col gap-[10px]'>
-            <div className='flex flex-col gap-[10px]'>
+          <div className='flex flex-col gap-2.5'>
+            <div className='flex flex-col gap-2.5'>
               <div className='h-[50px] w-[50px] rounded-full border border-[#1890FF] bg-[#b9bbbe]' />
             </div>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2>Кураж продаж</h2>
-              <div className='flex w-full gap-[10px]'>
+              <div className='flex w-full gap-2.5'>
                 <div className='h-[150px] w-[150px] rounded-xs bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
                 <div className='h-[150px] w-[150px] rounded-xs bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
               </div>

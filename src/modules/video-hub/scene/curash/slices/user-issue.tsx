@@ -26,10 +26,10 @@ export const UsersIssue = () => {
         <Modal.Header>Выдача карт игроку</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2 className='font-semibold'>Выберите колоду</h2>
               {deck.map(({ name }) => (
-                <div className='group flex cursor-pointer items-center gap-[10px]' tabIndex={0}>
+                <div className='group flex cursor-pointer items-center gap-2.5' tabIndex={0}>
                   <div className='relative flex items-center justify-center'>
                     <input
                       type='checkbox'
@@ -41,9 +41,9 @@ export const UsersIssue = () => {
                 </div>
               ))}
             </div>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2 className='font-semibold'>Игрок, которому будет выдана карта</h2>
-              <div className='flex w-full gap-[10px]'>
+              <div className='flex w-full gap-2.5'>
                 <div className='h-[50px] w-[50px] rounded-full border border-[#1890FF] bg-[#b9bbbe]' />
               </div>
             </div>

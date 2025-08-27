@@ -2,8 +2,8 @@
 
 import { CoinModal2 } from './coin-modal2';
 import { NotOwn } from './not-own-modal';
+import { UserAllCard } from './user-all';
 import { UsersIssue } from './user-issue';
-import { UserAllCard } from './userall-modal';
 
 export const CardsCurash = () => {
   return (

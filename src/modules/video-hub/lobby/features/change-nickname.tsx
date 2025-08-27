@@ -8,7 +8,7 @@ export const ChangeNickname = () => {
   return (
     <div className='flex w-[270px] flex-col gap-10 pt-10'>
       <h1 className='text-[18px] font-medium text-[#3f4149]'>Ваше имя в игре:</h1>
-      <div className='flex items-center gap-[10px] pt-5'>
+      <div className='flex items-center gap-2.5 pt-5'>
         {open ? (
           <div className='flex gap-[5px]'>
             <input

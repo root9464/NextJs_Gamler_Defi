@@ -24,7 +24,7 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
         <CameraPreview />
         <div className='flex flex-col'>
           <ChangeNickname />
-          <ChangeTrick />
+          <ChangeTrick gameType={gameType} />
         </div>
       </div>
       <div className='h-[43px] w-full'>

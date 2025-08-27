@@ -5,14 +5,16 @@ import DiceIco from '@/assets/svg/dice.svg';
 import MenuHub from '@/assets/svg/menu-curash.svg';
 import MicroIco from '@/assets/svg/micro.svg';
 import VideoIco from '@/assets/svg/video.svg';
+import { IssuingCards } from '@components/flows/issuing-cards';
 import { CardsModal } from '../slices/cards-modal';
 import { CoinModal } from '../slices/coin-modal';
 import { DiceModal } from '../slices/dice-modal';
 import { EndCard } from '../slices/end-game';
 import { TimerModal } from '../slices/timer-modal';
-import { IssuingCards } from './issuing-cards';
 
 //host && px-[13] : px-[53], host && ChangeIco : DiceIco, host && AllMute : null, exitIco если не ведущий то w-[52px]
+
+const Users = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
 export const ControlPanelCurash = () => {
   return (
@@ -22,7 +24,7 @@ export const ControlPanelCurash = () => {
           <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
             <AllMute />
           </div>
-          <IssuingCards />
+          <IssuingCards Users={Users} />
           <CardsModal />
           <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
             <VideoIco className='fill-black' />
@@ -36,7 +38,7 @@ export const ControlPanelCurash = () => {
           </div>
           <EndCard />
         </div>
-        <div className='flex h-[39px] items-center justify-center gap-[10px]'>
+        <div className='flex h-[39px] items-center justify-center gap-2.5'>
           <p>Игрок</p>
           <ArrowIco />
           <div className='flex flex-col gap-[5px]'>

@@ -16,25 +16,25 @@ export const CardsModal = () => {
         <Modal.Header>Карты игрока</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-5'>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2 className='font-semibold'>Выберите игрока</h2>
-              <div className='flex w-full gap-[10px]'>
+              <div className='flex w-full gap-2.5'>
                 <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border-2 focus:border-[#3c3e3f]' tabIndex={0} />
                 <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border-2 focus:border-[#3c3e3f]' tabIndex={0} />
                 <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border-2 focus:border-[#3c3e3f]' tabIndex={0} />
               </div>
             </div>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2 className='font-semibold'>Кураж продаж</h2>
-              <div className='flex w-full gap-[10px]'>
+              <div className='flex w-full gap-2.5'>
                 <div className='h-[150px] w-[150px] rounded-[6px] bg-blue-500 focus:border-2 focus:border-[#3c3e3f]' tabIndex={0}></div>
                 <div className='h-[150px] w-[150px] rounded-[6px] bg-blue-500 focus:border-2 focus:border-[#3c3e3f]' tabIndex={0}></div>
                 <div className='h-[150px] w-[150px] rounded-[6px] bg-blue-500 focus:border-2 focus:border-[#3c3e3f]' tabIndex={0}></div>
               </div>
             </div>
-            <div className='flex flex-col gap-[10px]'>
+            <div className='flex flex-col gap-2.5'>
               <h2 className='font-semibold'>Инструменты успешного продавца</h2>
-              <div className='flex w-full gap-[10px]'>
+              <div className='flex w-full gap-2.5'>
                 <div className='bg-epta h-[150px] w-[150px] rounded-[6px] focus:border-2 focus:border-[#3c3e3f]' tabIndex={0}></div>
                 <div className='bg-epta h-[150px] w-[150px] rounded-[6px] focus:border-2 focus:border-[#3c3e3f]' tabIndex={0}></div>
               </div>
