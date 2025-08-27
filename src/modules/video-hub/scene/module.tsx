@@ -8,7 +8,7 @@ import { MobileHeader } from './flow/mobile-header';
 type SceneModuleProps = {
   controlPanel: ReactElement<ControlPanelProps>;
   gameField: Readonly<ReactNode>;
-  cardHolder: Readonly<ReactNode>;
+  cardHolder?: Readonly<ReactNode>;
 };
 
 export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, cardHolder }) => {
