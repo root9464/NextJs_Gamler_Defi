@@ -1,4 +1,4 @@
-import { LobbyModule } from '@/modules/video-hub/lobby/module';
+import { LobbyModule } from '@/modules/video/lobby/module';
 import { validateResult } from '@/shared/utils/zod.utils';
 import { z } from 'zod/v4';
 

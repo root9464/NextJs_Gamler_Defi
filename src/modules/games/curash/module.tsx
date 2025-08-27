@@ -1,7 +1,7 @@
 import CoinIcon from '@/assets/svg/coin.svg';
 import DiceIcon from '@/assets/svg/dice.svg';
-import { ControlPanel } from '@/modules/video-hub/scene/flow/control-panel';
-import { SceneModule } from '@/modules/video-hub/scene/module';
+import { ControlPanel } from '@/modules/video/scene/flow/control-panel';
+import { SceneModule } from '@/modules/video/scene/module';
 import { ChangeDices } from './features/change-dices';
 import { GameField } from './features/game-field';
 import { SettingsCoins } from './features/setting-coins';

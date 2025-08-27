@@ -1,5 +1,5 @@
-import { CameraPreview } from '@/modules/video-hub/lobby/features/camera-preview';
-import { UserGameSettings } from '@/modules/video-hub/lobby/flow/user-game-settings';
+import { CameraPreview } from '@/modules/video/lobby/features/camera-preview';
+import { UserGameSettings } from '@/modules/video/lobby/flow/user-game-settings';
 import type { FC } from 'react';
 import { getUserGameFlow } from './adapters/game-type';
 import { DeviceStatusChecker } from './features/device-status-checker';

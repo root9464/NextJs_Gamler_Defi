@@ -1,5 +1,5 @@
-import { ControlPanel } from '@/modules/video-hub/scene/flow/control-panel';
-import { SceneModule } from '@/modules/video-hub/scene/module';
+import { ControlPanel } from '@/modules/video/scene/flow/control-panel';
+import { SceneModule } from '@/modules/video/scene/module';
 import { GameField } from './features/game-field';
 
 export const AcceptanceModule = () => {
