@@ -1,12 +1,13 @@
 import { CameraPreview } from '@/modules/video-hub/lobby/features/camera-preview';
 import { UserGameSettings } from '@/modules/video-hub/lobby/flow/user-game-settings';
 import type { FC } from 'react';
+import { getUserGameFlow } from './adapters/game-type';
 import { DeviceStatusChecker } from './features/device-status-checker';
 import { GameButton } from './features/game-button';
 
 type LobbyModuleProps = {
   roomId: string;
-  gameType: string;
+  gameType: 'curash' | 'acceptence';
 };
 
 const Description = () => (
@@ -17,19 +18,13 @@ const Description = () => (
 );
 
 export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
+  const gameFlow = getUserGameFlow(gameType);
   return (
     <div className='m-auto flex w-full flex-col items-center justify-center gap-5'>
       <Description />
       <div className='max-desktop-xs:flex-col flex w-full flex-row justify-center gap-5 pt-2.5'>
         <CameraPreview />
-        <UserGameSettings
-          flows={
-            <div className='max-desktop-xs:items-center flex w-full flex-col gap-2.5'>
-              <h2 className='max-desktop-xs:text-center text-lg font-semibold'>Ваша фишка в игре:</h2>
-              <div className='flex flex-row items-center gap-2.5'>ffff</div>
-            </div>
-          }
-        />
+        <UserGameSettings flows={gameFlow} />
       </div>
       <DeviceStatusChecker />
       <GameButton className='mt-10 h-8 w-75' roomId={roomId} gameType={gameType} />

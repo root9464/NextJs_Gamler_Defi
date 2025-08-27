@@ -5,14 +5,14 @@ import { SceneModule } from '@/modules/video-hub/scene/module';
 import { ChangeDices } from './features/change-dices';
 import { GameField } from './features/game-field';
 import { SettingsCoins } from './features/setting-coins';
-import { CardHolder } from './flow/cardholder';
+import { CardHolder } from './flows/cardholder';
 
 export const CurashModule = () => {
   return (
     <SceneModule
       controlPanel={
         <ControlPanel
-          isAdmin={false}
+          isAdmin={true}
           adminPanelActions={
             <>
               <div className='flex flex-row items-center gap-2.5'>

@@ -1,6 +1,8 @@
+'use client';
 import { trickAtom } from '@/modules/games/curash/store/trick-store';
 import TrickIco from '@assets/svg/trick-curash.svg';
 import { useAtom } from 'jotai';
+import type { CSSProperties } from 'react';
 
 const colorPaletteCurash = [
   { main: '#FFC0CB', highlight: '#FF69B4' },
@@ -17,6 +19,7 @@ const colorPaletteCurash = [
 
 export const ChangeTrick = () => {
   const [trickColor, SetTrickColor] = useAtom(trickAtom);
+  console.log(trickColor);
 
   const handleChangeColor = () => {
     const randomIndex = Math.floor(Math.random() * colorPaletteCurash.length);
@@ -26,7 +29,15 @@ export const ChangeTrick = () => {
 
   return (
     <div className='flex items-center gap-2.5 pt-5'>
-      <TrickIco className={`[--stop-color-1:${trickColor.main}] [--stop-color-2:${trickColor.highlight}] h-[59px] w-[53px]`} />
+      <TrickIco
+        className={`h-[59px] w-[53px]`}
+        style={
+          {
+            '--stop-color-1': trickColor.main,
+            '--stop-color-2': trickColor.highlight,
+          } as CSSProperties
+        }
+      />
       <div onClick={handleChangeColor} className='flex cursor-pointer items-center justify-center text-blue-400 hover:text-black'>
         <p>Сменить фишку</p>
       </div>
