@@ -31,31 +31,8 @@ export const IssuingCards: FC<UsersProps> = ({ Users }) => {
         <Modal.Header>Выдача карт игрокам</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-2.5'>
-              <h2 className='font-semibold'>Выберите колоду</h2>
-              {deck.map(({ name }) => (
-                <div className='group flex cursor-pointer items-center gap-2.5' tabIndex={0}>
-                  <div className='relative flex items-center justify-center'>
-                    <input
-                      type='checkbox'
-                      className='h-4 w-4 appearance-none rounded-full border border-black group-hover:border-[#1890FF] group-focus:border-[#1890FF]'
-                    />
-                    <div className='absolute hidden h-2 w-2 rounded-full bg-[#1890FF] group-focus:block' />
-                  </div>
-                  <p>{name}</p>
-                </div>
-              ))}
-            </div>
-            <div className='flex flex-col gap-2.5'>
-              <h2 className='font-semibold'>Выберите игрока, которому будет выдана карта</h2>
-              <div className='flex w-full gap-2.5'>
-                {Users.map(({ id }) => (
-                  <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} key={id}>
-                    {id}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <Coloda />
+            <UsersRender Users={Users} />
           </div>
         </Modal.Body>
         <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>
@@ -68,5 +45,40 @@ export const IssuingCards: FC<UsersProps> = ({ Users }) => {
         </Modal.Footer>
       </Modal.Content>
     </Modal>
+  );
+};
+
+const Coloda = () => {
+  return (
+    <div className='flex flex-col gap-2.5'>
+      <h2 className='font-semibold'>Выберите колоду</h2>
+      {deck.map(({ name }) => (
+        <div className='group flex cursor-pointer items-center gap-2.5' tabIndex={0}>
+          <div className='relative flex items-center justify-center'>
+            <input
+              type='checkbox'
+              className='h-4 w-4 appearance-none rounded-full border border-black group-hover:border-[#1890FF] group-focus:border-[#1890FF]'
+            />
+            <div className='absolute hidden h-2 w-2 rounded-full bg-[#1890FF] group-focus:block' />
+          </div>
+          <p>{name}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const UsersRender: FC<UsersProps> = ({ Users }) => {
+  return (
+    <div className='flex flex-col gap-2.5'>
+      <h2 className='font-semibold'>Выберите игрока, которому будет выдана карта</h2>
+      <div className='flex w-full gap-2.5'>
+        {Users.map(({ id }) => (
+          <div className='h-[50px] w-[50px] rounded-full bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} key={id}>
+            {id}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
