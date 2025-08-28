@@ -1,17 +1,29 @@
+import { useSession } from '@/modules/video-hub/scene/hooks/api/useSession';
+import { useAccount } from '@/shared/hooks/api/useAccount';
 import Link from 'next/link';
 import type { FC } from 'react';
 
 type TestCardProps = {
-  roomId: number;
+  roomId: string | undefined;
 };
 
+// есть страница ивентов на ней я получаю все сессии
+// после чего я нажимаю выбрать конкретную игру и перехожу на нее
+// после чего открывается страница лобби в которой я полуаю сессии по конкретному айдишнику(мок)
+//
+
 export default function EventsPage() {
+  const { data: sessionId } = useSession();
+  const { data: account } = useAccount();
+
+  console.log('account', account);
+
   return (
     <div className='flex flex-col gap-10 p-10'>
       <Description />
       <div className='flex gap-10'>
-        <TestCardAcceptence roomId={1} />
-        <TestCardCurash roomId={2} />
+        <TestCardAcceptence roomId={sessionId} />
+        <TestCardCurash roomId={sessionId} />
       </div>
     </div>
   );

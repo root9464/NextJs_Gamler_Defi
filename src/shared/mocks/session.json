@@ -1,0 +1,14 @@
+{
+  "ID": "68b06d4bb9abb516298d7ae6",
+  "HostID": "qeqweq",
+  "GameName": "sales_courage",
+  "Participants": [
+    {
+      "ID": "qeqweq",
+      "Name": "qweqwe"
+    }
+  ],
+  "Status": "scheduled",
+  "TimeToStart": "0001-01-01T00:00:00Z",
+  "Price": 0
+}
