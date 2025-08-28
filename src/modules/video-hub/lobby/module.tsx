@@ -1,7 +1,7 @@
 import { CameraPreview } from '@/modules/video-hub/lobby/features/camera-preview';
 import { ChangeNickname } from '@/modules/video-hub/lobby/features/change-nickname';
 import type { FC } from 'react';
-import { ChangeTrick } from './features/change-tick';
+import { ChangeTrick } from './features/change-trick';
 import { DeviceStatusChecker } from './features/device-status-checker';
 import { GameButton } from './features/game-button';
 

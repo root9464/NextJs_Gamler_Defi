@@ -5,7 +5,7 @@ import { CoinModal } from './coin-modal';
 import { NotOwn } from './not-own-modal';
 import { UserAllCard } from './user-all';
 
-const Users = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+const Users = [{ id: 1 }];
 
 export const CardsCurash = () => {
   return (

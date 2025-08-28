@@ -1,3 +1,4 @@
+'use client';
 import { trickAtom } from '@/modules/video-hub/scene/curash/store/trick-store';
 import TrickIco from '@assets/svg/trick-curash.svg';
 import { useAtom } from 'jotai';
@@ -17,12 +18,15 @@ const colorPaletteCurash = [
 
 export const ChangeCurash = () => {
   const [trickColor, SetTrickColor] = useAtom(trickAtom);
+  console.log(trickColor);
 
   const handleChangeColor = () => {
     const randomIndex = Math.floor(Math.random() * colorPaletteCurash.length);
     const newColors = colorPaletteCurash[randomIndex];
     SetTrickColor(newColors);
+    console.log(newColors);
   };
+
   return (
     <div className='flex items-center gap-2.5 pt-5'>
       <TrickIco className={`[--stop-color-1:${trickColor.main}] [--stop-color-2:${trickColor.highlight}] h-[59px] w-[53px]`} />
