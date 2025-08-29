@@ -44,5 +44,7 @@ Deploy to prod:
       - yarn install
       - yarn build
       - rsync --exclude '.git'  --exclude '.gitlab-ci.yml'  -avzh . /www/gamler/gamler_micro
+      - cd /www/gamler/gamler_micro
+      - mv env.prod .env
       - sudo systemctl stop gamlermicro
       - sudo systemctl start gamlermicro
