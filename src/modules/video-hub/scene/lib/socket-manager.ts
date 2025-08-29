@@ -1,18 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // ws://http://127.0.0.1:6069/api/session/ws/:session_id/:user_id
+import { GameControllers } from './game-controllers';
 
 type WSEventHandler<T = any> = (data: T) => void;
-
-type WsMessage<Event extends string = string, Data = any> = {
-  event: Event;
-  data: Data;
-};
 
 export class SocketManager extends WebSocket {
   private handlers: Partial<{ [event: string]: WSEventHandler<any> }> = {};
 
-  private constructor(url: string) {
+  sayImAnEngineer() {
+    console.log('I am an engineer too');
+  }
+
+  constructor(url: string) {
+    console.log('Engineer class');
     super(url);
     this.initEvents();
   }
@@ -24,59 +24,49 @@ export class SocketManager extends WebSocket {
     this.addEventListener('message', (e) => this.handleMessage(e));
   }
 
-  private emit<Event extends string, Data = any>(event: Event, data?: Data): void {
+  private emit<Event extends string, Data = any>(event: Event, data?: Data) {
     this.handlers[event]?.(data);
   }
 
-  public on<Event extends string, Data = any>(event: Event, handler: WSEventHandler<Data>): void {
+  public on<Event extends string, Data = any>(event: Event, handler: WSEventHandler<Data>) {
     this.handlers[event] = handler;
   }
 
-  public off<Event extends string>(event: Event): void {
+  public off<Event extends string>(event: Event) {
     delete this.handlers[event];
   }
 
   private handleMessage(event: MessageEvent) {
-    try {
-      const { event: evt, data } = JSON.parse(event.data);
-      const handler = this.handlers[evt];
-      if (handler) handler(data);
-    } catch (error) {
-      console.error(error);
-    }
+    const { event: evt, data } = JSON.parse(event.data);
+    const handler = this.handlers[evt];
+    if (handler) handler(data);
   }
 
-  //   connect(): void {
-  //     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-  //       console.log('Socket already connected.');
-  //       return;
-  //     }
-
-  //     this.socket = new WebSocket(this.url);
-
-  //     this.socket.onopen = () => {
-  //       console.log('Connected to WebSocket');
-  //     };
-
-  //     this.socket.onmessage = (event) => {
-  //       console.log('Message from server:', event.data);
-  //     };
-
-  //     this.socket.onerror = (error) => {
-  //       console.error('WebSocket Error:', error);
-  //     };
-
-  //     this.socket.onclose = (event) => {
-  //       console.log('WebSocket Closed:', event);
-  //       this.socket = null;
-  //     };
-  //   }
-
-  //   public sendEvent(event: any, data: any) {
-  //     this.send(JSON.stringify({ event, data }));
-  //   }
-
-  //   public diceRolled(data: any) {
-  //     this.sendEvent(event, data);
-  //   }
+  public sendMessage<Event extends string, Data = any>(event: Event, data: Data) {
+    if (this.readyState === WebSocket.OPEN) {
+      this.send(JSON.stringify({ event, data }));
+    }
+  }
 }
+
+interface Employee extends SocketManager, GameControllers {
+  sayImAnEngineer(): void;
+}
+class Employee {
+  constructor() {
+    this.sayImAnEngineer();
+  }
+}
+
+function applyMixins(derivedCtor: any, constructors: any[]) {
+  constructors.forEach((baseCtor) => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
+      Object.defineProperty(derivedCtor.prototype, name, Object.getOwnPropertyDescriptor(baseCtor.prototype, name) || Object.create(null));
+    });
+  });
+}
+
+applyMixins(Employee, [SocketManager, GameControllers]);
+
+const emp: Employee = new Employee();
+emp.sayImAnEngineer();
