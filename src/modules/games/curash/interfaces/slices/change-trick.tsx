@@ -19,7 +19,6 @@ const colorPaletteCurash = [
 
 export const ChangeTrick = () => {
   const [trickColor, SetTrickColor] = useAtom(trickAtom);
-  console.log(trickColor);
 
   const handleChangeColor = () => {
     const randomIndex = Math.floor(Math.random() * colorPaletteCurash.length);
