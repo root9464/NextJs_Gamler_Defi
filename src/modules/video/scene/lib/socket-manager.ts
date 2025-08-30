@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type { IGameController } from '@/modules/games/curash/lib/game-controllers';
-import { GameControllerMixin } from '@/modules/games/curash/lib/game-controllers';
+import type { IGameController } from '@/modules/video/scene/lib/game-controllers';
+import { GameControllerMixin } from '@/modules/video/scene/lib/game-controllers';
 import type { WSEventHandler, WSMessage } from '@/shared/types/ws';
 
 const GameSocketBase = GameControllerMixin(WebSocket);

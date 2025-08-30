@@ -8,7 +8,7 @@ export const RollDices = () => {
 
   const handleRollDice = () => {
     console.log('roll dices');
-    socketManager.rollDice();
+    socketManager.gameController.rollDice();
   };
 
   return (

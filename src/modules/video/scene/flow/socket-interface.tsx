@@ -3,7 +3,7 @@ import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useSetAtom } from 'jotai';
 import { useEffect, type FC, type ReactNode } from 'react';
 import { SocketManager } from '../lib/socket-manager';
-import { MINIMAL_SOCKET_MANAGER, socketAtom } from '../store/socket';
+import { buildSocketFacade, MINIMAL_FACADE, socketAtom } from '../store/socket';
 
 type SocketInterfaceProps = {
   sessionId: string;
@@ -21,13 +21,13 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
     const url = `ws://localhost:6069/api/session/ws/${sessionId}/${account.user_id}`;
     const socket = new SocketManager(url);
-    setSocket(socket);
+    setSocket(buildSocketFacade(socket));
 
     socket.on('open', () => console.log('connect in game session susscesful'));
 
     return () => {
       socket.close();
-      setSocket(MINIMAL_SOCKET_MANAGER);
+      setSocket(MINIMAL_FACADE);
     };
   }, [sessionId, account?.user_id, setSocket]);
 
