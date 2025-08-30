@@ -1,23 +1,42 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import type { ICourageGameController } from '@/modules/games/curash/lib/courage-game-controller';
+import { CourageGameControllerMixin } from '@/modules/games/curash/lib/courage-game-controller';
 import type { IGameController } from '@/modules/video/scene/lib/game-controllers';
 import { GameControllerMixin } from '@/modules/video/scene/lib/game-controllers';
 import type { WSEventHandler, WSMessage } from '@/shared/types/ws';
 
-const GameSocketBase = GameControllerMixin(WebSocket);
-
-export interface ISocketManager extends IGameController {
+export interface ISocketManager {
   on<E extends string, D = any>(event: E, handler: WSEventHandler<D>): () => void;
   off<E extends string>(event: E, handler?: WSEventHandler<any>): void;
   sendMessage<Event extends string, Data = any>(event: Event, data: Data): void;
   disconnect(): void;
+  gameController: IGameController & { courage: ICourageGameController };
 }
 
-export class SocketManager extends GameSocketBase implements ISocketManager {
+export class SocketManager extends WebSocket implements ISocketManager {
   private handlers = new Map<string, Set<WSEventHandler<any>>>();
+  public readonly gameController: IGameController & { courage: ICourageGameController };
 
   constructor(url: string) {
     super(url);
+    const gameControllerInstance = new (GameControllerMixin(WebSocket))(url);
+    const CourageControllers = new (CourageGameControllerMixin(WebSocket))(url);
+
+    this.gameController = {
+      sendGameAction: gameControllerInstance.sendGameAction.bind(gameControllerInstance),
+      rollDice: gameControllerInstance.rollDice.bind(gameControllerInstance),
+      selectCard: gameControllerInstance.selectCard.bind(gameControllerInstance),
+      showEveryoneCard: gameControllerInstance.showEveryoneCard.bind(gameControllerInstance),
+      changeDice: gameControllerInstance.changeDice.bind(gameControllerInstance),
+      moveToken: gameControllerInstance.moveToken.bind(gameControllerInstance),
+      getDecks: gameControllerInstance.getDecks.bind(gameControllerInstance),
+      giveDeckForSelection: gameControllerInstance.giveDeckForSelection.bind(gameControllerInstance),
+      courage: {
+        addCoins: CourageControllers.addCoins.bind(CourageControllers),
+      },
+    };
+
     this.addEventListener('open', () => this.emit('open'));
     this.addEventListener('close', (e) => this.emit('close', e));
     this.addEventListener('error', (e) => this.emit('error', e));
