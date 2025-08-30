@@ -1,10 +1,10 @@
 import { CurashFlow } from '@/modules/games/curash/interfaces/flows/curash-flow';
 import type { ReactNode } from 'react';
 
-type GameType = 'sales_courage' | 'acceptence';
+type GameType = 'curash' | 'acceptence';
 
 const gameFlows: Record<GameType, ReactNode> = {
-  sales_courage: <CurashFlow />,
+  curash: <CurashFlow />,
   acceptence: <></>,
 };
 
