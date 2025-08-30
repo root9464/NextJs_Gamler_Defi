@@ -12,7 +12,7 @@ export type ActionType =
   | 'get_decks'
   | 'give_deck_for_selection';
 
-type ActionPayloadMap = {
+export type ActionPayloadMap = {
   roll_dice: {};
   select_card: { deck_id: string; card_id: string };
   show_everyone_card: { card_id: string };

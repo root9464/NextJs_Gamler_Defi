@@ -6,7 +6,7 @@ import type { WSEventHandler, WSMessage } from '@/shared/types/ws';
 
 const GameSocketBase = GameControllerMixin(WebSocket);
 
-interface ISocketManager extends IGameController {
+export interface ISocketManager extends IGameController {
   on<E extends string, D = any>(event: E, handler: WSEventHandler<D>): () => void;
   off<E extends string>(event: E, handler?: WSEventHandler<any>): void;
   sendMessage<Event extends string, Data = any>(event: Event, data: Data): void;
