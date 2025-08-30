@@ -1,6 +1,6 @@
 import CoinIcon from '@/assets/svg/coin.svg';
 import PlusIcon from '@/assets/svg/plus.svg';
-import { UserAllCard } from '@/modules/video-hub/scene/slices/user-all-cards';
+import { UserAllCard } from '@/modules/video/scene/slices/user-all-cards';
 import { SettingsCoins } from '../features/setting-coins';
 
 export const CardHolder = () => {
