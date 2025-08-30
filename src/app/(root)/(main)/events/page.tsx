@@ -1,4 +1,4 @@
-import { useSession } from '@/modules/video-hub/scene/hooks/api/useSession';
+'use client';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -13,7 +13,6 @@ type TestCardProps = {
 //
 
 export default function EventsPage() {
-  const { data: sessionId } = useSession();
   const { data: account } = useAccount();
 
   console.log('account', account);
@@ -22,8 +21,8 @@ export default function EventsPage() {
     <div className='flex flex-col gap-10 p-10'>
       <Description />
       <div className='flex gap-10'>
-        <TestCardAcceptence roomId={sessionId} />
-        <TestCardCurash roomId={sessionId} />
+        <TestCardAcceptence roomId={'1'} />
+        <TestCardCurash roomId={'1'} />
       </div>
     </div>
   );

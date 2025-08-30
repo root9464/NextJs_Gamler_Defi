@@ -7,7 +7,7 @@ import { GameButton } from './features/game-button';
 
 type LobbyModuleProps = {
   roomId: string;
-  gameType: 'curash' | 'acceptence';
+  gameType: 'sales_courage' | 'acceptence';
 };
 
 const Description = () => (
