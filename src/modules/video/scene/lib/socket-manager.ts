@@ -10,6 +10,7 @@ export interface ISocketManager extends IGameController {
   on<E extends string, D = any>(event: E, handler: WSEventHandler<D>): () => void;
   off<E extends string>(event: E, handler?: WSEventHandler<any>): void;
   sendMessage<Event extends string, Data = any>(event: Event, data: Data): void;
+  disconnect(): void;
 }
 
 export class SocketManager extends GameSocketBase implements ISocketManager {
@@ -57,5 +58,10 @@ export class SocketManager extends GameSocketBase implements ISocketManager {
   sendMessage<Event extends string, Data = any>(event: Event, data: Data) {
     if (this.readyState !== WebSocket.OPEN) throw new Error('socketManager: connection dont open');
     this.send(JSON.stringify(<WSMessage<Event, Data>>{ event, data }));
+  }
+
+  disconnect() {
+    this.handlers.clear();
+    this.close();
   }
 }

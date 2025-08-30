@@ -1,13 +1,13 @@
 import { UserCameraFrame } from '@/components/slices/user-camera-frame';
 import { cn } from '@/shared/utils/tw.utils';
-import type { FC, ReactElement, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import type { ControlPanelProps } from './flow/control-panel';
 import { ControlPanel } from './flow/control-panel';
 import { MobileHeader } from './flow/mobile-header';
 import { SocketInterface } from './flow/socket-interface';
 
 type SceneModuleProps = {
-  controlPanel: ReactElement<ControlPanelProps>;
+  controlPanel: ControlPanelProps;
   gameField: Readonly<ReactNode>;
   cardHolder?: Readonly<ReactNode>;
 
@@ -20,7 +20,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
       <div className='flex h-min w-full flex-row gap-[25px] bg-black px-5 py-[25px] text-white'>
         <div className='max-desktop-xs:w-full relative flex h-fit w-[688px] flex-col gap-5'>
           <div className='max-desktop-xs:hidden flex w-full justify-between gap-6'>
-            <ControlPanel {...controlPanel.props} />
+            <ControlPanel {...controlPanel} />
             <UserCameraFrame />
           </div>
 

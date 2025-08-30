@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useSetAtom } from 'jotai';
 import { useEffect, type FC, type ReactNode } from 'react';
@@ -16,27 +16,20 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   const { data: account } = useAccount();
   const setSocket = useSetAtom(socketAtom);
 
-  const url = `ws://localhost:6069/api/session/ws/${sessionId}/${account?.user_id}`;
-
   useEffect(() => {
-    if (!account) return;
-    const socket = new SocketManager(url);
+    if (!account?.user_id) return;
 
+    const url = `ws://localhost:6069/api/session/ws/${sessionId}/${account.user_id}`;
+    const socket = new SocketManager(url);
     setSocket(socket);
 
-    const updateState = () => setSocket(socket);
-    socket.addEventListener('open', updateState);
-    socket.addEventListener('close', updateState);
-    socket.addEventListener('error', updateState);
+    socket.on('open', () => console.log('connect in game session susscesful'));
 
     return () => {
-      socket.removeEventListener('open', updateState);
-      socket.removeEventListener('close', updateState);
-      socket.removeEventListener('error', updateState);
       socket.close();
       setSocket(MINIMAL_SOCKET_MANAGER);
     };
-  }, [sessionId, account, setSocket, url]);
+  }, [sessionId, account?.user_id, setSocket]);
 
   return <>{children}</>;
 };
