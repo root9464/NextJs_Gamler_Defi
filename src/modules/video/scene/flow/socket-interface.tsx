@@ -1,3 +1,4 @@
+'use client'
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useSetAtom } from 'jotai';
 import { useEffect, type FC, type ReactNode } from 'react';
@@ -15,7 +16,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   const { data: account } = useAccount();
   const setSocket = useSetAtom(socketAtom);
 
-  const url = `ws://<your_server_address>/api/session/ws/${sessionId}/${account?.user_id}`;
+  const url = `ws://localhost:6069/api/session/ws/${sessionId}/${account?.user_id}`;
 
   useEffect(() => {
     if (!account) return;

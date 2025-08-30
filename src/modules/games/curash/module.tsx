@@ -1,10 +1,10 @@
 import CoinIcon from '@/assets/svg/coin.svg';
-import DiceIcon from '@/assets/svg/dice.svg';
 import { ControlPanel } from '@/modules/video/scene/flow/control-panel';
 import { SceneModule } from '@/modules/video/scene/module';
 import type { FC } from 'react';
 import { ChangeDices } from './features/change-dices';
 import { GameField } from './features/game-field';
+import { RollDices } from './features/roll-dices';
 import { SettingsCoins } from './features/setting-coins';
 import { CardHolder } from './flows/cardholder';
 
@@ -22,10 +22,15 @@ export const CurashModule: FC<CurashModuleProps> = ({ sessionId }) => {
           adminPanelActions={
             <>
               <div className='flex flex-row items-center gap-2.5'>
-                <DiceIcon className='h-[43px] w-[37px] cursor-pointer' />
+                <RollDices />
                 <ChangeDices />
               </div>
             </>
+          }
+          panelActions={
+            <div className='flex flex-row items-center gap-2.5'>
+              <RollDices />
+            </div>
           }
           adminActions={
             <>

@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 import { ChangeTimer } from '../features/change-timer';
-import { UserActions } from '../features/user-actions';
+import { UserActionsAudit } from '../features/user-actions-audit';
 import { Timer } from '../slices/timer';
 import { ActionButtons } from './action-buttons';
 
@@ -18,11 +18,11 @@ export const ControlPanel: FC<Partial<ControlPanelProps>> = ({ adminActions, add
     <div className='h-50 w-[333px] rounded-[11px] border-1 border-[#183410] bg-[#171918] px-3.5 py-[18px]'>
       <div className='flex flex-col gap-5'>
         <ActionButtons adminActions={adminActions} additionalActions={additionalActions} isAdmin={isAdmin} />
-        <UserActions />
+        <UserActionsAudit />
         <div className='flex items-center justify-center gap-5'>
           {isAdmin ? <ChangeTimer /> : <Timer />}
-          {panelActions}
-          {isAdmin && <>{adminPanelActions}</>}
+
+          {isAdmin ? <>{adminPanelActions}</> : <>{panelActions}</>}
         </div>
       </div>
     </div>
