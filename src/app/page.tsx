@@ -1,10 +1,10 @@
 'use client';
-import { ChangeTrick } from '@/modules/games/curash/interfaces/slices/change-trick';
+import MediaSocketManager from '@/modules/test/module';
 
 export default function Home() {
   return (
     <>
-      <ChangeTrick />
+      <MediaSocketManager />
     </>
   );
 }
