@@ -19,6 +19,7 @@ export const NotOwn: FC<CardsProps> = ({ id, img }) => {
   const socketManager = useAtomValue(socketAtom);
 
   const EveryOneShow = (id: string) => {
+    console.log('show card');
     socketManager.gameController.showEveryoneCard(id);
   };
 
