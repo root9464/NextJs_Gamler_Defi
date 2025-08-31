@@ -22,7 +22,6 @@ export const RollDices = () => {
   const handleRollDice = () => {
     console.log('roll dices');
     socketManager.gameController.rollDice();
-    socketManager.rollDice();
 
     const unsubscribe = socketManager.on('dice_rolled', (data: RollDiceResponse) => {
       console.log('Кубики брошены!', data);

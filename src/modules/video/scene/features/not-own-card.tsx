@@ -19,7 +19,7 @@ export const NotOwn: FC<CardsProps> = ({ id, img }) => {
   const socketManager = useAtomValue(socketAtom);
 
   const EveryOneShow = (id: string) => {
-    socketManager.showEveryoneCard(id);
+    socketManager.gameController.showEveryoneCard(id);
   };
 
   return (
@@ -27,18 +27,20 @@ export const NotOwn: FC<CardsProps> = ({ id, img }) => {
       <Modal.Trigger
         onClick={onOpen}
         className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] border border-white'>
-        <Image src={img} alt='' />
+        <Image src={img} alt='not found' />
       </Modal.Trigger>
       <Modal.Content className=''>
         <Modal.Header />
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
-          <Image src={img} alt='' />
+          <Image src={img} alt='not found' />
           <div className='flex'>
-            <button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))} onClick={() => EveryOneShow(id)}>
+            <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))} onClick={() => EveryOneShow(id)}>
               Показать
-            </button>
-            <button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))}>Передать</button>
-            <button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))}>Вернуть в колоду</button>
+            </Button>
+            <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))}>Передать</Button>
+            <Button className='w-full font-normal sm:w-fit' intent='primary'>
+              Вернуть в колоду
+            </Button>
           </div>
         </Modal.Body>
         <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>
