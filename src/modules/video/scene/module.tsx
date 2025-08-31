@@ -1,4 +1,6 @@
 import { UserCameraFrame } from '@/components/slices/user-camera-frame';
+import { NotOwn } from '@/modules/games/curash/features/show-card-modal';
+import { DiceResultModal } from '@/modules/games/curash/features/show-dice-modal';
 import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
 import type { ControlPanelProps } from './flow/control-panel';
@@ -44,6 +46,8 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
             </div>
           ))}
         </div>
+        <NotOwn />
+        <DiceResultModal />
       </div>
     </SocketInterface>
   );

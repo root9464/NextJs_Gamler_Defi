@@ -12,8 +12,12 @@ export const RollDices = () => {
   };
 
   return (
-    <button className='h-fit w-fit cursor-pointer bg-transparent' onClick={handleRollDice}>
+    <div
+      onClick={() => {
+        handleRollDice();
+      }}
+      className='h-fit w-fit cursor-pointer bg-transparent'>
       <DiceIcon className='h-[43px] w-[37px]' />
-    </button>
+    </div>
   );
 };

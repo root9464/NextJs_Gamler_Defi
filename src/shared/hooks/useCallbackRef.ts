@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+'use client';
 import { useSafeLayoutEffect } from '@shared/hooks/useSafeLayoutEffect';
 import { useCallback, useRef } from 'react';
 

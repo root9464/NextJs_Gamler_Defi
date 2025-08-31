@@ -4,7 +4,7 @@ import { z } from 'zod/v4';
 
 const LobbyParamsSchema = z.object({
   id: z.string().min(1, 'Room ID cannot be empty'),
-  type: z.enum(['curash', 'acceptence'], {
+  type: z.enum(['sales_courage', 'acceptence'], {
     error: 'Invalid game type',
   }),
 });
