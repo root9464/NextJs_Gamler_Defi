@@ -18,7 +18,7 @@ export type ActionPayloadMap = {
   show_everyone_card: { card_id: string };
   change_dice: { dice_count: number; faces_number: number };
   add_coins: { player_id: string; coins: number };
-  move_token: { position: { x: number; y: number } };
+  move_token: { position: { x: number; y: number } }; //фишку подвинуть
   get_decks: {};
   give_deck_for_selection: { deck_id: string; player_id: string };
 };
@@ -37,13 +37,12 @@ export interface IGameController {
   selectCard(deck_id: string, card_id: string): void;
   showEveryoneCard(card_id: string): void;
   changeDice(dice_count: number, faces_number: number): void;
-  addCoins(player_id: string, coins: number): void;
   moveToken(position: { x: number; y: number }): void;
   getDecks(): void;
   giveDeckForSelection(deck_id: string, player_id: string): void;
 }
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+export type Constructor<T = {}> = new (...args: any[]) => T;
 
 export function GameControllerMixin<TBase extends Constructor<Pick<WebSocket, 'send'>>>(Base: TBase) {
   return class GameController extends Base implements IGameController {
@@ -66,10 +65,6 @@ export function GameControllerMixin<TBase extends Constructor<Pick<WebSocket, 's
 
     changeDice(dice_count: number, faces_number: number) {
       this.sendGameAction('change_dice', { dice_count, faces_number });
-    }
-
-    addCoins(player_id: string, coins: number) {
-      this.sendGameAction('add_coins', { player_id, coins });
     }
 
     moveToken(position: { x: number; y: number }) {
