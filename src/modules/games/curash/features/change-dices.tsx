@@ -1,19 +1,33 @@
 'use client';
+
 import ChangeIco from '@/assets/svg/change.svg';
 import DiceIco from '@/assets/svg/dice.svg';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
+import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
+import { useAtomValue } from 'jotai';
+import { useState } from 'react';
 
 const deck = [
-  { id: 1, name: '6', desc: '1 кубик в игре' },
-  { id: 2, name: '6 + 6', desc: '2 кубик в игре' },
-  { id: 3, name: '6 + 6 + 6', desc: '3 кубик в игре' },
-  { id: 4, name: '6 + 6 + 6 + 6', desc: '4 кубик в игре' },
+  { id: 1, name: '6', desc: '1 кубик в игре', dice_count: 1 },
+  { id: 2, name: '6 + 6', desc: '2 кубика в игре', dice_count: 2 },
+  { id: 3, name: '6 + 6 + 6', desc: '3 кубика в игре', dice_count: 3 },
+  { id: 4, name: '6 + 6 + 6 + 6', desc: '4 кубика в игре', dice_count: 4 },
 ];
 
 export const ChangeDices = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const socket = useAtomValue(socketAtom);
+
+  const [selected, setSelected] = useState<number>(1);
+
+  const handleSave = () => {
+    const { dice_count } = deck.find((d) => d.id === selected)!;
+    socket.gameController.changeDice(dice_count, 6);
+    onClose();
+  };
+
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger onClick={onOpen} className='flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full bg-[#1890FF]'>
@@ -25,14 +39,16 @@ export const ChangeDices = () => {
           <div className='flex flex-col gap-2.5'>
             <h2 className='font-semibold'>Выберите комбинацию броска кубика для игроков</h2>
             {deck.map(({ name, desc, id }) => (
-              <div className='group flex cursor-pointer items-center gap-[30px]' tabIndex={0} key={id}>
+              <div key={id} tabIndex={0} onClick={() => setSelected(id)} className='group flex cursor-pointer items-center gap-[30px]'>
                 <div className='flex w-28 items-center gap-1'>
                   <div className='relative flex items-center justify-center'>
                     <input
                       type='checkbox'
-                      className='h-4 w-4 appearance-none rounded-full border border-black group-hover:border-[#1890FF] group-focus:border-[#1890FF]'
+                      readOnly
+                      checked={selected === id}
+                      className='h-4 w-4 appearance-none rounded-full border border-black group-hover:border-[#1890FF]'
                     />
-                    <div className='absolute hidden h-2 w-2 rounded-full bg-[#1890FF] group-focus:block' />
+                    {selected === id && <div className='absolute h-2 w-2 rounded-full bg-[#1890FF]' />}
                   </div>
                   <p>{name}</p>
                 </div>
@@ -48,7 +64,7 @@ export const ChangeDices = () => {
           <Button onClick={onClose} className='w-full font-normal text-red-500 sm:w-fit' intent='plain'>
             Отмена
           </Button>
-          <Button onClick={onClose} className='w-full font-normal sm:w-fit' intent='primary'>
+          <Button onClick={handleSave} className='w-full font-normal sm:w-fit' intent='primary'>
             Сохранить
           </Button>
         </Modal.Footer>

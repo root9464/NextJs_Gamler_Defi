@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type { ICourageGameController } from '@/modules/games/curash/lib/courage-game-controller';
-import { CourageGameControllerMixin } from '@/modules/games/curash/lib/courage-game-controller';
 import type { IGameController } from '@/modules/video/scene/lib/game-controllers';
-import { GameControllerMixin } from '@/modules/video/scene/lib/game-controllers';
 import type { WSEventHandler, WSMessage } from '@/shared/types/ws';
+import { MixedFullController } from './mixin';
 
 export interface ISocketManager {
   on<E extends string, D = any>(event: E, handler: WSEventHandler<D>): () => void;
@@ -14,26 +13,24 @@ export interface ISocketManager {
   gameController: IGameController & { courage: ICourageGameController };
 }
 
-export class SocketManager extends WebSocket implements ISocketManager {
+export class SocketManager extends MixedFullController implements ISocketManager {
   private handlers = new Map<string, Set<WSEventHandler<any>>>();
   public readonly gameController: IGameController & { courage: ICourageGameController };
 
   constructor(url: string) {
     super(url);
-    const gameControllerInstance = new (GameControllerMixin(WebSocket))(url);
-    const CourageControllers = new (CourageGameControllerMixin(WebSocket))(url);
 
     this.gameController = {
-      sendGameAction: gameControllerInstance.sendGameAction.bind(gameControllerInstance),
-      rollDice: gameControllerInstance.rollDice.bind(gameControllerInstance),
-      selectCard: gameControllerInstance.selectCard.bind(gameControllerInstance),
-      showEveryoneCard: gameControllerInstance.showEveryoneCard.bind(gameControllerInstance),
-      changeDice: gameControllerInstance.changeDice.bind(gameControllerInstance),
-      moveToken: gameControllerInstance.moveToken.bind(gameControllerInstance),
-      getDecks: gameControllerInstance.getDecks.bind(gameControllerInstance),
-      giveDeckForSelection: gameControllerInstance.giveDeckForSelection.bind(gameControllerInstance),
+      sendGameAction: this.sendGameAction.bind(this),
+      rollDice: this.rollDice.bind(this),
+      selectCard: this.selectCard.bind(this),
+      showEveryoneCard: this.showEveryoneCard.bind(this),
+      changeDice: this.changeDice.bind(this),
+      moveToken: this.moveToken.bind(this),
+      getDecks: this.getDecks.bind(this),
+      giveDeckForSelection: this.giveDeckForSelection.bind(this),
       courage: {
-        addCoins: CourageControllers.addCoins.bind(CourageControllers),
+        addCoins: this.addCoins.bind(this),
       },
     };
 
@@ -58,15 +55,21 @@ export class SocketManager extends WebSocket implements ISocketManager {
     if (handler) {
       this.handlers.get(event)!.delete(handler);
       if (this.handlers.get(event)!.size === 0) this.handlers.delete(event);
-    } else this.handlers.delete(event);
+    } else {
+      this.handlers.delete(event);
+    }
   }
 
   private handleMessage(e: MessageEvent) {
     try {
       const parsed = JSON.parse(e.data);
-      if (parsed?.type && parsed?.payload) return this.emit(parsed.type, parsed.payload);
+      if (parsed?.type && parsed?.payload) {
+        return this.emit(parsed.type, parsed.payload);
+      }
       if (parsed?.event && parsed?.data) {
-        if (parsed.event === 'game_action' && parsed.data.type) return this.emit(parsed.data.type, parsed.data.payload);
+        if (parsed.event === 'game_action' && parsed.data.type) {
+          return this.emit(parsed.data.type, parsed.data.payload);
+        }
         return this.emit(parsed.event, parsed.data);
       }
     } catch (err) {
@@ -75,7 +78,9 @@ export class SocketManager extends WebSocket implements ISocketManager {
   }
 
   sendMessage<Event extends string, Data = any>(event: Event, data: Data) {
-    if (this.readyState !== WebSocket.OPEN) throw new Error('socketManager: connection dont open');
+    if (this.readyState !== WebSocket.OPEN) {
+      throw new Error('socketManager: connection not open');
+    }
     this.send(JSON.stringify(<WSMessage<Event, Data>>{ event, data }));
   }
 
