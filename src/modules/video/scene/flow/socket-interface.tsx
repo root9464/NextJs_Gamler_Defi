@@ -1,6 +1,7 @@
 'use client';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useSetAtom } from 'jotai';
+import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, type FC, type ReactNode } from 'react';
 import { SocketManager } from '../lib/socket-manager';
 import { MINIMAL_SOCKET_MANAGER, socketAtom } from '../store/socket';
@@ -8,7 +9,7 @@ import { localStreamAtom, remoteStreamsAtom } from '../store/video';
 
 type SocketInterfaceProps = {
   sessionId: string;
-  children: Readonly<ReactNode>;
+  children: ReactNode;
 };
 
 export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children }) => {
@@ -18,12 +19,12 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   const setRemoteStreams = useSetAtom(remoteStreamsAtom);
 
   const pcRef = useRef<RTCPeerConnection | null>(null);
-  const mountedRef = useRef(false);
+  const socketRef = useRef<SocketManager | null>(null);
+
+  const pathname = usePathname();
 
   const handleRemoteTrack = useCallback(
-    (stream: MediaStream) => {
-      setRemoteStreams((prev) => (prev.some((s) => s.id === stream.id) ? prev : [...prev, stream]));
-    },
+    (stream: MediaStream) => setRemoteStreams((prev) => (prev.some((s) => s.id === stream.id) ? prev : [...prev, stream])),
     [setRemoteStreams],
   );
 
@@ -32,16 +33,8 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
       const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
       pcRef.current = pc;
 
-      pc.ontrack = (event) => {
-        const stream = event.streams[0] || new MediaStream([event.track]);
-        handleRemoteTrack(stream);
-      };
-
-      pc.onicecandidate = (event) => {
-        if (event.candidate) {
-          socketRef.current?.sendMessage('candidate', JSON.stringify(event.candidate.toJSON()));
-        }
-      };
+      pc.ontrack = (e) => handleRemoteTrack(e.streams[0] || new MediaStream([e.track]));
+      pc.onicecandidate = (e) => e.candidate && socketRef.current?.sendMessage('candidate', JSON.stringify(e.candidate.toJSON()));
 
       if (localStream) {
         localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
@@ -50,8 +43,6 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
     },
     [handleRemoteTrack, setLocalStream],
   );
-
-  const socketRef = useRef<SocketManager | null>(null);
 
   const initSocket = useCallback(
     (userId: string) => {
@@ -62,27 +53,24 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
       socket.on('open', () => socket.sendMessage('request_offer', ''));
 
-      socket.on('offer', async (data: string) => {
-        const offer = JSON.parse(data);
+      socket.on('offer', async (data) => {
         if (!pcRef.current) return;
-
+        const offer = JSON.parse(data);
         await pcRef.current.setRemoteDescription(new RTCSessionDescription(offer));
         const answer = await pcRef.current.createAnswer();
         await pcRef.current.setLocalDescription(answer);
         socket.sendMessage('answer', JSON.stringify(answer));
       });
 
-      socket.on('answer', async (data: string) => {
+      socket.on('answer', async (data) => {
         if (!pcRef.current) return;
-        const answer = JSON.parse(data);
-        await pcRef.current.setRemoteDescription(new RTCSessionDescription(answer));
+        await pcRef.current.setRemoteDescription(new RTCSessionDescription(JSON.parse(data)));
       });
 
-      socket.on('candidate', async (data: string) => {
+      socket.on('candidate', async (data) => {
         if (!pcRef.current) return;
         try {
-          const candidate = JSON.parse(data);
-          await pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+          await pcRef.current.addIceCandidate(new RTCIceCandidate(JSON.parse(data)));
         } catch {
           console.warn('Не удалось добавить ICE-кандидата');
         }
@@ -108,24 +96,25 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
     [initPeerConnection, initSocket, setRemoteStreams],
   );
 
+  const cleanup = useCallback(() => {
+    pcRef.current?.getSenders().forEach((s) => s.track && s.replaceTrack(null));
+    pcRef.current?.close();
+    socketRef.current?.disconnect();
+    setLocalStream((stream) => {
+      stream?.getTracks().forEach((t) => t.stop());
+      return null;
+    });
+
+    setRemoteStreams([]);
+    setSocket(MINIMAL_SOCKET_MANAGER);
+  }, [setLocalStream, setRemoteStreams, setSocket]);
+
   useEffect(() => {
-    if (!account?.user_id || mountedRef.current) return;
-    mountedRef.current = true;
+    if (!account?.user_id) return;
     joinRoom(account.user_id.toString());
-
-    return () => {
-      const pc = pcRef.current;
-      const socket = socketRef.current;
-
-      pc?.getSenders().forEach((s) => s.track && s.replaceTrack(null));
-      pc?.close();
-      socket?.disconnect();
-
-      setLocalStream(null);
-      setRemoteStreams([]);
-      setSocket(MINIMAL_SOCKET_MANAGER);
-    };
-  }, [account?.user_id, joinRoom, setLocalStream, setRemoteStreams, setSocket]);
+    window.addEventListener('beforeunload', cleanup);
+    return () => cleanup();
+  }, [account?.user_id, joinRoom, cleanup, pathname]);
 
   return <>{children}</>;
 };
