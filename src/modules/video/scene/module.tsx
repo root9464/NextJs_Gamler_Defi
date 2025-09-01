@@ -1,4 +1,6 @@
-import { UserCameraFrame } from '@/components/slices/user-camera-frame';
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { RemoteUsersCamera } from '@/modules/video/scene/flow/remote-users-camera';
 import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
 import type { ControlPanelProps } from './flow/control-panel';
@@ -21,7 +23,6 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
         <div className='max-desktop-xs:w-full relative flex h-fit w-[688px] flex-col gap-5'>
           <div className='max-desktop-xs:hidden flex w-full justify-between gap-6'>
             <ControlPanel {...controlPanel} />
-            <UserCameraFrame />
           </div>
 
           <MobileHeader />
@@ -36,14 +37,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
               'min-[1100px]:hidden',
             )}></div>
         </div>
-        <div className='max-desktop-xs:hidden flex max-h-[1587px] w-full flex-wrap content-start gap-6 overflow-y-auto'>
-          {Array.from({ length: 34 }).map((_, index) => (
-            <div className='flex h-[294px] w-[332px] flex-col gap-[25px]' key={index}>
-              <UserCameraFrame />
-              {cardHolder}
-            </div>
-          ))}
-        </div>
+        <RemoteUsersCamera />
       </div>
     </SocketInterface>
   );

@@ -1,4 +1,4 @@
-import { UserCameraFrame } from '@/components/slices/user-camera-frame';
+import { UserCameraFrame } from '@/modules/video/scene/flow/remote-users-camera';
 import { cn } from '@/shared/utils/tw.utils';
 import { MenuBar } from '../slices/menu-bar';
 

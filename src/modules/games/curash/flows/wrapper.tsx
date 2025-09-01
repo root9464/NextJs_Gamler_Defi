@@ -1,4 +1,4 @@
-import { UserCameraFrame } from '@/components/slices/user-camera-frame';
+import { UserCameraFrame } from '@/modules/video/scene/flow/remote-users-camera';
 import { CardHolder } from './cardholder';
 
 export const Wrapper = () => {

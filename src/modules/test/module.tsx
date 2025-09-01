@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
+import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { SocketManager } from '../video/scene/lib/socket-manager';
 import { WebRTCManager } from '../video/scene/lib/webrtc';
+import { remoteStreamsAtom } from '../video/scene/store/video';
 
 export default function VideoComponent() {
   const [roomId, setRoomId] = useState('125');
   const [userId, setUserId] = useState('6');
-  const [remoteStreams, setRemoteStreams] = useState<MediaStream[]>([]);
+  const [remoteStreams, setRemoteStreams] = useAtom(remoteStreamsAtom);
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const webRtcRef = useRef<WebRTCManager | null>(null);
   const socketRef = useRef<SocketManager | null>(null);
