@@ -7,9 +7,10 @@ import { SocketManager } from '../video/scene/lib/socket-manager';
 import { WebRTCManager } from '../video/scene/lib/webrtc';
 import { remoteStreamsAtom } from '../video/scene/store/video';
 
+const roomId = '125';
+
 export default function VideoComponent() {
-  const [roomId, setRoomId] = useState('125');
-  const [userId, setUserId] = useState('6');
+  const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
   const [remoteStreams, setRemoteStreams] = useAtom(remoteStreamsAtom);
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const webRtcRef = useRef<WebRTCManager | null>(null);
@@ -70,22 +71,12 @@ export default function VideoComponent() {
     };
   }, []);
 
+  console.log(remoteStreams);
+
   return (
     <div className='flex min-h-screen flex-col items-center bg-neutral-950 p-4 font-mono text-sm text-gray-300'>
       <h1 className='mb-4 text-lg text-gray-400'>WebRTC Video</h1>
       <div className='mb-4 w-full max-w-md rounded bg-neutral-900 p-3'>
-        <input
-          className='mb-2 w-full rounded border border-neutral-700 bg-neutral-800 p-2 text-gray-300'
-          placeholder='Room ID'
-          value={roomId}
-          onChange={(e) => setRoomId(e.target.value)}
-        />
-        <input
-          className='mb-2 w-full rounded border border-neutral-700 bg-neutral-800 p-2 text-gray-300'
-          placeholder='User ID'
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
         <button className='w-full rounded bg-neutral-700 p-2 text-gray-200 hover:bg-neutral-600' onClick={joinRoom}>
           Join Room
         </button>
