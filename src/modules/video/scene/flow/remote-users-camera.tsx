@@ -1,3 +1,4 @@
+'use client'
 import { useAtomValue } from 'jotai';
 import { UserCameraFrame } from '../slices/user-camera-frame';
 import { remoteStreamsAtom } from '../store/video';
