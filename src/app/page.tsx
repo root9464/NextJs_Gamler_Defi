@@ -1,10 +1,13 @@
 'use client';
-import MediaSocketManager from '@/modules/test/module';
+import { GameField } from '@/modules/games/curash/features/game-field';
+import { OkdSocketInterface } from '@/modules/video/scene/depricated/old-socket-interface';
 
 export default function Home() {
   return (
     <>
-      <MediaSocketManager />
+      <OkdSocketInterface sessionId='125'>
+        <GameField />
+      </OkdSocketInterface>
     </>
   );
 }
