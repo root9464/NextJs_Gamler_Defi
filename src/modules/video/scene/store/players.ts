@@ -13,3 +13,5 @@ export type Player = {
 };
 
 export const playersAtom = atom<Player[]>([]);
+
+export const currentUserIdAtom = atom<string | null>(null);
