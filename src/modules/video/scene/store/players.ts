@@ -1,17 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
-
 import { atom } from 'jotai';
+
+export type Position = {
+  x: number;
+  y: number;
+};
 
 export type Player = {
   id: string;
   name: string;
   isHost: boolean;
-  position: { x: number; y: number };
-  hand: any[];
-  metadata: any;
+  position: Position;
+  hand: unknown[];
+  metadata: Record<string, unknown>;
 };
 
 export const playersAtom = atom<Player[]>([]);
+
+export const updatePlayerPositionAtom = atom(null, (get, set, { id, position }: { id: string; position: Position }) => {
+  const players = get(playersAtom);
+  const updated = players.map((p) => (p.id === id ? { ...p, position } : p));
+  set(playersAtom, updated);
+});
 
 export const currentUserIdAtom = atom<string | null>(null);
