@@ -12,7 +12,7 @@ interface OldSocketInterfaceProps {
   children: Readonly<ReactNode>;
 }
 
-export const OkdSocketInterface: FC<OldSocketInterfaceProps> = ({ sessionId, children }) => {
+export const OldSocketInterface: FC<OldSocketInterfaceProps> = ({ sessionId, children }) => {
   const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
   const setSocket = useSetAtom(socketAtom);
   const setCurrentUserId = useSetAtom(currentUserIdAtom);

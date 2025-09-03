@@ -12,11 +12,11 @@ type SceneModuleProps = {
   controlPanel: ControlPanelProps;
   gameField: Readonly<ReactNode>;
   cardHolder?: Readonly<ReactNode>;
-
+  eventsModals?: Readonly<ReactNode>;
   sessionId: string;
 };
 
-export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, cardHolder, sessionId }) => {
+export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, cardHolder, eventsModals, sessionId }) => {
   return (
     <SocketInterface sessionId={sessionId}>
       <div className='flex h-min w-full flex-row gap-[25px] bg-black px-5 py-[25px] text-white'>
@@ -39,6 +39,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
         </div>
         <RemoteUsersCamera />
       </div>
+      {eventsModals}
     </SocketInterface>
   );
 };

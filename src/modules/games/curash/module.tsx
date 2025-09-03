@@ -6,6 +6,7 @@ import { GameField } from './features/game-field';
 import { RollDices } from './features/roll-dices';
 import { SettingsCoins } from './features/setting-coins';
 import { CardHolder } from './flows/cardholder';
+import { ThrownDice } from './slices/thrown-dice';
 
 type CurashModuleProps = {
   sessionId: string;
@@ -32,6 +33,11 @@ export const CurashModule: FC<CurashModuleProps> = ({ sessionId }) => {
       }}
       cardHolder={<CardHolder />}
       gameField={<GameField />}
+      eventsModals={
+        <>
+          <ThrownDice />
+        </>
+      }
     />
   );
 };
