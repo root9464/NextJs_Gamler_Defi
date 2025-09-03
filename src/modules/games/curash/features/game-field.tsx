@@ -21,11 +21,10 @@ interface FullStatePayload {
 }
 
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
-
 const round = (value: number, precision: number = 100000): number => Math.round(value * precision) / precision;
+const toNumber = (value: number | string): number => (typeof value === 'number' ? value : parseFloat(value) || 0);
 
 const normalizePosition = (raw: SocketPayload['position']): { x: number; y: number } => {
-  const toNumber = (value: number | string): number => (typeof value === 'number' ? value : parseFloat(value) || 0);
   return {
     x: round(clamp(toNumber(raw.x), 0, 1)),
     y: round(clamp(toNumber(raw.y), 0, 1)),
