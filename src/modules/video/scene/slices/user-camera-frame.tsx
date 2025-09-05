@@ -2,13 +2,20 @@ import HeartIcon from '@/assets/svg/hearthub.svg';
 import InfoIcon from '@/assets/svg/info.svg';
 import MuteIcon from '@/assets/svg/mute.svg';
 import { cn } from '@/shared/utils/tw.utils';
-import type { FC } from 'react';
+import { useEffect, useRef, type FC } from 'react';
 
 type UsersCameraFrameProps = {
   stream: MediaStream;
 };
 
 export const UserCameraFrame: FC<UsersCameraFrameProps> = ({ stream }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
   return (
     <div
       className={cn(
@@ -28,14 +35,7 @@ export const UserCameraFrame: FC<UsersCameraFrameProps> = ({ stream }) => {
         </div>
       </div>
 
-      <video
-          key={stream.id}
-          autoPlay
-          ref={(video) => {
-            if (video) video.srcObject = stream;
-          }}
-          className='absolute inset-0 h-full w-full object-cover'
-        />
+      <video key={stream.id} autoPlay ref={videoRef} className='absolute inset-0 h-full w-full object-cover' />
 
       <Footer />
     </div>

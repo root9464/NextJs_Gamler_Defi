@@ -12,6 +12,8 @@ export type Player = {
   position: Position;
   hand: unknown[];
   metadata: Record<string, unknown>;
+  streamId?: string;
+  trackId?: string;
 };
 
 export const playersAtom = atom<Player[]>([]);
