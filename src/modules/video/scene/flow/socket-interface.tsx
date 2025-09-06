@@ -93,18 +93,6 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
         });
         setLocalStream(localStream);
       }
-
-      // Дебаггер WebRTC
-      setInterval(async () => {
-        if (pcRef.current) {
-          const stats = await pcRef.current.getStats();
-          stats.forEach((report) => {
-            if (report.type === 'inbound-rtp' && report.kind === 'video') {
-              console.log(`Video inbound: ${JSON.stringify(report)}`);
-            }
-          });
-        }
-      }, 5000);
     },
     [handleRemoteTrack, setLocalStream, userId],
   );
@@ -268,19 +256,6 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
       await initPeerConnection(localStream);
       initSocket(userId);
-
-      // Временный маппинг для теста
-      setTimeout(() => {
-        const testTrackId = '0336e05b-2817-45dd-8a42-2b13f691b95c';
-        const testPlayerId = '4062';
-        trackIdToPlayerId.current.set(testTrackId, testPlayerId);
-        const pendingStream = pendingStreams.current.get(testTrackId);
-        if (pendingStream) {
-          console.log(`Test mapping stream ${pendingStream.id} to player ${testPlayerId}`);
-          setPlayers((prev) => prev.map((p) => (p.id === testPlayerId ? { ...p, streamId: pendingStream.id } : p)));
-          pendingStreams.current.delete(testTrackId);
-        }
-      }, 2000);
     },
     [initPeerConnection, initSocket, setRemoteStreams, sessionId],
   );
