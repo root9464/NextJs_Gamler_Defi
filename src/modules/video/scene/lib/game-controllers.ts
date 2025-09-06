@@ -46,6 +46,7 @@ export type Constructor<T = {}> = new (...args: any[]) => T;
 
 export function GameControllerMixin<TBase extends Constructor<Pick<WebSocket, 'send'>>>(Base: TBase) {
   return class GameController extends Base implements IGameController {
+    void: any;
     sendGameAction<T extends ActionType>(type: T, payload: ActionPayloadMap[T]) {
       const body: BodyEvent<T> = { event: 'game_action', data: { type, payload } };
       this.send(JSON.stringify(body));

@@ -14,7 +14,7 @@ const CardsArr = [
 export const CardHolder = () => {
   return (
     <div className='flex h-[69px] w-full justify-between gap-5'>
-      <div className='flex h-full grow gap-2.5'>
+      <div className='flex h-full grow gap-5'>
         {CardsArr.map((card) => (
           <NotOwn key={card.id} img={card.img} id={card.id} />
         ))}

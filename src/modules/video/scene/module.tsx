@@ -1,6 +1,7 @@
 import { UserCameraFrame } from '@/components/slices/user-camera-frame';
 import { NotOwn } from '@/modules/games/curash/features/show-card-modal';
 import { DiceResultModal } from '@/modules/games/curash/features/show-dice-modal';
+import { UserSelectCard } from '@/modules/games/curash/features/user-select-card';
 import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
 import type { ControlPanelProps } from './flow/control-panel';
@@ -12,7 +13,6 @@ type SceneModuleProps = {
   controlPanel: ControlPanelProps;
   gameField: Readonly<ReactNode>;
   cardHolder?: Readonly<ReactNode>;
-
   sessionId: string;
 };
 
@@ -46,6 +46,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
             </div>
           ))}
         </div>
+        <UserSelectCard />
         <NotOwn />
         <DiceResultModal />
       </div>

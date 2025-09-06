@@ -1,6 +1,7 @@
 import MenuHubIcon from '@/assets/svg/menuhub.svg';
 import MicroIcon from '@/assets/svg/micro.svg';
 import VideoIcon from '@/assets/svg/video.svg';
+import { IssuingCards } from '@/modules/games/curash/flows/issuing-card';
 import type { FC, ReactNode } from 'react';
 import { GiveUserCard } from '../features/give-user-card';
 import { LeaveGame } from '../features/leave-game';
@@ -11,15 +12,18 @@ type ActionButtonsProps = {
   isAdmin: boolean;
 };
 
+const Users = [{ playerId: '1' }];
+
 export const ActionButtons: FC<ActionButtonsProps> = ({ adminActions, playerActions, isAdmin }) => (
   <div className='flex w-full flex-row items-center justify-center gap-2.5'>
     {isAdmin && (
       <>
-        <GiveUserCard />
+        {/*рома пожалуйста исправь эту заглушку когда будем натягивать бекенд ебаных долбаебов что бы все хорошо было*/}
+        <IssuingCards Users={Users} />
         {adminActions}
       </>
     )}
-
+    <GiveUserCard />
     <div className='flex size-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
       <VideoIcon className='fill-black' />
     </div>

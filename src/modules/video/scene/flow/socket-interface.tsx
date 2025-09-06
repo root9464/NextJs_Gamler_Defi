@@ -16,10 +16,12 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   const { data: account } = useAccount();
   const setSocket = useSetAtom(socketAtom);
 
+  const userId = 6;
+
   useEffect(() => {
     if (!account?.user_id) return;
 
-    const url = `ws://localhost:6069/api/session/ws/${sessionId}/${account.user_id}`;
+    const url = `ws://localhost:6069/api/session/ws/sales_courage/${sessionId}/${userId}`;
     const socket = new SocketManager(url);
     setSocket(socket);
 
