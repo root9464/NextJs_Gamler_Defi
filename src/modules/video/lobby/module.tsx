@@ -6,7 +6,7 @@ import { cn } from '@/shared/utils/tw.utils';
 import Link from 'next/link';
 import type { FC } from 'react';
 import { getUserGameFlow } from './adapters/game-type';
-import { DeviceStatusChecker } from './features/device-status-checker';
+// import { DeviceStatusChecker } from './features/device-status-checker';
 
 type LobbyModuleProps = {
   roomId: string;
@@ -41,7 +41,7 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
         <CameraPreview />
         <UserGameSettings flows={gameFlow} />
       </div>
-      <DeviceStatusChecker />
+      {/* <DeviceStatusChecker /> */}
 
       <Link
         href={`/game/scene/${gameType}/${roomId}`}

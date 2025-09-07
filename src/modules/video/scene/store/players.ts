@@ -16,7 +16,7 @@ export type Player = {
   trackId?: string;
 };
 
-export const playersAtom = atom<Player[]>([]);
+export const playersAtom = atom<Player[]>([]); // рома сюда зыркай
 
 export const updatePlayerPositionAtom = atom(null, (get, set, { id, position }: { id: string; position: Position }) => {
   const players = get(playersAtom);
