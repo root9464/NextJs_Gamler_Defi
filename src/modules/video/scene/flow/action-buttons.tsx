@@ -12,14 +12,12 @@ type ActionButtonsProps = {
   isAdmin: boolean;
 };
 
-const Users = [{ playerId: '1' }];
-
 export const ActionButtons: FC<ActionButtonsProps> = ({ adminActions, playerActions, isAdmin }) => (
   <div className='flex w-full flex-row items-center justify-center gap-2.5'>
     {isAdmin && (
       <>
         {/*рома пожалуйста исправь эту заглушку когда будем натягивать бекенд ебаных долбаебов что бы все хорошо было*/}
-        <IssuingCards Users={Users} />
+        <IssuingCards />
         {adminActions}
       </>
     )}

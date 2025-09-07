@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { RemoteUsersCamera } from '@/modules/video/scene/flow/remote-users-camera';
 import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
@@ -23,6 +21,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
         <div className='max-desktop-xs:w-full relative flex h-fit w-[688px] flex-col gap-5'>
           <div className='max-desktop-xs:hidden flex w-full justify-between gap-6'>
             <ControlPanel {...controlPanel} />
+            <div className='w-[332px]' />
           </div>
 
           <MobileHeader />
@@ -37,7 +36,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
               'min-[1100px]:hidden',
             )}></div>
         </div>
-        <RemoteUsersCamera />
+        <RemoteUsersCamera cardHolder={cardHolder} />
       </div>
       {eventsModals}
     </SocketInterface>

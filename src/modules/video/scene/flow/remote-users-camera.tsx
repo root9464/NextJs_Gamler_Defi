@@ -1,11 +1,16 @@
 'use client';
 import { useAtomValue } from 'jotai';
+import type { FC, ReactNode } from 'react';
 import { UserCameraFrame } from '../slices/user-camera-frame';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
 import { remoteStreamsAtom } from '../store/video';
 
-export const RemoteUsersCamera = () => {
+type Props = {
+  cardHolder: ReactNode;
+};
+
+export const RemoteUsersCamera: FC<Props> = ({ cardHolder }) => {
   const remoteStreams = useAtomValue(remoteStreamsAtom);
   const players = useAtomValue(playersAtom);
   const currentUserId = useAtomValue(currentUserIdAtom);
@@ -26,7 +31,11 @@ export const RemoteUsersCamera = () => {
           console.log(`Rendering player ${player.id}: streamId=${player.streamId}, streamExists=${!!stream}`);
           return (
             <div className='flex h-[294px] w-[332px] flex-col gap-[25px]' key={player.id}>
-              {stream ? <UserCameraFrame stream={stream} /> : <PlaceholderFrame player={player} />}
+              {stream ? (
+                <UserCameraFrame stream={stream} cardHolder={cardHolder} />
+              ) : (
+                <PlaceholderFrame player={player} cardHolder={cardHolder} />
+              )}
             </div>
           );
         })}
@@ -34,7 +43,12 @@ export const RemoteUsersCamera = () => {
   );
 };
 
-const PlaceholderFrame = ({ player }: { player: Player }) => {
+type PlaceholderFrameProps = {
+  player: Player;
+  cardHolder: ReactNode;
+};
+
+const PlaceholderFrame: FC<PlaceholderFrameProps> = ({ player, cardHolder }) => {
   const initials = (player.name || player.id)
     .split(' ')
     .map((s) => s[0])
@@ -43,11 +57,14 @@ const PlaceholderFrame = ({ player }: { player: Player }) => {
     .toUpperCase();
 
   return (
-    <div className='relative flex h-50 w-[332px] shrink-0 flex-col items-center justify-center rounded-[11px] bg-neutral-800 px-[15px] py-[18px]'>
-      <div className='flex h-16 w-16 items-center justify-center rounded-full bg-neutral-700 text-xl font-bold text-gray-300'>
-        {initials || '?'}
+    <div className='flex flex-col gap-2.5'>
+      <div className='relative flex h-50 w-[332px] shrink-0 flex-col items-center justify-center rounded-[11px] bg-neutral-800 px-[15px] py-[18px]'>
+        <div className='flex h-16 w-16 items-center justify-center rounded-full bg-neutral-700 text-xl font-bold text-gray-300'>
+          {initials || '?'}
+        </div>
+        <div className='mt-2 text-sm text-gray-400'>{player.name || player.id}</div>
       </div>
-      <div className='mt-2 text-sm text-gray-400'>{player.name || player.id}</div>
+      {cardHolder}
     </div>
   );
 };

@@ -118,7 +118,7 @@ export const GameField = () => {
   };
 
   return (
-    <motion.div className='relative h-full w-[800px]' ref={constraintsRef}>
+    <motion.div className='relative h-full w-full' ref={constraintsRef}>
       <Image src={Curash} alt='Game background' className='aspect-[689/1369] h-full w-full object-contain' />
       {players.map((player) => (
         <motion.div

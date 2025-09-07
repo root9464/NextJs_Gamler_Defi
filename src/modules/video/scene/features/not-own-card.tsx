@@ -34,7 +34,7 @@ export const NotOwn: FC<CardsProps> = ({ id, img }) => {
         <Modal.Header />
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <Image src={img} alt='not found' />
-          <div className='flex'>
+          <div className='flex gap-2.5'>
             <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))} onClick={() => EveryOneShow(id)}>
               Показать
             </Button>

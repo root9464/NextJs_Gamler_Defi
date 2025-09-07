@@ -1,15 +1,13 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
+import type { Player } from '@/modules/video/scene/store/players';
+import { playersAtom } from '@/modules/video/scene/store/players';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import PlusIco from '@assets/svg/plus.svg';
 import { useAtomValue } from 'jotai';
 import { useState, type FC } from 'react';
-
-type UsersProps = {
-  Users: { playerId: string }[];
-};
 
 const deckData = [
   { name: 'Кураж продаж (52 карт)', deck_id: '1' },
@@ -21,9 +19,10 @@ const deckData = [
   { name: 'Пожелания от игры после руководителя (10 карт)', deck_id: '7' },
 ];
 
-export const IssuingCards: FC<UsersProps> = ({ Users }) => {
+export const IssuingCards = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
+  const Players = useAtomValue(playersAtom);
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
@@ -33,6 +32,7 @@ export const IssuingCards: FC<UsersProps> = ({ Users }) => {
       onClose();
       setSelectedDeckId(null);
       setSelectedPlayerId(null);
+      console.log('Карты выданы');
     } else {
       console.warn('Пожалуйста, выберите колоду и игрока.');
     }
@@ -50,7 +50,7 @@ export const IssuingCards: FC<UsersProps> = ({ Users }) => {
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-4'>
             <Deck selectedDeckId={selectedDeckId} onSelectDeck={setSelectedDeckId} />
-            <UsersRender Users={Users} selectedPlayerId={selectedPlayerId} onSelectPlayer={setSelectedPlayerId} />
+            <UsersRender Players={Players} selectedPlayerId={selectedPlayerId} onSelectPlayer={setSelectedPlayerId} />
           </div>
         </Modal.Body>
         <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>
@@ -94,21 +94,22 @@ const Deck: FC<DeckProps> = ({ selectedDeckId, onSelectDeck }) => {
   );
 };
 
-type UsersRenderProps = UsersProps & {
+type UsersRenderProps = {
   selectedPlayerId: string | null;
-  onSelectPlayer: (playerId: string) => void;
+  onSelectPlayer: (id: string) => void;
+  Players: Player[];
 };
 
-const UsersRender: FC<UsersRenderProps> = ({ Users, selectedPlayerId, onSelectPlayer }) => {
+const UsersRender: FC<UsersRenderProps> = ({ Players, selectedPlayerId, onSelectPlayer }) => {
   return (
     <div className='flex flex-col gap-2.5'>
       <h2 className='font-semibold'>Выберите игрока, которому будет выдана карта</h2>
       <div className='flex w-full gap-2.5'>
-        {Users.map(({ playerId }) => (
+        {Players.map(({ id }) => (
           <div
-            className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe] ${selectedPlayerId === playerId ? 'border-2 border-[#1890FF]' : 'focus:border focus:border-[#1890FF]'}`}
-            onClick={() => onSelectPlayer(playerId)}>
-            {playerId}
+            className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe] ${selectedPlayerId === id ? 'border-2 border-[#1890FF]' : 'focus:border focus:border-[#1890FF]'}`}
+            onClick={() => onSelectPlayer(id)}>
+            {id}
           </div>
         ))}
       </div>
