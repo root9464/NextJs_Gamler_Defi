@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type { ICourageGameController } from '@/modules/games/curash/lib/courage-game-controller';
 import type { IGameController } from '@/modules/video/scene/lib/game-controllers';
 import type { WSEventHandler, WSMessage } from '@/shared/types/ws';

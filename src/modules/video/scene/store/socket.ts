@@ -26,3 +26,12 @@ export const MINIMAL_SOCKET_MANAGER: ISocketManager = {
 };
 
 export const socketAtom = atom<ISocketManager>(MINIMAL_SOCKET_MANAGER);
+
+export interface Token {
+  userId: string;
+  position: {
+    x: number;
+    y: number;
+  };
+}
+export const tokensAtom = atom<Token[]>([]);

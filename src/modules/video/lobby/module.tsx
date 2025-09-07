@@ -1,9 +1,12 @@
+'use client';
+
 import { CameraPreview } from '@/modules/video/lobby/features/camera-preview';
 import { UserGameSettings } from '@/modules/video/lobby/flow/user-game-settings';
+import { cn } from '@/shared/utils/tw.utils';
+import Link from 'next/link';
 import type { FC } from 'react';
 import { getUserGameFlow } from './adapters/game-type';
 import { DeviceStatusChecker } from './features/device-status-checker';
-import { GameButton } from './features/game-button';
 
 type LobbyModuleProps = {
   roomId: string;
@@ -19,6 +22,18 @@ const Description = () => (
 
 export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
   const gameFlow = getUserGameFlow(gameType);
+
+  const allowAudioAndNavigate = () => {
+    // Разрешаем звук для всех video-элементов (в том числе future remote-потоков)
+    document.querySelectorAll('video').forEach((v: HTMLVideoElement) => {
+      v.muted = false;
+      const p = v.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    });
+    // Можно здесь выполнять дополнительную логику, если нужно
+    // Переход на страницу игровой сцены выполняется через Link ниже
+  };
+
   return (
     <div className='m-auto flex w-full flex-col items-center justify-center gap-5'>
       <Description />
@@ -27,7 +42,13 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
         <UserGameSettings flows={gameFlow} />
       </div>
       <DeviceStatusChecker />
-      <GameButton className='mt-10 h-8 w-75' roomId={roomId} gameType={gameType} />
+
+      <Link
+        href={`/game/scene/${gameType}/${roomId}`}
+        className={cn('mt-10 flex h-8 w-75 items-center justify-center rounded bg-blue-600 text-white hover:bg-blue-500')}
+        onClick={allowAudioAndNavigate}>
+        Разрешить звук и перейти в комнату
+      </Link>
     </div>
   );
 };

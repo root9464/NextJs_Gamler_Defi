@@ -1,7 +1,6 @@
-import { UserCameraFrame } from '@/components/slices/user-camera-frame';
-import { NotOwn } from '@/modules/games/curash/features/show-card-modal';
-import { DiceResultModal } from '@/modules/games/curash/features/show-dice-modal';
-import { UserSelectCard } from '@/modules/games/curash/features/user-select-card';
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { RemoteUsersCamera } from '@/modules/video/scene/flow/remote-users-camera';
 import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
 import type { ControlPanelProps } from './flow/control-panel';
@@ -13,17 +12,17 @@ type SceneModuleProps = {
   controlPanel: ControlPanelProps;
   gameField: Readonly<ReactNode>;
   cardHolder?: Readonly<ReactNode>;
+  eventsModals?: Readonly<ReactNode>;
   sessionId: string;
 };
 
-export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, cardHolder, sessionId }) => {
+export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, cardHolder, eventsModals, sessionId }) => {
   return (
     <SocketInterface sessionId={sessionId}>
       <div className='flex h-min w-full flex-row gap-[25px] bg-black px-5 py-[25px] text-white'>
         <div className='max-desktop-xs:w-full relative flex h-fit w-[688px] flex-col gap-5'>
           <div className='max-desktop-xs:hidden flex w-full justify-between gap-6'>
             <ControlPanel {...controlPanel} />
-            <UserCameraFrame />
           </div>
 
           <MobileHeader />
@@ -38,18 +37,9 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
               'min-[1100px]:hidden',
             )}></div>
         </div>
-        <div className='max-desktop-xs:hidden flex max-h-[1587px] w-full flex-wrap content-start gap-6 overflow-y-auto'>
-          {Array.from({ length: 34 }).map((_, index) => (
-            <div className='flex h-[294px] w-[332px] flex-col gap-[25px]' key={index}>
-              <UserCameraFrame />
-              {cardHolder}
-            </div>
-          ))}
-        </div>
-        <UserSelectCard />
-        <NotOwn />
-        <DiceResultModal />
+        <RemoteUsersCamera />
       </div>
+      {eventsModals}
     </SocketInterface>
   );
 };
