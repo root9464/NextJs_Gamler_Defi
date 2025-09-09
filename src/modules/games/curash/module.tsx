@@ -31,7 +31,7 @@ export const CurashModule: FC<CurashModuleProps> = ({ sessionId }) => {
           </div>
         ),
       }}
-      cardHolder={<CardHolder />}
+      cardHolder={CardHolder}
       gameField={<GameField />}
       eventsModals={
         <>

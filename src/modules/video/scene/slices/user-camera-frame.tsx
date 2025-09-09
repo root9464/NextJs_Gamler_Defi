@@ -2,15 +2,14 @@ import HeartIcon from '@/assets/svg/hearthub.svg';
 import InfoIcon from '@/assets/svg/info.svg';
 import MuteIcon from '@/assets/svg/mute.svg';
 import { cn } from '@/shared/utils/tw.utils';
-import type { ReactNode } from 'react';
 import { useEffect, useRef, type FC } from 'react';
 
 type UsersCameraFrameProps = {
   stream: MediaStream;
-  cardHolder: ReactNode;
+  cardHolder: FC<{ userId: string }>;
 };
 
-export const UserCameraFrame: FC<UsersCameraFrameProps> = ({ stream, cardHolder }) => {
+export const UserCameraFrame: FC<UsersCameraFrameProps> = ({ stream, cardHolder: CardHolder }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export const UserCameraFrame: FC<UsersCameraFrameProps> = ({ stream, cardHolder 
 
         <Footer />
       </div>
-      {cardHolder}
+      <CardHolder userId='1' />
     </div>
   );
 };

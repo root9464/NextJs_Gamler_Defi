@@ -1,9 +1,11 @@
+'use client';
 import TestImg from '@/assets/img/test.jpg';
 import Test2Img from '@/assets/img/test2.jpg';
 import CoinIcon from '@/assets/svg/coin.svg';
 import PlusIcon from '@/assets/svg/plus.svg';
 import { NotOwn } from '@/modules/video/scene/features/not-own-card';
 import { UserAllCard } from '@/modules/video/scene/slices/user-all-cards';
+import type { FC } from 'react';
 import { SettingsCoins } from '../features/setting-coins';
 
 const CardsArr = [
@@ -11,7 +13,13 @@ const CardsArr = [
   { id: '2', img: Test2Img },
 ];
 
-export const CardHolder = () => {
+type CardHolderProps = {
+  userId: string;
+};
+
+export const CardHolder: FC<CardHolderProps> = ({ userId }) => {
+  console.log(userId, 'userId');
+
   return (
     <div className='flex h-[69px] w-full justify-between gap-5'>
       <div className='flex h-full grow gap-5'>

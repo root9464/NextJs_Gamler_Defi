@@ -12,7 +12,7 @@ import { SocketInterface } from './flow/socket-interface';
 type SceneModuleProps = {
   controlPanel: ControlPanelProps;
   gameField: Readonly<ReactNode>;
-  cardHolder?: Readonly<ReactNode>;
+  cardHolder: FC<{ userId: string }>;
   eventsModals?: Readonly<ReactNode>;
   sessionId: string;
 };

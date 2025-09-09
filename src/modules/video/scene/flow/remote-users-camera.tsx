@@ -1,13 +1,13 @@
 'use client';
 import { useAtomValue } from 'jotai';
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
 import { UserCameraFrame } from '../slices/user-camera-frame';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
 import { remoteStreamsAtom } from '../store/video';
 
 type Props = {
-  cardHolder: ReactNode;
+  cardHolder: FC<{ userId: string }>;
 };
 
 export const RemoteUsersCamera: FC<Props> = ({ cardHolder }) => {
@@ -45,10 +45,10 @@ export const RemoteUsersCamera: FC<Props> = ({ cardHolder }) => {
 
 type PlaceholderFrameProps = {
   player: Player;
-  cardHolder: ReactNode;
+  cardHolder: FC<{ userId: string }>;
 };
 
-const PlaceholderFrame: FC<PlaceholderFrameProps> = ({ player, cardHolder }) => {
+const PlaceholderFrame: FC<PlaceholderFrameProps> = ({ player, cardHolder: CardHolder }) => {
   const initials = (player.name || player.id)
     .split(' ')
     .map((s) => s[0])
@@ -64,7 +64,7 @@ const PlaceholderFrame: FC<PlaceholderFrameProps> = ({ player, cardHolder }) => 
         </div>
         <div className='mt-2 text-sm text-gray-400'>{player.name || player.id}</div>
       </div>
-      {cardHolder}
+      <CardHolder userId='1' />
     </div>
   );
 };
