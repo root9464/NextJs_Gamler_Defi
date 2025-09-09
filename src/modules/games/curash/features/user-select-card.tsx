@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import { Modal } from '@/components/ui/modal';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useAtomValue } from 'jotai';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type PromptSelectResponse = {
   id: string;
@@ -14,46 +16,59 @@ type PromptSelectResponse = {
 };
 
 export const UserSelectCard = () => {
-  const [lastRoll, setLastRoll] = useState<PromptSelectResponse | null>(null);
-  const [showImage, setShowImage] = useState<number | null>(null);
+  const [selectedDeck, setSelectedDeck] = useState<PromptSelectResponse | null>(null);
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
-  console.log('showImage', showImage);
+
+  const handleCardSelect = useCallback(
+    (cardId: string) => {
+      if (!selectedDeck) return;
+
+      setSelectedCardId(cardId);
+      socketManager.gameController.selectCard(selectedDeck.id, cardId);
+      console.log('cardId', cardId);
+      console.log('selectedDeck.id', selectedDeck.id);
+    },
+    [selectedDeck, socketManager],
+  );
 
   useEffect(() => {
-    const subscribe = socketManager.on('prompt_select_card', (data: PromptSelectResponse) => {
-      console.log('prompt_select_card получено', data);
-      setLastRoll(data);
-      setShowImage(null);
+    const handlePromptSelect = (data: PromptSelectResponse) => {
+      setSelectedDeck(data);
+      setSelectedCardId(null);
       onOpen();
-    });
+    };
 
-    return () => subscribe();
+    socketManager.on('prompt_select_card', handlePromptSelect);
+
+    return () => {
+      socketManager.off('prompt_select_card', handlePromptSelect);
+    };
   }, [socketManager, onOpen]);
 
-  const handleModalClick = (index: number) => {
-    if (lastRoll && !showImage) {
-      setShowImage(index);
-    }
-  };
+  const handleClose = useCallback(() => {
+    setSelectedCardId(null);
+    onClose();
+  }, [onClose]);
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onClose}>
+    <Modal isOpen={isOpen} onOpenChange={handleClose}>
       <Modal.Content>
         <Modal.Header />
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <h1>Выберите карту</h1>
           <div className='flex gap-3'>
-            {showImage && lastRoll?.back_image_url ? (
-              <Image src={lastRoll.back_image_url} alt='Выбранная карта' className='h-auto w-full object-cover' />
-            ) : (
-              lastRoll?.cards.map((_, index) => (
-                <div
-                  onClick={() => handleModalClick(index)}
-                  className='flex h-[75px] w-[75px] items-center justify-center rounded-xs bg-black text-3xl font-bold text-white'
-                  key={index}></div>
-              ))
-            )}
+            {selectedDeck?.cards.map((cardId) => (
+              <Image
+                key={cardId}
+                src={selectedDeck.back_image_url}
+                alt='not found'
+                width={120}
+                height={120}
+                onClick={() => handleCardSelect(cardId)}
+              />
+            ))}
           </div>
         </Modal.Body>
         <Modal.Footer />

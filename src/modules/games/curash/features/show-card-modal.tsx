@@ -16,7 +16,7 @@ type CardRevealedResponse = {
   task: string;
 };
 
-export const NotOwn = () => {
+export const ShowCardModal = () => {
   const [show, setShow] = useState<CardRevealedResponse | null>(null);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);

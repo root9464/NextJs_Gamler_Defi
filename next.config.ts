@@ -11,6 +11,17 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '6069',
+        pathname: '/api/game/assets/**',
+      },
+    ],
+  },
+
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule: any) => rule.test?.test?.('.svg'));
 

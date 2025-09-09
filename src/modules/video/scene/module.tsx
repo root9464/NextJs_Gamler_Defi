@@ -1,3 +1,6 @@
+import { SelectedCard } from '@/modules/games/curash/features/selected-card';
+import { ShowCardModal } from '@/modules/games/curash/features/show-card-modal';
+import { UserSelectCard } from '@/modules/games/curash/features/user-select-card';
 import { RemoteUsersCamera } from '@/modules/video/scene/flow/remote-users-camera';
 import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
@@ -36,6 +39,9 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
               'min-[1100px]:hidden',
             )}></div>
         </div>
+        <ShowCardModal />
+        <SelectedCard />
+        <UserSelectCard />
         <RemoteUsersCamera cardHolder={cardHolder} />
       </div>
       {eventsModals}

@@ -7,17 +7,25 @@ import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import PlusIco from '@assets/svg/plus.svg';
 import { useAtomValue } from 'jotai';
-import { useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 
-const deckData = [
-  { name: 'Кураж продаж (52 карт)', deck_id: '1' },
-  { name: 'Инструменты успешного продавца (52 карт)', deck_id: '2' },
-  { name: 'Новичок (54 карт)', deck_id: '3' },
-  { name: 'Продавец (36 карт)', deck_id: '4' },
-  { name: 'Руководитель продаж (24 карт)', deck_id: '5' },
-  { name: 'Пожелания от игры до руководителя (10 карт)', deck_id: '6' },
-  { name: 'Пожелания от игры после руководителя (10 карт)', deck_id: '7' },
-];
+type Card = {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  image_url: string;
+  task: string;
+};
+
+type DeckFromServer = {
+  deck: {
+    id: string;
+    name: string;
+    back_image_url: string;
+    cards: Card[];
+  };
+};
 
 export const IssuingCards = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -25,18 +33,34 @@ export const IssuingCards = () => {
   const Players = useAtomValue(playersAtom);
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const [decks, setDecks] = useState<DeckFromServer[]>([]);
 
   const GiveDeckForSelection = () => {
     if (selectedDeckId && selectedPlayerId) {
       socketManager.gameController.giveDeckForSelection(selectedDeckId, selectedPlayerId);
-      onClose();
       setSelectedDeckId(null);
       setSelectedPlayerId(null);
       console.log('Карты выданы');
+      onClose();
     } else {
       console.warn('Пожалуйста, выберите колоду и игрока.');
     }
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    console.log('Запрос колод с сервера');
+    socketManager.gameController.getDecks();
+    console.log('socketManager', socketManager);
+
+    console.log('Подписка на событие got_decks');
+    socketManager.on('got_decks', (data: DeckFromServer[]) => {
+      console.log('got_decks получено', data);
+      setDecks(data);
+    });
+  }, [isOpen, socketManager]);
+
+  console.log('isOpen', isOpen);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -49,7 +73,7 @@ export const IssuingCards = () => {
         <Modal.Header>Выдача карт игрокам</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-4'>
-            <Deck selectedDeckId={selectedDeckId} onSelectDeck={setSelectedDeckId} />
+            <Deck selectedDeckId={selectedDeckId} onSelectDeck={setSelectedDeckId} decks={decks} />
             <UsersRender Players={Players} selectedPlayerId={selectedPlayerId} onSelectPlayer={setSelectedPlayerId} />
           </div>
         </Modal.Body>
@@ -67,25 +91,26 @@ export const IssuingCards = () => {
 };
 
 type DeckProps = {
+  decks: DeckFromServer[];
   selectedDeckId: string | null;
   onSelectDeck: (deckId: string) => void;
 };
 
-const Deck: FC<DeckProps> = ({ selectedDeckId, onSelectDeck }) => {
+const Deck: FC<DeckProps> = ({ selectedDeckId, onSelectDeck, decks }) => {
   return (
     <div className='flex flex-col gap-2.5'>
       <h2 className='font-semibold'>Выберите колоду</h2>
-      {deckData.map(({ name, deck_id }) => (
-        <div className='group flex cursor-pointer items-center gap-2.5' tabIndex={0} onClick={() => onSelectDeck(deck_id)}>
+      {decks.map(({ deck: { name, id } }) => (
+        <div className='group flex cursor-pointer items-center gap-2.5' tabIndex={0} onClick={() => onSelectDeck(id)} key={id}>
           <div className='relative flex items-center justify-center'>
             <input
               type='checkbox'
               className='h-4 w-4 appearance-none rounded-full border border-black group-hover:border-[#1890FF] group-focus:border-[#1890FF]'
-              checked={selectedDeckId === deck_id}
+              checked={selectedDeckId === id}
               readOnly
             />
             <div className='absolute hidden h-2 w-2 rounded-full bg-[#1890FF] group-focus:block' />
-            {selectedDeckId === deck_id && <div className='absolute h-2 w-2 rounded-full bg-[#1890FF]' />}
+            {selectedDeckId === id && <div className='absolute h-2 w-2 rounded-full bg-[#1890FF]' />}
           </div>
           <p>{name}</p>
         </div>
@@ -107,6 +132,7 @@ const UsersRender: FC<UsersRenderProps> = ({ Players, selectedPlayerId, onSelect
       <div className='flex w-full gap-2.5'>
         {Players.map(({ id }) => (
           <div
+            key={id}
             className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe] ${selectedPlayerId === id ? 'border-2 border-[#1890FF]' : 'focus:border focus:border-[#1890FF]'}`}
             onClick={() => onSelectPlayer(id)}>
             {id}

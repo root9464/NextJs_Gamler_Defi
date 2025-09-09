@@ -2,7 +2,7 @@
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useSetAtom } from 'jotai';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState, type FC, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, type FC, type ReactNode } from 'react';
 import { SocketManager } from '../lib/socket-manager';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
@@ -32,7 +32,8 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   const pathname = usePathname();
 
   // УДАЛИТЬ В ПРОДЕ!
-  const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
+  // const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
+  const userId = '1';
 
   const handleRemoteTrack = useCallback(
     (stream: MediaStream, trackId: string) => {
@@ -102,10 +103,10 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
       const url = `ws://127.0.0.1:6069/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
       const socket = new SocketManager(url);
       socketRef.current = socket;
-      setSocket(socket);
 
       socket.on('open', () => {
         console.log(`WebSocket connected: userId=${userId}`);
+        setSocket(socket);
         setCurrentUserId(userId);
         socket.sendMessage('request_offer', '');
         socket.sendMessage('participants', '');
