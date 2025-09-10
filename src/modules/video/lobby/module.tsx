@@ -10,7 +10,7 @@ import { DeviceStatusChecker } from './features/device-status-checker';
 
 type LobbyModuleProps = {
   roomId: string;
-  gameType: 'curash' | 'acceptence';
+  gameType: 'sales_courage' | 'acceptence';
 };
 
 const Description = () => (
@@ -24,14 +24,11 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
   const gameFlow = getUserGameFlow(gameType);
 
   const allowAudioAndNavigate = () => {
-    // Разрешаем звук для всех video-элементов (в том числе future remote-потоков)
     document.querySelectorAll('video').forEach((v: HTMLVideoElement) => {
       v.muted = false;
       const p = v.play();
       if (p && typeof p.catch === 'function') p.catch(() => {});
     });
-    // Можно здесь выполнять дополнительную логику, если нужно
-    // Переход на страницу игровой сцены выполняется через Link ниже
   };
 
   return (
