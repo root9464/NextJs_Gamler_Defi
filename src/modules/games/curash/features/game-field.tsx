@@ -40,6 +40,18 @@ const calculateRelativePosition = (event: PointerEvent, rect: DOMRect): { x: num
   };
 };
 
+const assignInitialPositions = (players: Player[]): Player[] => {
+  const offset = 0.1;
+  const initialY = 0.5;
+  return players.map((player, index) => ({
+    ...player,
+    position: {
+      x: round(clamp(offset * (index + 1), 0, 1)),
+      y: initialY,
+    },
+  }));
+};
+
 export const GameField = () => {
   const constraintsRef = useRef<HTMLDivElement>(null);
   const socketManager = useAtomValue(socketAtom);
@@ -53,12 +65,17 @@ export const GameField = () => {
     if (!socketManager) return;
 
     const handleFullState = (payload: FullStatePayload) => {
-      console.log('Full state received:', payload);
+      const updatedPlayers = assignInitialPositions(payload.players);
+      updatedPlayers.forEach((player) => {
+        updatePlayerPosition({ id: player.id, position: player.position });
+        if (socketManager.gameController?.moveToken) {
+          socketManager.gameController.moveToken(player.position);
+        }
+      });
       setLocalPosition({});
     };
 
     const handleTokenMoved = (payload: { playerId: string; position: { x: number; y: number } }) => {
-      console.log(`Token moved for player ${payload.playerId} to:`, payload.position);
       if (payload.playerId !== currentUserId) {
         updatePlayerPosition({ id: payload.playerId, position: normalizePosition(payload.position) });
       }
@@ -79,9 +96,6 @@ export const GameField = () => {
 
       const rect = constraintsRef.current.getBoundingClientRect();
       const { x, y } = calculateRelativePosition(event, rect);
-      console.log('Dragging token to relative position:', { x, y });
-      console.log('Dragging token to absolute position:', { x: event.clientX, y: event.clientY });
-
       setLocalPosition((prev) => ({ ...prev, [currentUserId!]: { x, y } }));
     };
 
@@ -91,9 +105,6 @@ export const GameField = () => {
       draggingRef.current = null;
       const rect = constraintsRef.current.getBoundingClientRect();
       const { x, y } = calculateRelativePosition(event, rect);
-      console.log('Dropped token at relative position:', { x, y });
-      console.log('Dropped token at absolute position:', { x: event.clientX, y: event.clientY });
-
       setLocalPosition((prev) => ({ ...prev, [currentUserId!]: { x, y } }));
       updatePlayerPosition({ id: currentUserId!, position: { x, y } });
       if (socketManager?.gameController?.moveToken) {
