@@ -1,6 +1,5 @@
 import { cn } from '@/shared/utils/tw.utils';
 import { MenuBar } from '../slices/menu-bar';
-import { RemoteUsersCamera } from './remote-users-camera';
 
 export const MobileHeader = () => {
   return (
@@ -13,9 +12,7 @@ export const MobileHeader = () => {
         'min-[1100px]:hidden',
       )}>
       <MenuBar />
-      <div className='test-box scrollbar-hide flex max-w-3/5 flex-row gap-3 overflow-x-scroll'>
-        <RemoteUsersCamera />
-      </div>
+      <div className='test-box scrollbar-hide flex max-w-3/5 flex-row gap-3 overflow-x-scroll'>{/* <RemoteUsersCamera /> */}</div>
     </div>
   );
 };

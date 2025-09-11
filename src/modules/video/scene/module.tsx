@@ -6,7 +6,7 @@ import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
 import type { ControlPanelProps } from './flow/control-panel';
 import { ControlPanel } from './flow/control-panel';
-import { MobileHeader } from './flow/mobile-header';
+// import { MobileHeader } from './flow/mobile-header';
 import { SocketInterface } from './flow/socket-interface';
 
 type SceneModuleProps = {
@@ -27,7 +27,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
             <div className='w-[332px]' />
           </div>
 
-          <MobileHeader />
+          {/* <MobileHeader /> */}
 
           {gameField}
 

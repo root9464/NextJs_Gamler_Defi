@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { CameraPreview } from '@/modules/video/lobby/features/camera-preview';
 import { UserGameSettings } from '@/modules/video/lobby/flow/user-game-settings';
 import { cn } from '@/shared/utils/tw.utils';

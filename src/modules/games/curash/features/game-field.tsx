@@ -20,6 +20,9 @@ interface FullStatePayload {
   players: Player[];
 }
 
+const X_OFFSET = 0.1;
+const INITIAL_Y = 0.5;
+
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 const round = (value: number, precision: number = 100000): number => Math.round(value * precision) / precision;
 const toNumber = (value: number | string): number => (typeof value === 'number' ? value : parseFloat(value) || 0);
@@ -40,6 +43,16 @@ const calculateRelativePosition = (event: PointerEvent, rect: DOMRect): { x: num
   };
 };
 
+const assignInitialPositions = (players: Player[]): Player[] => {
+  return players.map((player, index) => ({
+    ...player,
+    position: {
+      x: round(clamp(X_OFFSET * (index + 1), 0, 1)),
+      y: INITIAL_Y,
+    },
+  }));
+};
+
 export const GameField = () => {
   const constraintsRef = useRef<HTMLDivElement>(null);
   const socketManager = useAtomValue(socketAtom);
@@ -53,12 +66,17 @@ export const GameField = () => {
     if (!socketManager) return;
 
     const handleFullState = (payload: FullStatePayload) => {
-      console.log('Full state received:', payload);
+      const updatedPlayers = assignInitialPositions(payload.players);
+      updatedPlayers.forEach((player) => {
+        updatePlayerPosition({ id: player.id, position: player.position });
+        if (socketManager.gameController?.moveToken) {
+          socketManager.gameController.moveToken(player.position);
+        }
+      });
       setLocalPosition({});
     };
 
     const handleTokenMoved = (payload: { playerId: string; position: { x: number; y: number } }) => {
-      console.log(`Token moved for player ${payload.playerId} to:`, payload.position);
       if (payload.playerId !== currentUserId) {
         updatePlayerPosition({ id: payload.playerId, position: normalizePosition(payload.position) });
       }
@@ -79,9 +97,6 @@ export const GameField = () => {
 
       const rect = constraintsRef.current.getBoundingClientRect();
       const { x, y } = calculateRelativePosition(event, rect);
-      console.log('Dragging token to relative position:', { x, y });
-      console.log('Dragging token to absolute position:', { x: event.clientX, y: event.clientY });
-
       setLocalPosition((prev) => ({ ...prev, [currentUserId!]: { x, y } }));
     };
 
@@ -91,9 +106,6 @@ export const GameField = () => {
       draggingRef.current = null;
       const rect = constraintsRef.current.getBoundingClientRect();
       const { x, y } = calculateRelativePosition(event, rect);
-      console.log('Dropped token at relative position:', { x, y });
-      console.log('Dropped token at absolute position:', { x: event.clientX, y: event.clientY });
-
       setLocalPosition((prev) => ({ ...prev, [currentUserId!]: { x, y } }));
       updatePlayerPosition({ id: currentUserId!, position: { x, y } });
       if (socketManager?.gameController?.moveToken) {
@@ -118,7 +130,7 @@ export const GameField = () => {
   };
 
   return (
-    <motion.div className='relative h-full w-full' ref={constraintsRef}>
+    <motion.div className='relative h-full w-[800px]' ref={constraintsRef}>
       <Image src={Curash} alt='Game background' className='aspect-[689/1369] h-full w-full object-contain' />
       {players.map((player) => (
         <motion.div
