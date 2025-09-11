@@ -20,6 +20,9 @@ interface FullStatePayload {
   players: Player[];
 }
 
+const X_OFFSET = 0.1;
+const INITIAL_Y = 0.5;
+
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 const round = (value: number, precision: number = 100000): number => Math.round(value * precision) / precision;
 const toNumber = (value: number | string): number => (typeof value === 'number' ? value : parseFloat(value) || 0);
@@ -41,13 +44,11 @@ const calculateRelativePosition = (event: PointerEvent, rect: DOMRect): { x: num
 };
 
 const assignInitialPositions = (players: Player[]): Player[] => {
-  const offset = 0.1;
-  const initialY = 0.5;
   return players.map((player, index) => ({
     ...player,
     position: {
-      x: round(clamp(offset * (index + 1), 0, 1)),
-      y: initialY,
+      x: round(clamp(X_OFFSET * (index + 1), 0, 1)),
+      y: INITIAL_Y,
     },
   }));
 };
