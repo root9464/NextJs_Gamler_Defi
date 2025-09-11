@@ -232,7 +232,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
         }
       });
     },
-    [sessionId, setCurrentUserId, setPlayers, setSocket, userId],
+    [sessionId, setCurrentUserId, setPlayers, setSocket],
   );
 
   const joinRoom = useCallback(
