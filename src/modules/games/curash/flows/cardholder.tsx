@@ -31,6 +31,7 @@ type CardHolderProps = {
 export const CardHolder: FC<CardHolderProps> = ({ userId }) => {
   const socketManager = useAtomValue(socketAtom);
   const [hand, setHand] = useState<ShowPlayerHandResult[]>([]);
+
   useEffect(() => {
     setInterval(() => {
       socketManager.gameController.showPlayerHand(userId);
@@ -38,8 +39,8 @@ export const CardHolder: FC<CardHolderProps> = ({ userId }) => {
         console.log('show_player_hand_result получено', data);
         setHand(data);
       });
-    }, 10000);
-  }, [socketManager, userId]);
+    }, 100000);
+  }, []);
 
   const allCards = hand.flatMap((deck) =>
     deck.cards.map((card) => ({
@@ -49,6 +50,9 @@ export const CardHolder: FC<CardHolderProps> = ({ userId }) => {
   );
 
   const firstTwoCards = allCards.slice(0, 2);
+  console.log('userId-cardholder', userId);
+  console.log('firstTwoCards', firstTwoCards);
+  console.log('hand', hand);
 
   return (
     <div className='flex h-[69px] w-full justify-between gap-5'>

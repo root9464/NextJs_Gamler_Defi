@@ -19,26 +19,25 @@ export const RemoteUsersCamera: FC<Props> = ({ cardHolder }) => {
     'Remote streams:',
     remoteStreams.map((s) => s.id),
   );
+
   console.log('Players:', players);
   console.log('Current user ID:', currentUserId);
 
   return (
     <div className='max-desktop-xs:hidden flex max-h-[1587px] w-full flex-wrap content-start gap-6 overflow-y-auto'>
-      {players
-        .filter((player) => player.id !== currentUserId)
-        .map((player) => {
-          const stream = player.streamId ? remoteStreams.find((s) => s.id === player.streamId) : undefined;
-          console.log(`Rendering player ${player.id}: streamId=${player.streamId}, streamExists=${!!stream}`);
-          return (
-            <div className='flex h-[294px] w-[332px] flex-col gap-[25px]' key={player.id}>
-              {stream ? (
-                <UserCameraFrame stream={stream} cardHolder={cardHolder} />
-              ) : (
-                <PlaceholderFrame player={player} cardHolder={cardHolder} />
-              )}
-            </div>
-          );
-        })}
+      {players.map((player) => {
+        const stream = player.streamId ? remoteStreams.find((s) => s.id === player.streamId) : undefined;
+        console.log(`Rendering player ${player.id}: streamId=${player.streamId}, streamExists=${!!stream}`);
+        return (
+          <div className='flex h-[294px] w-[332px] flex-col gap-[25px]' key={player.id}>
+            {stream ? (
+              <UserCameraFrame player={player} stream={stream} cardHolder={cardHolder} />
+            ) : (
+              <PlaceholderFrame player={player} cardHolder={cardHolder} />
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -49,6 +48,7 @@ type PlaceholderFrameProps = {
 };
 
 const PlaceholderFrame: FC<PlaceholderFrameProps> = ({ player, cardHolder: CardHolder }) => {
+  console.log('Rendering placeholder for player', player.id);
   const initials = (player.name || player.id)
     .split(' ')
     .map((s) => s[0])

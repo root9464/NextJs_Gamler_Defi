@@ -10,7 +10,7 @@ import { useAtomValue } from 'jotai';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
-type HandFromServer = {
+type Card = {
   id: string;
   title: string;
   description: string;
@@ -19,10 +19,17 @@ type HandFromServer = {
   task: string;
 };
 
+export type ShowPlayerHandResult = {
+  background_image_url: string;
+  cards: Card[];
+  deck_id: string;
+  deck_name: string;
+};
+
 export const GiveUserCard = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
-  const [hand, setHands] = useState<HandFromServer[]>([]);
+  const [hand, setHands] = useState<ShowPlayerHandResult[]>([]);
 
   const sendId = (userId: string) => {
     console.log('Запрос колод с сервера');
@@ -33,7 +40,7 @@ export const GiveUserCard = () => {
   useEffect(() => {
     if (!isOpen) return;
     console.log('Подписка на событие got_decks');
-    socketManager.on('show_player_hand_result', (data: HandFromServer[]) => {
+    socketManager.on('show_player_hand_result', (data: ShowPlayerHandResult[]) => {
       console.log('got_decks получено', data);
       setHands(data);
     });
@@ -51,9 +58,14 @@ export const GiveUserCard = () => {
         <Modal.Body className='flex flex-col gap-5 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <UsersRender sendId={sendId} />
           <div className='flex flex-col gap-2.5'>
-            {hand.map(({ image_url, id, title }) => (
-              <div className='flex gap-2.5'>
-                <img src={image_url} key={id} alt={title} className='h-[150px] w-[150px]' />
+            {hand.map((deck) => (
+              <div key={deck.deck_id} className='flex flex-col gap-2.5'>
+                <h3>{deck.deck_name}</h3>
+                <div className='flex w-full gap-2.5'>
+                  {deck.cards.map(({ image_url, id, title }) => (
+                    <img src={image_url} key={id} alt={title} className='h-[150px] w-[150px]' />
+                  ))}
+                </div>
               </div>
             ))}
           </div>

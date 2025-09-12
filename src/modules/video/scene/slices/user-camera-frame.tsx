@@ -3,13 +3,15 @@ import InfoIcon from '@/assets/svg/info.svg';
 import MuteIcon from '@/assets/svg/mute.svg';
 import { cn } from '@/shared/utils/tw.utils';
 import { useEffect, useRef, type FC } from 'react';
+import type { Player } from '../store/players';
 
 type UsersCameraFrameProps = {
   stream: MediaStream;
   cardHolder: FC<{ userId: string }>;
+  player: Player;
 };
 
-export const UserCameraFrame: FC<UsersCameraFrameProps> = ({ stream, cardHolder: CardHolder }) => {
+export const UserCameraFrame: FC<UsersCameraFrameProps> = ({ stream, cardHolder: CardHolder, player }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export const UserCameraFrame: FC<UsersCameraFrameProps> = ({ stream, cardHolder:
 
         <Footer />
       </div>
-      <CardHolder userId='1' />
+      <CardHolder userId={player.id} />
     </div>
   );
 };
