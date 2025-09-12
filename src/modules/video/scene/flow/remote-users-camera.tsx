@@ -64,7 +64,7 @@ const PlaceholderFrame: FC<PlaceholderFrameProps> = ({ player, cardHolder: CardH
         </div>
         <div className='mt-2 text-sm text-gray-400'>{player.name || player.id}</div>
       </div>
-      <CardHolder userId='1' />
+      <CardHolder userId={player.id} />
     </div>
   );
 };

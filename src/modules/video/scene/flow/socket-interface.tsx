@@ -2,7 +2,7 @@
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useSetAtom } from 'jotai';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, type FC, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type FC, type ReactNode } from 'react';
 import { SocketManager } from '../lib/socket-manager';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
@@ -33,7 +33,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   // УДАЛИТЬ В ПРОДЕ!
   // const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
-  const userId = '1';
+  const [userId] = useState(() => (Math.random() > 0.5 ? '1' : '2'));
 
   const handleRemoteTrack = useCallback(
     (stream: MediaStream, trackId: string) => {

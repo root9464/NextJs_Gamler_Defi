@@ -1,9 +1,18 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { Modal } from '@/components/ui/modal';
+import type { ShowPlayerHandResult } from '@/modules/games/curash/flows/cardholder';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
+import type { FC } from 'react';
 
-export const UserAllCard = () => {
+type Props = {
+  hand: ShowPlayerHandResult[];
+  userId: string;
+};
+
+export const UserAllCard: FC<Props> = ({ hand, userId }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger
@@ -17,14 +26,21 @@ export const UserAllCard = () => {
         <Modal.Body className='flex flex-col gap-3 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-2.5'>
             <div className='flex flex-col gap-2.5'>
-              <div className='h-[50px] w-[50px] rounded-full border border-[#1890FF] bg-[#b9bbbe]' />
+              <div className='flex h-[50px] w-[50px] items-center justify-center rounded-full border border-[#1890FF] bg-[#b9bbbe]'>
+                {userId}
+              </div>
             </div>
             <div className='flex flex-col gap-2.5'>
-              <h2>Кураж продаж</h2>
-              <div className='flex w-full gap-2.5'>
-                <div className='h-[150px] w-[150px] rounded-xs bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
-                <div className='h-[150px] w-[150px] rounded-xs bg-[#b9bbbe] focus:border focus:border-[#1890FF]' tabIndex={0} />
-              </div>
+              {hand.map((deck) => (
+                <div key={deck.deck_id} className='flex flex-col gap-2.5'>
+                  <h3>{deck.deck_name}</h3>
+                  <div className='flex w-full gap-2.5'>
+                    {deck.cards.map(({ image_url, id, title }) => (
+                      <img src={image_url} key={id} alt={title} className='h-[150px] w-[150px]' />
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </Modal.Body>

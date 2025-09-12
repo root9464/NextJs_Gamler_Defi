@@ -22,14 +22,15 @@ export const ShowCardModal = () => {
   const socketManager = useAtomValue(socketAtom);
 
   useEffect(() => {
-    const subscribe = socketManager.on('card_revealed', (data: CardRevealedResponse) => {
-      console.log('card_revealed полученно', data);
-      onOpen();
-      setShow(data);
-    });
-
-    console.log('Результат вызова socketManager.on:', subscribe);
-  }, []);
+    setInterval(() => {
+      console.log('Подписка на событие card_revealed');
+      socketManager.on('card_revealed', (data: CardRevealedResponse) => {
+        console.log('card_revealed полученно', data);
+        onOpen();
+        setShow(data);
+      });
+    }, 10000);
+  }, [socketManager, onOpen]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

@@ -17,7 +17,7 @@ export const ActionButtons: FC<ActionButtonsProps> = ({ adminActions, playerActi
     {isAdmin && (
       <>
         {/*рома пожалуйста исправь эту заглушку когда будем натягивать бекенд ебаных долбаебов что бы все хорошо было*/}
-        <IssuingCards Users={[]} />
+        <IssuingCards />
         {adminActions}
       </>
     )}

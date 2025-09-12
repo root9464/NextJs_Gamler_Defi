@@ -29,6 +29,9 @@ export class SocketManager extends MixedFullController implements ISocketManager
       moveToken: this.moveToken.bind(this),
       getDecks: this.getDecks.bind(this),
       giveDeckForSelection: this.giveDeckForSelection.bind(this),
+      showPlayerHand: this.showPlayerHand.bind(this),
+      returnCardToDeck: this.returnCardToDeck.bind(this),
+      transferCard: this.transferCard.bind(this),
       courage: {
         addCoins: this.addCoins.bind(this),
       },

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { Button, buttonStyles } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
@@ -5,22 +6,27 @@ import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { cn } from '@/shared/utils/tw.utils';
 import { useAtomValue } from 'jotai';
-import type { StaticImageData } from 'next/image';
-import Image from 'next/image';
 import type { FC } from 'react';
+import { TransferCardModal } from './transfer-card';
 
 type CardsProps = {
   id: string;
-  img: StaticImageData;
+  img: string;
+  deckId: string;
 };
 
-export const NotOwn: FC<CardsProps> = ({ id, img }) => {
+export const NotOwn: FC<CardsProps> = ({ id, img, deckId }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
 
-  const EveryOneShow = (id: string) => {
+  const returnDeck = () => {
+    console.log('Вернули в колоду');
+    socketManager.gameController.returnCardToDeck(deckId, id);
+  };
+
+  const EveryOneShow = (id: string, deckId: string) => {
     console.log('show card');
-    socketManager.gameController.showEveryoneCard(id);
+    socketManager.gameController.showEveryoneCard(id, deckId);
   };
 
   return (
@@ -28,18 +34,18 @@ export const NotOwn: FC<CardsProps> = ({ id, img }) => {
       <Modal.Trigger
         onClick={onOpen}
         className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] border border-white'>
-        <Image src={img} alt='not found' />
+        <img src={img} alt='not found' />
       </Modal.Trigger>
       <Modal.Content className=''>
         <Modal.Header />
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
-          <Image src={img} alt='not found' />
+          <img src={img} alt='not found' />
           <div className='flex gap-2.5'>
-            <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))} onClick={() => EveryOneShow(id)}>
+            <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))} onClick={() => EveryOneShow(id, deckId)}>
               Показать
             </Button>
-            <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))}>Передать</Button>
-            <Button className='w-full font-normal sm:w-fit' intent='primary'>
+            <TransferCardModal deckId={deckId} cardId={id} img={img} />
+            <Button className='w-full font-normal sm:w-fit' intent='primary' onClick={returnDeck}>
               Вернуть в колоду
             </Button>
           </div>
