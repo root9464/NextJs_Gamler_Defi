@@ -30,7 +30,6 @@ export const SelectedCard = () => {
 
   useEffect(() => {
     socketManager.on('card_selected', (data) => {
-      console.log('card_selected полученно', data);
       setSelectedCard(data);
       onOpen();
     });

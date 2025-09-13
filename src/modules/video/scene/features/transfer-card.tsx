@@ -29,7 +29,9 @@ export const TransferCardModal: FC<Props> = ({ cardId, deckId, img }) => {
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger onClick={onOpen} className='w-full font-normal text-black sm:w-fit'>
-        передать
+        <Button className='w-full font-normal sm:w-fit' intent='primary'>
+          передать
+        </Button>
       </Modal.Trigger>
       <Modal.Content className=''>
         <Modal.Header>Выдача карт игрокам</Modal.Header>

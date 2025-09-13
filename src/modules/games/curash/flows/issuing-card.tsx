@@ -40,10 +40,7 @@ export const IssuingCards = () => {
       socketManager.gameController.giveDeckForSelection(selectedDeckId, selectedPlayerId);
       setSelectedDeckId(null);
       setSelectedPlayerId(null);
-      console.log('Карты выданы');
       onClose();
-    } else {
-      console.warn('Пожалуйста, выберите колоду и игрока.');
     }
   };
 
@@ -59,8 +56,6 @@ export const IssuingCards = () => {
       setDecks(data);
     });
   }, [isOpen, socketManager]);
-
-  console.log('isOpen', isOpen);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

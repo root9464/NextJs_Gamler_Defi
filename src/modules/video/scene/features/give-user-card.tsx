@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 import CardHubIcon from '@/assets/svg/cardhub.svg';
 import { Button } from '@/components/ui/button';
@@ -7,8 +6,8 @@ import { playersAtom } from '@/modules/video/scene/store/players';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useAtomValue } from 'jotai';
-import type { FC } from 'react';
 import { useEffect, useState } from 'react';
+import { NotOwn } from '../features/not-own-card';
 
 type Card = {
   id: string;
@@ -19,31 +18,40 @@ type Card = {
   task: string;
 };
 
-export type ShowPlayerHandResult = {
-  background_image_url: string;
-  cards: Card[];
+type Deck = {
   deck_id: string;
   deck_name: string;
+  background_image_url: string;
+  cards: Card[];
+};
+
+type ShowPlayerHandResult = {
+  player_id: string;
+  decks: Deck[];
 };
 
 export const GiveUserCard = () => {
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
-  const [hand, setHands] = useState<ShowPlayerHandResult[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [hands, setHands] = useState<Map<string, Deck[]>>(new Map());
 
-  const sendId = (userId: string) => {
-    console.log('Запрос колод с сервера');
-    socketManager.gameController.showPlayerHand(userId);
-    console.log('socketManager', socketManager);
+  const handleUserSelect = (userId: string) => {
+    setSelectedUserId(userId);
+    socketManager.sendMessage('game_action', {
+      type: 'show_player_hand',
+      payload: { player_id: userId },
+    });
   };
 
   useEffect(() => {
     if (!isOpen) return;
-    console.log('Подписка на событие got_decks');
-    socketManager.on('show_player_hand_result', (data: ShowPlayerHandResult[]) => {
-      console.log('got_decks получено', data);
-      setHands(data);
+
+    const unsubscribe = socketManager.on('show_player_hand_result', (payload: ShowPlayerHandResult) => {
+      setHands((prev) => new Map(prev).set(payload.player_id, payload.decks));
     });
+
+    return () => unsubscribe();
   }, [isOpen, socketManager]);
 
   return (
@@ -56,19 +64,21 @@ export const GiveUserCard = () => {
       <Modal.Content className=''>
         <Modal.Header>Карты игрока</Modal.Header>
         <Modal.Body className='flex flex-col gap-5 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
-          <UsersRender sendId={sendId} />
-          <div className='flex flex-col gap-2.5'>
-            {hand.map((deck) => (
-              <div key={deck.deck_id} className='flex flex-col gap-2.5'>
-                <h3>{deck.deck_name}</h3>
-                <div className='flex w-full gap-2.5'>
-                  {deck.cards.map(({ image_url, id, title }) => (
-                    <img src={image_url} key={id} alt={title} className='h-[150px] w-[150px]' />
-                  ))}
+          <UsersRender selectedUserId={selectedUserId} onUserSelect={handleUserSelect} />
+          {selectedUserId && (
+            <div className='flex flex-col gap-2.5'>
+              {(hands.get(selectedUserId) || []).map((deck) => (
+                <div key={deck.deck_id} className='flex flex-col gap-2.5'>
+                  <h3>{deck.deck_name}</h3>
+                  <div className='flex h-max w-full gap-2.5'>
+                    {deck.cards.map((card) => (
+                      <NotOwn key={card.id} img={card.image_url} cardId={card.id} deckId={deck.deck_id} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>
           <Button onClick={onClose} className='w-full font-normal text-red-500 sm:w-fit' intent='plain'>
@@ -80,11 +90,12 @@ export const GiveUserCard = () => {
   );
 };
 
-type PropsUser = {
-  sendId: (id: string) => void;
+type UsersRenderProps = {
+  selectedUserId: string | null;
+  onUserSelect: (userId: string) => void;
 };
 
-const UsersRender: FC<PropsUser> = ({ sendId }) => {
+const UsersRender: React.FC<UsersRenderProps> = ({ selectedUserId, onUserSelect }) => {
   const Players = useAtomValue(playersAtom);
 
   return (
@@ -93,9 +104,11 @@ const UsersRender: FC<PropsUser> = ({ sendId }) => {
       <div className='flex w-full gap-2.5'>
         {Players.map(({ id }) => (
           <div
-            onClick={() => sendId(id)}
+            onClick={() => onUserSelect(id)}
             key={id}
-            className='flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe] focus:border-2 focus:border-[#3c3e3f]'
+            className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe] focus:border-2 focus:border-[#3c3e3f] ${
+              selectedUserId === id ? 'border-2 border-[#1890FF]' : ''
+            }`}
             tabIndex={0}>
             {id}
           </div>

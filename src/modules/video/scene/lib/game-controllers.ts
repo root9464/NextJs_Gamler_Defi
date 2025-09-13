@@ -18,7 +18,7 @@ export type ActionType =
 export type ActionPayloadMap = {
   roll_dice: {};
   select_card: { deck_id: string; card_id: string };
-  show_everyone_card: { card_id: string; deck_id: string };
+  show_everyone_card: { card_id: string };
   change_dice: { dice_count: number; faces_number: number };
   add_coins: { player_id: string; coins: number };
   move_token: { position: { x: number; y: number } }; //фишку подвинуть
@@ -41,7 +41,7 @@ export interface IGameController {
   sendGameAction<T extends ActionType>(type: T, payload: ActionPayloadMap[T]): void;
   rollDice(): void;
   selectCard(deck_id: string, card_id: string): void;
-  showEveryoneCard(card_id: string, deck_id: string): void;
+  showEveryoneCard(card_id: string): void;
   changeDice(dice_count: number, faces_number: number): void;
   moveToken(position: { x: number; y: number }): void;
   getDecks(): void;
@@ -69,8 +69,8 @@ export function GameControllerMixin<TBase extends Constructor<Pick<WebSocket, 's
       this.sendGameAction('select_card', { deck_id, card_id });
     }
 
-    showEveryoneCard(card_id: string, deck_id: string) {
-      this.sendGameAction('show_everyone_card', { card_id, deck_id });
+    showEveryoneCard(card_id: string) {
+      this.sendGameAction('show_everyone_card', { card_id });
     }
 
     changeDice(dice_count: number, faces_number: number) {

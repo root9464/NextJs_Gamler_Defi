@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import type { FC } from 'react';
 import { UserCameraFrame } from '../slices/user-camera-frame';
 import type { Player } from '../store/players';
-import { currentUserIdAtom, playersAtom } from '../store/players';
+import { playersAtom } from '../store/players';
 import { remoteStreamsAtom } from '../store/video';
 
 type Props = {
@@ -13,15 +13,6 @@ type Props = {
 export const RemoteUsersCamera: FC<Props> = ({ cardHolder }) => {
   const remoteStreams = useAtomValue(remoteStreamsAtom);
   const players = useAtomValue(playersAtom);
-  const currentUserId = useAtomValue(currentUserIdAtom);
-
-  console.log(
-    'Remote streams:',
-    remoteStreams.map((s) => s.id),
-  );
-
-  console.log('Players:', players);
-  console.log('Current user ID:', currentUserId);
 
   return (
     <div className='max-desktop-xs:hidden flex max-h-[1587px] w-full flex-wrap content-start gap-6 overflow-y-auto'>

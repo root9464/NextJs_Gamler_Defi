@@ -4,7 +4,7 @@ import { NotOwn } from '@/modules/video/scene/features/not-own-card';
 import { UserAllCard } from '@/modules/video/scene/slices/user-all-cards';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useAtomValue } from 'jotai';
-import { useEffect, useState, type FC } from 'react';
+import { useEffect, useState } from 'react';
 import { IssuingCardDeck } from '../features/issuing-card-deck';
 import { SettingsCoins } from '../features/setting-coins';
 
@@ -17,51 +17,47 @@ type Card = {
   task: string;
 };
 
-export type ShowPlayerHandResult = {
-  background_image_url: string;
-  cards: Card[];
+type Deck = {
   deck_id: string;
   deck_name: string;
+  background_image_url: string;
+  cards: Card[];
 };
 
-type CardHolderProps = {
-  userId: string;
+type ShowPlayerHandResult = {
+  player_id: string;
+  decks: Deck[];
 };
 
-export const CardHolder: FC<CardHolderProps> = ({ userId }) => {
+export const CardHolder = ({ userId }: { userId: string }) => {
   const socketManager = useAtomValue(socketAtom);
-  const [hand, setHand] = useState<ShowPlayerHandResult[]>([]);
+  const [hands, setHands] = useState<Map<string, Deck[]>>(new Map());
 
   useEffect(() => {
     setInterval(() => {
-      socketManager.gameController.showPlayerHand(userId);
-      socketManager.on('show_player_hand_result', (data: ShowPlayerHandResult[]) => {
-        console.log('show_player_hand_result получено', data);
-        setHand(data);
-      });
-    }, 100000);
-  }, []);
-
-  const allCards = hand.flatMap((deck) =>
-    deck.cards.map((card) => ({
-      ...card,
-      deck_id: deck.deck_id,
-    })),
-  );
-
-  const firstTwoCards = allCards.slice(0, 2);
-  console.log('userId-cardholder', userId);
-  console.log('firstTwoCards', firstTwoCards);
-  console.log('hand', hand);
+      socketManager.sendMessage('game_action', { type: 'show_player_hand', payload: { player_id: userId } });
+    }, 10000);
+    const unsubscribe = socketManager.on('show_player_hand_result', (payload: ShowPlayerHandResult) => {
+      setHands((prev) => new Map(prev).set(payload.player_id, payload.decks));
+    });
+    return () => unsubscribe();
+  }, [socketManager, userId]);
 
   return (
     <div className='flex h-[69px] w-full justify-between gap-5'>
       <div className='flex h-full grow gap-5'>
-        {firstTwoCards.map((card) => (
-          <NotOwn key={`${card.deck_id}-${card.id}`} img={card.image_url} id={card.id} deckId={card.deck_id} />
+        {(hands.get(userId) || []).map((deck) => (
+          <div className='flex gap-2'>
+            {deck.cards.map((card) => (
+              // <div key={card.id} className='relative h-32 w-20'>
+              //   <img src={card.image_url} alt={card.title} className='h-full w-full rounded object-cover' />
+              // </div>
+              <NotOwn key={card.id} img={card.image_url} cardId={card.id} deckId={deck.deck_id} />
+            ))}
+          </div>
         ))}
       </div>
-      <UserAllCard userId={userId} hand={hand} />
+      <UserAllCard userId={userId} />
       <IssuingCardDeck userId={userId} />
       <SettingsCoins className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] bg-[#005C2F] text-sm text-white'>
         <CoinIcon />

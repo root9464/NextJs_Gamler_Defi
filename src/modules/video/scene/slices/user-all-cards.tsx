@@ -1,22 +1,59 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 import { Modal } from '@/components/ui/modal';
-import type { ShowPlayerHandResult } from '@/modules/games/curash/flows/cardholder';
+import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
-import type { FC } from 'react';
+import { useAtomValue } from 'jotai';
+import { useEffect, useState, type FC } from 'react';
+import { NotOwn } from '../features/not-own-card';
 
 type Props = {
-  hand: ShowPlayerHandResult[];
   userId: string;
 };
 
-export const UserAllCard: FC<Props> = ({ hand, userId }) => {
+type Card = {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  image_url: string;
+  task: string;
+};
+
+type Deck = {
+  deck_id: string;
+  deck_name: string;
+  background_image_url: string;
+  cards: Card[];
+};
+
+type ShowPlayerHandResult = {
+  player_id: string;
+  decks: Deck[];
+};
+
+export const UserAllCard: FC<Props> = ({ userId }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const socketManager = useAtomValue(socketAtom);
+  const [hands, setHands] = useState<Map<string, Deck[]>>(new Map());
+
+  const getCard = () => {
+    socketManager.sendMessage('game_action', { type: 'show_player_hand', payload: { player_id: userId } });
+  };
+
+  useEffect(() => {
+    const unsubscribe = socketManager.on('show_player_hand_result', (payload: ShowPlayerHandResult) => {
+      setHands((prev) => new Map(prev).set(payload.player_id, payload.decks));
+    });
+    return () => unsubscribe();
+  }, [socketManager, userId]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger
-        onClick={onOpen}
+        onClick={() => {
+          getCard();
+          onOpen();
+        }}
         className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] bg-white text-sm text-black'>
         <div className='flex h-5 w-5 items-center justify-center rounded-full bg-[#FF4D4F] text-xs text-white'>1</div>
         <p>Все</p>
@@ -31,12 +68,12 @@ export const UserAllCard: FC<Props> = ({ hand, userId }) => {
               </div>
             </div>
             <div className='flex flex-col gap-2.5'>
-              {hand.map((deck) => (
-                <div key={deck.deck_id} className='flex flex-col gap-2.5'>
-                  <h3>{deck.deck_name}</h3>
-                  <div className='flex w-full gap-2.5'>
-                    {deck.cards.map(({ image_url, id, title }) => (
-                      <img src={image_url} key={id} alt={title} className='h-[150px] w-[150px]' />
+              {(hands.get(userId) || []).map((deck) => (
+                <div key={deck.deck_id} className='flex flex-col gap-2'>
+                  <h3 className='text-sm font-semibold text-black'>{deck.deck_name}</h3>
+                  <div className='flex gap-2'>
+                    {deck.cards.map((card) => (
+                      <NotOwn key={card.id} img={card.image_url} cardId={card.id} deckId={deck.deck_id} />
                     ))}
                   </div>
                 </div>
