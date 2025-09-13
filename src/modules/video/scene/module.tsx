@@ -1,17 +1,17 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { SelectedCard } from '@/modules/games/curash/features/selected-card';
+import { ShowCardModal } from '@/modules/games/curash/features/show-card-modal';
+import { UserSelectCard } from '@/modules/games/curash/features/user-select-card';
 import { RemoteUsersCamera } from '@/modules/video/scene/flow/remote-users-camera';
 import { cn } from '@/shared/utils/tw.utils';
 import type { FC, ReactNode } from 'react';
 import type { ControlPanelProps } from './flow/control-panel';
 import { ControlPanel } from './flow/control-panel';
-import { MobileHeader } from './flow/mobile-header';
 import { SocketInterface } from './flow/socket-interface';
 
 type SceneModuleProps = {
   controlPanel: ControlPanelProps;
   gameField: Readonly<ReactNode>;
-  cardHolder?: Readonly<ReactNode>;
+  cardHolder: FC<{ userId: string }>;
   eventsModals?: Readonly<ReactNode>;
   sessionId: string;
 };
@@ -23,9 +23,10 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
         <div className='max-desktop-xs:w-full relative flex h-fit w-[688px] flex-col gap-5'>
           <div className='max-desktop-xs:hidden flex w-full justify-between gap-6'>
             <ControlPanel {...controlPanel} />
+            <div className='w-[332px]' />
           </div>
 
-          <MobileHeader />
+          {/* <MobileHeader /> */}
 
           {gameField}
 
@@ -37,7 +38,10 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
               'min-[1100px]:hidden',
             )}></div>
         </div>
-        <RemoteUsersCamera />
+        <ShowCardModal />
+        <SelectedCard />
+        <UserSelectCard />
+        <RemoteUsersCamera cardHolder={cardHolder} />
       </div>
       {eventsModals}
     </SocketInterface>

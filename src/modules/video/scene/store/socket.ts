@@ -19,6 +19,8 @@ export const MINIMAL_SOCKET_MANAGER: ISocketManager = {
     getDecks: noop,
     giveDeckForSelection: noop,
     sendGameAction: noop,
+    returnCardToDeck: noop,
+    transferCard: noop,
     courage: {
       addCoins: noop,
     },

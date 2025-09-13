@@ -10,7 +10,9 @@ export type ActionType =
   | 'add_coins'
   | 'move_token'
   | 'get_decks'
-  | 'give_deck_for_selection';
+  | 'give_deck_for_selection'
+  | 'return_card_to_deck'
+  | 'transfer_card';
 
 export type ActionPayloadMap = {
   roll_dice: {};
@@ -21,6 +23,8 @@ export type ActionPayloadMap = {
   move_token: { position: { x: number; y: number } }; //фишку подвинуть
   get_decks: {};
   give_deck_for_selection: { deck_id: string; player_id: string };
+  return_card_to_deck: { deck_id: string; card_id: string };
+  transfer_card: { card_id: string; deck_id: string; player_id: string };
 };
 
 type BodyEvent<T extends ActionType> = WSMessage<
@@ -40,6 +44,8 @@ export interface IGameController {
   moveToken(position: { x: number; y: number }): void;
   getDecks(): void;
   giveDeckForSelection(deck_id: string, player_id: string): void;
+  returnCardToDeck(deck_id: string, card_id: string): void;
+  transferCard(card_id: string, deck_id: string, player_id: string): void;
 }
 
 export type Constructor<T = {}> = new (...args: any[]) => T;
@@ -77,6 +83,14 @@ export function GameControllerMixin<TBase extends Constructor<Pick<WebSocket, 's
 
     giveDeckForSelection(deck_id: string, player_id: string) {
       this.sendGameAction('give_deck_for_selection', { deck_id, player_id });
+    }
+
+    returnCardToDeck(deckId: string, cardId: string) {
+      this.sendGameAction('return_card_to_deck', { deck_id: deckId, card_id: cardId });
+    }
+
+    transferCard(deckId: string, cardId: string, player_id: string) {
+      this.sendGameAction('transfer_card', { deck_id: deckId, card_id: cardId, player_id });
     }
   };
 }

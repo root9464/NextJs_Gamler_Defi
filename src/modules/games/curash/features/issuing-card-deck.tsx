@@ -1,8 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
-import type { Player } from '@/modules/video/scene/store/players';
-import { playersAtom } from '@/modules/video/scene/store/players';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import PlusIco from '@assets/svg/plus.svg';
@@ -27,20 +25,24 @@ type DeckFromServer = {
   };
 };
 
-export const IssuingCards = () => {
+type IssuingProps = {
+  userId: string;
+};
+
+export const IssuingCardDeck: FC<IssuingProps> = ({ userId }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
-  const Players = useAtomValue(playersAtom);
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null);
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [decks, setDecks] = useState<DeckFromServer[]>([]);
 
   const GiveDeckForSelection = () => {
-    if (selectedDeckId && selectedPlayerId) {
-      socketManager.gameController.giveDeckForSelection(selectedDeckId, selectedPlayerId);
+    if (selectedDeckId && userId) {
+      socketManager.gameController.giveDeckForSelection(selectedDeckId, userId);
       setSelectedDeckId(null);
-      setSelectedPlayerId(null);
+      console.log('Карты выданы');
       onClose();
+    } else {
+      console.warn('Пожалуйста, выберите колоду и игрока.');
     }
   };
 
@@ -57,11 +59,13 @@ export const IssuingCards = () => {
     });
   }, [isOpen, socketManager]);
 
+  console.log('isOpen', isOpen);
+
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger
         onClick={onOpen}
-        className='flex h-[36px] w-[26px] cursor-pointer items-center justify-center rounded-[3px] bg-linear-to-r from-[#BDC3C7] to-[#FFFFFF]'>
+        className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] bg-white text-sm text-black'>
         <PlusIco />
       </Modal.Trigger>
       <Modal.Content className=''>
@@ -69,7 +73,7 @@ export const IssuingCards = () => {
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex flex-col gap-4'>
             <Deck selectedDeckId={selectedDeckId} onSelectDeck={setSelectedDeckId} decks={decks} />
-            <UsersRender Players={Players} selectedPlayerId={selectedPlayerId} onSelectPlayer={setSelectedPlayerId} />
+            <UsersRender userId={userId} />
           </div>
         </Modal.Body>
         <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>
@@ -115,24 +119,15 @@ const Deck: FC<DeckProps> = ({ selectedDeckId, onSelectDeck, decks }) => {
 };
 
 type UsersRenderProps = {
-  selectedPlayerId: string | null;
-  onSelectPlayer: (id: string) => void;
-  Players: Player[];
+  userId: string;
 };
 
-const UsersRender: FC<UsersRenderProps> = ({ Players, selectedPlayerId, onSelectPlayer }) => {
+const UsersRender: FC<UsersRenderProps> = ({ userId }) => {
   return (
     <div className='flex flex-col gap-2.5'>
       <h2 className='font-semibold'>Выберите игрока, которому будет выдана карта</h2>
       <div className='flex w-full gap-2.5'>
-        {Players.map(({ id }) => (
-          <div
-            key={id}
-            className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe] ${selectedPlayerId === id ? 'border-2 border-[#1890FF]' : 'focus:border focus:border-[#1890FF]'}`}
-            onClick={() => onSelectPlayer(id)}>
-            {id}
-          </div>
-        ))}
+        <div className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe]`}>{userId}</div>
       </div>
     </div>
   );

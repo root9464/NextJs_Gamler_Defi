@@ -142,6 +142,9 @@ export const GameField = () => {
           className='absolute h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer'
           onPointerDown={(e) => handlePointerDown(e, player.id)}>
           <CoinIco />
+          <div className='flex items-center justify-center rounded-[5px] bg-black/60'>
+            <p className='text-white'>{player.id}</p>
+          </div>
         </motion.div>
       ))}
     </motion.div>
