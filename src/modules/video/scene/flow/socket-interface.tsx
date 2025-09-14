@@ -95,9 +95,10 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
     [handleRemoteTrack, setLocalStream, userId],
   );
 
+  //https://serv.gamler.online/web3/api/game/assets
   const initSocket = useCallback(
     (userId: string) => {
-      const url = `ws://127.0.0.1:6069/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
+      const url = `https://serv.gamler.online/web3/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
       const socket = new SocketManager(url);
       socketRef.current = socket;
 
