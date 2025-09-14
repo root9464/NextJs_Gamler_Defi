@@ -2,7 +2,7 @@
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useSetAtom } from 'jotai';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState, type FC, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, type FC, type ReactNode } from 'react';
 import { SocketManager } from '../lib/socket-manager';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
@@ -15,7 +15,7 @@ type SocketInterfaceProps = {
 };
 
 export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children }) => {
-  const { data: account } = useAccount();
+  const { data: account, isSuccess: isAccountSuccess } = useAccount();
 
   const setSocket = useSetAtom(socketAtom);
   const setLocalStream = useSetAtom(localStreamAtom);
@@ -31,10 +31,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   const pathname = usePathname();
 
-  // УДАЛИТЬ В ПРОДЕ!
-  // const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
-  const [userId] = useState(() => (Math.random() > 0.5 ? '1' : '2'));
-
+  const userId = isAccountSuccess && account ? account.user_id.toString() : "0"
   const handleRemoteTrack = useCallback(
     (stream: MediaStream, trackId: string) => {
       console.log(
