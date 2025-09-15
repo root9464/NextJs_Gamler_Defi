@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 type Account = Extend<
   AdditionalInformation,
   {
-    user_photo_url: string;
+    // user_photo_url: string;
     coins_number: number;
     player_likes_number: number;
     host_likes_number: number;
@@ -28,15 +28,15 @@ const fetchAccount = async () => {
     schema: AdditionalInformationSchema,
   });
 
-  const user_photo = await proxy.get<Blob>(`/api/web2/user/${userAccount.photo_path}`, {
-    responseType: 'blob',
-  });
+  // const user_photo = await proxy.get<Blob>(`/api/web2/user/${userAccount.photo_path}`, {
+  //   responseType: 'blob',
+  // });
 
-  const user_photo_url = URL.createObjectURL(user_photo);
+  // const user_photo_url = URL.createObjectURL(user_photo);
 
   const account: Account = {
     ...user,
-    user_photo_url: user_photo_url,
+    // user_photo_url: user_photo_url,
     coins_number: userAccount.coins_number,
     player_likes_number: userAccount.player_likes_number,
     host_likes_number: userAccount.host_likes_number,
