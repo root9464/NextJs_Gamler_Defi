@@ -1,5 +1,4 @@
 'use client';
-import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useSetAtom } from 'jotai';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, type FC, type ReactNode } from 'react';
@@ -17,7 +16,7 @@ type SocketInterfaceProps = {
 };
 
 export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children }) => {
-   const localAccountData = localStorage.getItem('user-logged-in');
+  const localAccountData = localStorage.getItem('user-logged-in');
   const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
 
   const setSocket = useSetAtom(socketAtom);
