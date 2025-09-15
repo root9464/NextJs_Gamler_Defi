@@ -41,7 +41,7 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
       <DeviceStatusChecker />
 
       <Link
-        href={`/game/scene/${gameType}/${roomId}`}
+        href={`/web3/game/scene/${gameType}/${roomId}`}
         className={cn('mt-10 flex h-8 w-75 items-center justify-center rounded bg-blue-600 text-white hover:bg-blue-500')}
         onClick={allowAudioAndNavigate}>
         Разрешить звук и перейти в комнату
