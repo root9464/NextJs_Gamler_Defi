@@ -1,12 +1,12 @@
 'use client';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { cn } from '@/shared/utils/tw.utils';
-import { Avatar } from '@ui/avatar';
+// import { Avatar } from '@ui/avatar';
 import { Skeleton } from '@ui/skeleton';
 import type { FC } from 'react';
 import { memo } from 'react';
 
-import BaseAvatar from '@assets/svg/base-avatar.svg';
+// import BaseAvatar from '@assets/svg/base-avatar.svg';
 import CoinIcon from '@assets/svg/coin.svg';
 import OrangeHeartIcon from '@assets/svg/heart-orange.svg';
 import HeartIcon from '@assets/svg/heart.svg';
