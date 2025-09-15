@@ -38,11 +38,11 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
               'min-[1100px]:hidden',
             )}></div>
         </div>
-        <ShowCardModal />
-        <SelectedCard />
-        <UserSelectCard />
         <RemoteUsersCamera cardHolder={cardHolder} />
       </div>
+      <ShowCardModal />
+      <SelectedCard />
+      <UserSelectCard />
       {eventsModals}
     </SocketInterface>
   );

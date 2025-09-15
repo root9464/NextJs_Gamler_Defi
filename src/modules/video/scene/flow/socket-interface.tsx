@@ -7,8 +7,6 @@ import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
 import { MINIMAL_SOCKET_MANAGER, socketAtom } from '../store/socket';
 import { localStreamAtom, remoteStreamsAtom } from '../store/video';
-import { validateResult } from '@/shared/utils/zod.utils';
-import { UserSchema } from '@/shared/types/user';
 
 type SocketInterfaceProps = {
   sessionId: string;
@@ -16,8 +14,8 @@ type SocketInterfaceProps = {
 };
 
 export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children }) => {
-  const localAccountData = localStorage.getItem('user-logged-in');
-  const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
+  // const localAccountData = localStorage.getItem('user-logged-in');
+  // const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
 
   const setSocket = useSetAtom(socketAtom);
   const setLocalStream = useSetAtom(localStreamAtom);
@@ -33,9 +31,11 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   const pathname = usePathname();
 
-  const userId = userAccount.user_id.toString()
-  console.log(userId, "userId");
-  
+  // const userId = userAccount.user_id.toString();
+  const userId = '555';
+
+  console.log(userId, 'userId');
+
   const handleRemoteTrack = useCallback(
     (stream: MediaStream, trackId: string) => {
       console.log(
@@ -101,8 +101,10 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   const initSocket = useCallback(
     (userId: string) => {
-      console.log("initialization socket connection")
-      const url = `wss://serv.gamler.online/web3/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
+      console.log('initialization socket connection');
+      // const url = `wss://serv.gamler.online/web3/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
+      const url = `ws://127.0.0.1:6069/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
+
       const socket = new SocketManager(url);
       socketRef.current = socket;
 
@@ -112,8 +114,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
         setCurrentUserId(userId);
         socket.sendMessage('request_offer', '');
         socket.sendMessage('participants', '');
-        // Запрашиваем подписку на треки для всех участников
-        socket.sendMessage('subscribe', JSON.stringify({ userIds: [] })); // Пустой массив = подписка на всех
+        socket.sendMessage('subscribe', JSON.stringify({ userIds: [] }));
       });
 
       unsubscribeCallbacks.current.push(
@@ -124,7 +125,6 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
             if (!exists) return [...prev, payload.player];
             return prev;
           });
-          // Подписываемся на треки нового игрока
           socket.sendMessage('subscribe', JSON.stringify({ userIds: [payload.player.id] }));
         }),
       );
@@ -286,7 +286,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   useEffect(() => {
     if (!userId) {
-      console.log("No user ID available, skipping socket connection");
+      console.log('No user ID available, skipping socket connection');
       return;
     }
     joinRoom(userId);

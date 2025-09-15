@@ -49,9 +49,6 @@ export const CardHolder = ({ userId }: { userId: string }) => {
         {(hands.get(userId) || []).map((deck) => (
           <div className='flex gap-2'>
             {deck.cards.map((card) => (
-              // <div key={card.id} className='relative h-32 w-20'>
-              //   <img src={card.image_url} alt={card.title} className='h-full w-full rounded object-cover' />
-              // </div>
               <NotOwn key={card.id} img={card.image_url} cardId={card.id} deckId={deck.deck_id} />
             ))}
           </div>

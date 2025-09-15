@@ -1,7 +1,7 @@
 import { proxy } from '@/shared/lib/proxy';
 import { UserSchema } from '@/shared/types/user';
 import type { Extend } from '@/shared/types/utils';
-// import accountDataMock from '@shared/mocks/user.json';
+import accountDataMock from '@shared/mocks/user.json';
 import type { AdditionalInformation } from '@shared/types/orders';
 import { AdditionalInformationSchema } from '@shared/types/orders';
 import { validateResult } from '@shared/utils/zod.utils';
@@ -18,9 +18,9 @@ type Account = Extend<
 >;
 
 const fetchAccount = async () => {
-  const localAccountData = localStorage.getItem('user-logged-in');
-  const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
-  // const userAccount = validateResult(accountDataMock, UserSchema);
+  // const localAccountData = localStorage.getItem('user-logged-in');
+  // const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
+  const userAccount = validateResult(accountDataMock, UserSchema);
 
   console.log(userAccount);
 

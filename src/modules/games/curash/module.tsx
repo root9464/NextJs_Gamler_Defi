@@ -17,7 +17,6 @@ export const CurashModule: FC<CurashModuleProps> = ({ sessionId }) => {
     <SceneModule
       sessionId={sessionId}
       controlPanel={{
-        isAdmin: true,
         adminTopActions: (
           <SettingsCoins
             className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'

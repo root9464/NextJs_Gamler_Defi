@@ -17,10 +17,10 @@ export const ActionButtons: FC<ActionButtonsProps> = ({ adminActions, playerActi
     {isAdmin && (
       <>
         <IssuingCards />
+        <GiveUserCard />
         {adminActions}
       </>
     )}
-    <GiveUserCard />
     <div className='flex size-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
       <VideoIcon className='fill-black' />
     </div>

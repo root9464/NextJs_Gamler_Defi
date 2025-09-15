@@ -1,5 +1,6 @@
 'use client';
 import ChangeIcon from '@/assets/svg/change.svg';
+import { useAccount } from '@/shared/hooks/api/useAccount';
 import type { FC, ReactNode } from 'react';
 
 type UserGameSettings = {
@@ -7,12 +8,14 @@ type UserGameSettings = {
 };
 
 export const UserGameSettings: FC<UserGameSettings> = ({ flows }) => {
+    const {data: account} = useAccount()
+
   return (
     <div className='max-desktop-xs:w-full flex w-fit flex-col gap-10 pt-10'>
       <div className='max-desktop-xs:items-center flex w-full flex-col gap-2.5'>
         <h2 className='text-lg font-semibold'>Ваше имя в игре:</h2>
         <div className='flex flex-row items-center gap-2.5'>
-          <p className='font-medium'>Татьяна</p>
+          <p className='font-medium'>{account?.name ?? 'Invalid'}</p>
           <div className='size-fit rounded-full border border-[#D9D9D9] bg-white p-2.5'>
             <ChangeIcon className='fill-uiActiveBlue' />
           </div>

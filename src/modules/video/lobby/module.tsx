@@ -7,6 +7,7 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import { getUserGameFlow } from './adapters/game-type';
 import { DeviceStatusChecker } from './features/device-status-checker';
+import { useAccount } from '@/shared/hooks/api/useAccount';
 
 type LobbyModuleProps = {
   roomId: string;
