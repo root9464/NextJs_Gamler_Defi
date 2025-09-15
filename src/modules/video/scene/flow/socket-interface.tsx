@@ -8,6 +8,8 @@ import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
 import { MINIMAL_SOCKET_MANAGER, socketAtom } from '../store/socket';
 import { localStreamAtom, remoteStreamsAtom } from '../store/video';
+import { validateResult } from '@/shared/utils/zod.utils';
+import { UserSchema } from '@/shared/types/user';
 
 type SocketInterfaceProps = {
   sessionId: string;
@@ -15,7 +17,8 @@ type SocketInterfaceProps = {
 };
 
 export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children }) => {
-  const { data: account, isSuccess: isAccountSuccess } = useAccount();
+   const localAccountData = localStorage.getItem('user-logged-in');
+  const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
 
   const setSocket = useSetAtom(socketAtom);
   const setLocalStream = useSetAtom(localStreamAtom);
@@ -31,7 +34,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   const pathname = usePathname();
 
-  const userId = isAccountSuccess && account ? account.user_id.toString() : "0"
+  const userId = userAccount.user_id.toString()
   console.log(userId, "userId");
   
   const handleRemoteTrack = useCallback(
@@ -283,11 +286,11 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   }, [setLocalStream, setRemoteStreams, setSocket, setCurrentUserId, setPlayers]);
 
   useEffect(() => {
-    if (!account?.user_id) return;
+    if (userId) return;
     joinRoom(userId);
     window.addEventListener('beforeunload', cleanup);
     return () => cleanup();
-  }, [account?.user_id, joinRoom, cleanup, pathname]);
+  }, [userId, joinRoom, cleanup, pathname]);
 
   return <>{children}</>;
 };
