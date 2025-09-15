@@ -32,6 +32,8 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   const pathname = usePathname();
 
   const userId = isAccountSuccess && account ? account.user_id.toString() : "0"
+  console.log(userId, "userId");
+  
   const handleRemoteTrack = useCallback(
     (stream: MediaStream, trackId: string) => {
       console.log(
