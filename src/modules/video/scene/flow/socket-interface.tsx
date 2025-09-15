@@ -285,7 +285,10 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   }, [setLocalStream, setRemoteStreams, setSocket, setCurrentUserId, setPlayers]);
 
   useEffect(() => {
-    if (userId) return;
+    if (!userId) {
+      console.log("No user ID available, skipping socket connection");
+      return;
+    }
     joinRoom(userId);
     window.addEventListener('beforeunload', cleanup);
     return () => cleanup();
