@@ -1,13 +1,11 @@
 'use client';
 
-import { CameraPreview } from '@/modules/video/lobby/features/camera-preview';
 import { UserGameSettings } from '@/modules/video/lobby/flow/user-game-settings';
 import { cn } from '@/shared/utils/tw.utils';
 import Link from 'next/link';
 import type { FC } from 'react';
 import { getUserGameFlow } from './adapters/game-type';
 import { DeviceStatusChecker } from './features/device-status-checker';
-import { useAccount } from '@/shared/hooks/api/useAccount';
 
 type LobbyModuleProps = {
   roomId: string;
@@ -36,7 +34,7 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
     <div className='m-auto flex w-full flex-col items-center justify-center gap-5'>
       <Description />
       <div className='max-desktop-xs:flex-col flex w-full flex-row justify-center gap-5 pt-2.5'>
-        <CameraPreview />
+        {/* <CameraPreview /> */}
         <UserGameSettings flows={gameFlow} />
       </div>
       <DeviceStatusChecker />

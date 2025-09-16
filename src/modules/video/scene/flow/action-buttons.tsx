@@ -5,6 +5,7 @@ import { IssuingCards } from '@/modules/games/curash/flows/issuing-card';
 import type { FC, ReactNode } from 'react';
 import { GiveUserCard } from '../features/give-user-card';
 import { LeaveGame } from '../features/leave-game';
+import { IconFlow } from './icon-flow';
 
 type ActionButtonsProps = {
   adminActions?: ReactNode;
@@ -21,18 +22,18 @@ export const ActionButtons: FC<ActionButtonsProps> = ({ adminActions, playerActi
         {adminActions}
       </>
     )}
-    <div className='flex size-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
-      <VideoIcon className='fill-black' />
-    </div>
-    <div className='flex size-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
-      <MicroIcon className='fill-black' />
-    </div>
+    <IconFlow className='bg-white'>
+      <VideoIcon className='h-full w-full fill-black' />
+    </IconFlow>
+    <IconFlow className='bg-white'>
+      <MicroIcon className='h-full w-full fill-black' />
+    </IconFlow>
 
     {playerActions}
 
-    <div className='flex size-[35px] cursor-pointer items-center justify-center rounded-full bg-white'>
-      <MenuHubIcon />
-    </div>
+    <IconFlow className='bg-white'>
+      <MenuHubIcon className='h-full w-full' />
+    </IconFlow>
     <LeaveGame />
   </div>
 );

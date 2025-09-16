@@ -3,7 +3,7 @@ import DiceIcon from '@/assets/svg/dice.svg';
 
 export const UserActionsAudit = () => {
   return (
-    <div className='flex h-[39px] items-center justify-center gap-[10px] **:text-white'>
+    <div className='max-desktop-xs:hidden flex h-[39px] items-center justify-center gap-[10px] **:text-white'>
       <p className='text-base font-medium'>Игрок</p>
       <ArrowIcon />
       <div className='flex flex-col gap-[5px]'>

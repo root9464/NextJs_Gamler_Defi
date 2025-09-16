@@ -1,4 +1,5 @@
 'use client';
+import { cn } from '@/shared/utils/tw.utils';
 import { useAtomValue } from 'jotai';
 import type { FC } from 'react';
 import { ChangeTimer } from '../features/change-timer';
@@ -19,14 +20,18 @@ export const ControlPanel: FC<ControlPanelProps> = ({ topActions, playerActions,
   const players = useAtomValue(playersAtom);
   const currentUserId = useAtomValue(currentUserIdAtom);
 
-  const isAdmin = players.some((player) => player.isHost && player.id === currentUserId);
-
+  // const isAdmin = players.some((player) => player.isHost && player.id === currentUserId);
+  const isAdmin = true;
   return (
-    <div className='h-50 w-[333px] rounded-[11px] border-1 border-[#183410] bg-[#171918] px-3.5 py-[18px]'>
+    <div
+      className={cn(
+        'h-50 w-[333px] rounded-[11px] bg-[#171918] px-3.5 py-[18px]',
+        'max-desktop-xs:h-min max-desktop-xs:w-full max-desktop-xs:rounded-none max-desktop-xs:p-0 max-desktop-xs:bg-transparent',
+      )}>
       <div className='flex flex-col gap-5'>
         <ActionButtons playerActions={topActions} adminActions={adminTopActions} isAdmin={isAdmin} />
         <UserActionsAudit />
-        <div className='flex items-center justify-center gap-5'>
+        <div className='max-desktop-xs:hidden flex items-center justify-center gap-5'>
           {isAdmin ? (
             <>
               <ChangeTimer />

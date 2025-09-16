@@ -37,8 +37,7 @@ export const SelectedCard = () => {
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <Modal.Trigger />
-      <Modal.Content className=''>
+      <Modal.Content>
         <Modal.Header />
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <div className='flex w-full justify-center'>
