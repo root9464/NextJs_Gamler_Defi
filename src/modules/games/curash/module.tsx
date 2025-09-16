@@ -1,5 +1,6 @@
-import CoinIcon from '@/assets/svg/coin.svg';
 import { SceneModule } from '@/modules/video/scene/module';
+import { cn } from '@/shared/utils/tw.utils';
+import CoinIcon from '@assets/svg/coin.svg';
 import type { FC } from 'react';
 import { ChangeDices } from './features/change-dices';
 import { GameField } from './features/game-field';
@@ -19,8 +20,11 @@ export const CurashModule: FC<CurashModuleProps> = ({ sessionId }) => {
       controlPanel={{
         adminTopActions: (
           <SettingsCoins
-            className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-full bg-white'
-            children={<CoinIcon />}
+            className={cn(
+              'flex size-[35px] cursor-pointer items-center justify-center rounded-full bg-white p-2',
+              'max-desktop-xs:size-[45px] max-desktop-xs:p-3',
+            )}
+            children={<CoinIcon className='h-full w-full' />}
           />
         ),
         adminGameActions: (

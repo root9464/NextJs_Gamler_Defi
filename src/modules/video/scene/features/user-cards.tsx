@@ -7,7 +7,8 @@ import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
-import { NotOwn } from '../features/not-own-card';
+import { IconFlow } from '../flow/icon-flow';
+import { NotOwn } from './not-own-card';
 
 type Card = {
   id: string;
@@ -30,7 +31,7 @@ type ShowPlayerHandResult = {
   decks: Deck[];
 };
 
-export const GiveUserCard = () => {
+export const UserCards = () => {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
@@ -56,11 +57,9 @@ export const GiveUserCard = () => {
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <Modal.Trigger
-        onClick={onOpen}
-        className='flex h-9 w-[26px] cursor-pointer items-center justify-center rounded-[3px] bg-linear-to-r from-[#BDC3C7] to-[#FFFFFF]'>
+      <IconFlow className='w-full bg-white' as={Modal.Trigger} onClick={onOpen}>
         <CardHubIcon />
-      </Modal.Trigger>
+      </IconFlow>
       <Modal.Content className=''>
         <Modal.Header>Карты игрока</Modal.Header>
         <Modal.Body className='flex flex-col gap-5 border-t border-b border-black/10 pt-[22px] pb-[17px]'>

@@ -3,7 +3,7 @@ import { useAccount } from '@/shared/hooks/api/useAccount';
 import { cn } from '@/shared/utils/tw.utils';
 // import { Avatar } from '@ui/avatar';
 import { Skeleton } from '@ui/skeleton';
-import type { FC } from 'react';
+import type { ComponentType, FC, SVGProps } from 'react';
 import { memo } from 'react';
 
 // import BaseAvatar from '@assets/svg/base-avatar.svg';
@@ -12,14 +12,14 @@ import OrangeHeartIcon from '@assets/svg/heart-orange.svg';
 import HeartIcon from '@assets/svg/heart.svg';
 
 type StatProps = {
-  icon: React.ComponentType;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   value?: number;
   className?: string;
 };
 
 const Stat: FC<StatProps> = memo(({ icon: Icon, value = 0, className }) => (
   <div className={cn('mobile:w-[55px] mr-[5px] ml-[10px] flex h-full w-[50px] flex-row items-center gap-[4px]', className)}>
-    <Icon />
+    <Icon className='size-[18px]' />
     <p className='mobile:text-sm text-xs'>{value}</p>
   </div>
 ));

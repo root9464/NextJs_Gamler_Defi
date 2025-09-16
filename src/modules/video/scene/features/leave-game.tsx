@@ -16,11 +16,8 @@ export const LeaveGame = () => {
     router.push('/');
   };
   return (
-    <IconFlow
-      as='button'
-      className='flex size-[35px] cursor-pointer items-center justify-center rounded-[40px] bg-[#FF4343]'
-      onClick={handleLeave}>
-      <ExitIcon />
+    <IconFlow as='button' className='bg-[#FF4343]' onClick={handleLeave}>
+      <ExitIcon className='h-full w-full' />
     </IconFlow>
   );
 };

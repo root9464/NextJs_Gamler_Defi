@@ -9,13 +9,13 @@ import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useAtomValue } from 'jotai';
 import { useState, type FC } from 'react';
 
-type Props = {
+type TransferCardModalProps = {
   cardId: string;
   deckId: string;
   img: string;
 };
 
-export const TransferCardModal: FC<Props> = ({ cardId, deckId, img }) => {
+export const TransferCardModal: FC<TransferCardModalProps> = ({ cardId, deckId, img }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
   const Players = useAtomValue(playersAtom);

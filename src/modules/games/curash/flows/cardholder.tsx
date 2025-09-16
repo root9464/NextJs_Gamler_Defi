@@ -57,7 +57,7 @@ export const CardHolder = ({ userId }: { userId: string }) => {
       <UserAllCard userId={userId} />
       <IssuingCardDeck userId={userId} />
       <SettingsCoins className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] bg-[#005C2F] text-sm text-white'>
-        <CoinIcon />
+        <CoinIcon className='wfull h-full' />
         <p>0 +</p>
       </SettingsCoins>
     </div>

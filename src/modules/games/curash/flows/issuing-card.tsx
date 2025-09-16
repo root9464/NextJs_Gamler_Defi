@@ -5,6 +5,7 @@ import type { Player } from '@/modules/video/scene/store/players';
 import { playersAtom } from '@/modules/video/scene/store/players';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
+import { cn } from '@/shared/utils/tw.utils';
 import PlusIco from '@assets/svg/plus.svg';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState, type FC } from 'react';
@@ -61,7 +62,10 @@ export const IssuingCards = () => {
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger
         onClick={onOpen}
-        className='flex h-[36px] w-[26px] cursor-pointer items-center justify-center rounded-[3px] bg-linear-to-r from-[#BDC3C7] to-[#FFFFFF]'>
+        className={cn(
+          'flex h-[36px] w-[26px] cursor-pointer items-center justify-center rounded-[3px] bg-linear-to-r from-[#BDC3C7] to-[#FFFFFF]',
+          'max-desktop-xs:hidden',
+        )}>
         <PlusIco />
       </Modal.Trigger>
       <Modal.Content className=''>

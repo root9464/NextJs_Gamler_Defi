@@ -3,8 +3,8 @@ import MicroIcon from '@/assets/svg/micro.svg';
 import VideoIcon from '@/assets/svg/video.svg';
 import { IssuingCards } from '@/modules/games/curash/flows/issuing-card';
 import type { FC, ReactNode } from 'react';
-import { GiveUserCard } from '../features/give-user-card';
 import { LeaveGame } from '../features/leave-game';
+import { UserCards } from '../features/user-cards';
 import { IconFlow } from './icon-flow';
 
 type ActionButtonsProps = {
@@ -18,10 +18,10 @@ export const ActionButtons: FC<ActionButtonsProps> = ({ adminActions, playerActi
     {isAdmin && (
       <>
         <IssuingCards />
-        <GiveUserCard />
         {adminActions}
       </>
     )}
+    <UserCards />
     <IconFlow className='bg-white'>
       <VideoIcon className='h-full w-full fill-black' />
     </IconFlow>
