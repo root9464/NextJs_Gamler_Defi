@@ -1,3 +1,4 @@
+import { IssuingCards } from '@/modules/games/curash/flows/issuing-card';
 import DiceImage from '@assets/img/dice.png';
 import CoinIcon from '@assets/svg/coin.svg';
 import Image from 'next/image';
@@ -17,6 +18,7 @@ export const MenuBar = () => {
         </div>
         <p className='text-[#FFEA05]'>20</p>
       </div>
+      <IssuingCards />
     </div>
   );
 };

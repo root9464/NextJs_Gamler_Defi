@@ -57,8 +57,8 @@ export const UserCards = () => {
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <IconFlow className='w-full bg-white' as={Modal.Trigger} onClick={onOpen}>
-        <CardHubIcon />
+      <IconFlow className='bg-white' as={Modal.Trigger} onClick={onOpen}>
+        <CardHubIcon className='h-full w-full' />
       </IconFlow>
       <Modal.Content className=''>
         <Modal.Header>Карты игрока</Modal.Header>

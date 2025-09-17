@@ -27,7 +27,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
             <div className='w-[332px]' />
           </div>
 
-          <MobileHeader />
+          <MobileHeader cardHolder={cardHolder} />
 
           {gameField}
 

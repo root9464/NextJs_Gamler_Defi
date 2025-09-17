@@ -1,7 +1,13 @@
 import { cn } from '@/shared/utils/tw.utils';
+import { FC } from 'react';
 import { MenuBar } from '../slices/menu-bar';
+import { RemoteUsersCamera } from './remote-users-camera';
 
-export const MobileHeader = () => {
+type MobileHeaderProps = {
+  cardHolder: FC<{ userId: string }>;
+};
+
+export const MobileHeader: FC<MobileHeaderProps> = ({ cardHolder }) => {
   return (
     <div
       className={cn(
@@ -12,7 +18,9 @@ export const MobileHeader = () => {
         'min-[1100px]:hidden',
       )}>
       <MenuBar />
-      <div className='test-box scrollbar-hide flex max-w-3/5 flex-row gap-3 overflow-x-scroll'>{/* <RemoteUsersCamera /> */}</div>
+      <div className='test-box scrollbar-hide flex max-w-3/5 flex-row gap-3 overflow-x-scroll'>
+        <RemoteUsersCamera cardHolder={cardHolder} />
+      </div>
     </div>
   );
 };

@@ -17,7 +17,7 @@ export const ActionButtons: FC<ActionButtonsProps> = ({ adminActions, playerActi
   <div className='flex w-full flex-row items-center justify-center gap-2.5'>
     {isAdmin && (
       <>
-        <IssuingCards />
+        <IssuingCards className='max-desktop-xs:hidden' />
         {adminActions}
       </>
     )}

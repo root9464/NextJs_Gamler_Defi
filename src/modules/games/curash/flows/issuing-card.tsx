@@ -28,7 +28,11 @@ type DeckFromServer = {
   };
 };
 
-export const IssuingCards = () => {
+type IssuingCardsProps = {
+  className?: string;
+};
+
+export const IssuingCards: FC<IssuingCardsProps> = ({ className }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
   const Players = useAtomValue(playersAtom);
@@ -64,7 +68,7 @@ export const IssuingCards = () => {
         onClick={onOpen}
         className={cn(
           'flex h-[36px] w-[26px] cursor-pointer items-center justify-center rounded-[3px] bg-linear-to-r from-[#BDC3C7] to-[#FFFFFF]',
-          'max-desktop-xs:hidden',
+          className,
         )}>
         <PlusIco />
       </Modal.Trigger>

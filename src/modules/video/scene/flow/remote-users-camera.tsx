@@ -6,11 +6,11 @@ import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
 import { remoteStreamsAtom } from '../store/video';
 
-type Props = {
+type RemoteUsersCameraProps = {
   cardHolder: FC<{ userId: string }>;
 };
 
-export const RemoteUsersCamera: FC<Props> = ({ cardHolder }) => {
+export const RemoteUsersCamera: FC<RemoteUsersCameraProps> = ({ cardHolder }) => {
   const remoteStreams = useAtomValue(remoteStreamsAtom);
   const players = useAtomValue(playersAtom) ?? [];
   const currentUserId = useAtomValue(currentUserIdAtom);
