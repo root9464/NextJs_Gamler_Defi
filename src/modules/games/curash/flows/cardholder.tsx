@@ -44,7 +44,7 @@ export const CardHolder = ({ userId }: { userId: string }) => {
   }, [socketManager, userId]);
 
   return (
-    <div className='flex h-[69px] w-full justify-between gap-5'>
+    <div className='max-desktop-xs:hidden flex h-[69px] w-full justify-between gap-5'>
       <div className='flex h-full grow gap-5'>
         {(hands.get(userId) || []).map((deck) => (
           <div className='flex gap-2'>
