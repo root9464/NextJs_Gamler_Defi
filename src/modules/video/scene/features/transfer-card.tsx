@@ -21,10 +21,7 @@ export const TransferCardModal: FC<TransferCardModalProps> = ({ cardId, deckId, 
   const Players = useAtomValue(playersAtom);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
-  const transferCard = () => {
-    console.log('Передали другому игроку');
-    socketManager.gameController.transferCard(deckId, cardId, selectedPlayerId!);
-  };
+  const transferCard = () => socketManager.gameController.transferCard(deckId, cardId, selectedPlayerId!);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

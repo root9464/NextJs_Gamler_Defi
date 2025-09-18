@@ -6,10 +6,7 @@ import { useAtomValue } from 'jotai';
 export const RollDices = () => {
   const socketManager = useAtomValue(socketAtom);
 
-  const handleRollDice = () => {
-    console.log('roll dices');
-    socketManager.gameController.rollDice();
-  };
+  const handleRollDice = () => socketManager.gameController.rollDice();
 
   return (
     <button className='h-fit w-fit cursor-pointer bg-transparent' onClick={handleRollDice}>

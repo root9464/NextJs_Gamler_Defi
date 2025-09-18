@@ -37,7 +37,6 @@ type TableParams = {
 export const DebtTable = () => {
   const { data: account } = useAccount();
   const modalDisclosureControl = useDisclosure();
-  console.log(modalDisclosureControl, 'modalDisclosureControl in DebtTable');
   const address = useTonAddress();
   const { mutateAsync: deleteOrder } = useDeletePaymentOrder(account?.user_id ?? 0, modalDisclosureControl.onClose);
 
@@ -168,11 +167,7 @@ const ActionColumn: FC<ActionColumnProps> = ({ record, payOrder, createCell, del
       <a
         key={record.order_id}
         className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-blue-500 underline'
-        onClick={() => {
-          console.log('click in Погасить задолженность');
-          console.log(record, 'record in ActionColumn');
-          payOrder(createCell, record.order_id, { amount: record.debt_amount, reffererId: record.refferer_id });
-        }}>
+        onClick={() => payOrder(createCell, record.order_id, { amount: record.debt_amount, reffererId: record.refferer_id })}>
         Погасить задолженность
       </a>
     )}

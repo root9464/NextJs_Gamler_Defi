@@ -22,17 +22,18 @@ export const SelectedCard = () => {
   const socketManager = useAtomValue(socketAtom);
   const [selectedCard, setSelectedCard] = useState<Card>();
 
-  const EveryOneShow = (id: string) => {
-    console.log('show card');
+  const showCardEveryone = (id: string) => {
     socketManager.gameController.showEveryoneCard(id);
     onClose();
   };
 
   useEffect(() => {
-    socketManager.on('card_selected', (data) => {
+    const unsubscribe = socketManager.on('card_selected', (data) => {
       setSelectedCard(data);
       onOpen();
     });
+
+    return () => unsubscribe();
   }, [onOpen, socketManager]);
 
   return (
@@ -46,7 +47,7 @@ export const SelectedCard = () => {
           <div className='flex gap-2.5'>
             <Button
               className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))}
-              onClick={() => selectedCard && EveryOneShow(selectedCard.id)}>
+              onClick={() => selectedCard && showCardEveryone(selectedCard.id)}>
               Показать
             </Button>
             <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))}>Передать</Button>

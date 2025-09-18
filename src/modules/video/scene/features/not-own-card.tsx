@@ -19,15 +19,8 @@ export const NotOwn: FC<CardsProps> = ({ cardId, img, deckId }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
 
-  const returnDeck = () => {
-    console.log('Вернули в колоду');
-    socketManager.gameController.returnCardToDeck(deckId, cardId);
-  };
-
-  const EveryOneShow = (cardId: string) => {
-    console.log('show card');
-    socketManager.gameController.showEveryoneCard(cardId);
-  };
+  const returnCardDeck = () => socketManager.gameController.returnCardToDeck(deckId, cardId);
+  const showCardEveryone = (cardId: string) => socketManager.gameController.showEveryoneCard(cardId);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -41,11 +34,11 @@ export const NotOwn: FC<CardsProps> = ({ cardId, img, deckId }) => {
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <img src={img} alt='not found' />
           <div className='flex gap-2.5'>
-            <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))} onClick={() => EveryOneShow(cardId)}>
+            <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))} onClick={() => showCardEveryone(cardId)}>
               Показать
             </Button>
             <TransferCardModal deckId={deckId} cardId={cardId} img={img} />
-            <Button className='w-full font-normal sm:w-fit' intent='primary' onClick={returnDeck}>
+            <Button className='w-full font-normal sm:w-fit' intent='primary' onClick={returnCardDeck}>
               Вернуть в колоду
             </Button>
           </div>

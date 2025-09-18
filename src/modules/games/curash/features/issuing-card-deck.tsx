@@ -39,7 +39,6 @@ export const IssuingCardDeck: FC<IssuingProps> = ({ userId }) => {
     if (selectedDeckId && userId) {
       socketManager.gameController.giveDeckForSelection(selectedDeckId, userId);
       setSelectedDeckId(null);
-      console.log('Карты выданы');
       onClose();
     } else {
       console.warn('Пожалуйста, выберите колоду и игрока.');
@@ -48,18 +47,12 @@ export const IssuingCardDeck: FC<IssuingProps> = ({ userId }) => {
 
   useEffect(() => {
     if (!isOpen) return;
-    console.log('Запрос колод с сервера');
     socketManager.gameController.getDecks();
-    console.log('socketManager', socketManager);
-
-    console.log('Подписка на событие got_decks');
-    socketManager.on('got_decks', (data: DeckFromServer[]) => {
-      console.log('got_decks получено', data);
+    const unsubscribe = socketManager.on('got_decks', (data: DeckFromServer[]) => {
       setDecks(data);
     });
+    return () => unsubscribe();
   }, [isOpen, socketManager]);
-
-  console.log('isOpen', isOpen);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

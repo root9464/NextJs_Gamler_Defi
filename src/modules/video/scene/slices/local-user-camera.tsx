@@ -12,7 +12,7 @@ export const LocalUserPlaceholder: FC<LocalUserBannerProps> = ({ cardHolder: Car
     <div className='max-desktop-xs:w-full flex flex-col gap-2.5'>
       <div
         className={cn(
-          'relative flex h-50 w-[332px] shrink-0 flex-col justify-between overflow-hidden rounded-[11px] bg-red-300 px-[15px] py-[18px]',
+          'relative flex h-50 w-[332px] shrink-0 flex-col justify-between overflow-hidden rounded-[11px] bg-blue-300 px-[15px] py-[18px]',
           'max-desktop-xs:w-30 max-desktop-xs:px-2.5 max-desktop-xs:h-[77px] py-1',
         )}>
         <div className='relative z-10 flex w-full justify-between'>

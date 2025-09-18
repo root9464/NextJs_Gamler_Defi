@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai';
 import { motion } from 'motion/react';
 import { useEffect, type FC } from 'react';
 import { CameraPlaceholder } from '../slices/camera-placeholder';
+import { LocalUserPlaceholder } from '../slices/local-user-camera';
 import { UserCameraFrame } from '../slices/user-camera-frame';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
@@ -18,24 +19,36 @@ type RemoteUsersCameraProps = {
   };
 };
 
-const getPlayerStream = (player: Player, stream: MediaStream[]) => {
-  return player.streamId ? stream.find((s) => s.id === player.streamId) : undefined;
+const getPlayerStream = (player: Player, streams: MediaStream[]) => {
+  return player.streamId ? streams.find((s) => s.id === player.streamId) : undefined;
 };
 
-type PlayerCardProps = {
+type RemotePlayerCardProps = {
   player: Player;
   cardHolder: FC<{ userId: string }>;
   stream?: any;
   className?: string;
 };
 
-const PlayerCard: FC<PlayerCardProps> = ({ player, cardHolder, stream, className }) => (
+const RemotePlayerCard: FC<RemotePlayerCardProps> = ({ player, cardHolder, stream, className }) => (
   <motion.div className={cn('flex flex-col gap-[25px]', 'max-desktop-xs:shrink-0', className)} layout>
     {stream ? (
       <UserCameraFrame player={player} stream={stream} cardHolder={cardHolder} />
     ) : (
       <CameraPlaceholder player={player} cardHolder={cardHolder} />
     )}
+  </motion.div>
+);
+
+type LocalPlayerCardProps = {
+  player: Player;
+  cardHolder: FC<{ userId: string }>;
+  className?: string;
+};
+
+const LocalPlayerCard: FC<LocalPlayerCardProps> = ({ player, cardHolder, className }) => (
+  <motion.div className={cn('flex flex-col gap-[25px]', 'max-desktop-xs:shrink-0', className)} layout>
+    <LocalUserPlaceholder player={player} cardHolder={cardHolder} />
   </motion.div>
 );
 
@@ -49,6 +62,9 @@ export const RemoteUsersCamera: FC<RemoteUsersCameraProps> = ({ cardHolder, clas
     initializeMockPlayers(5, true);
   }, []);
 
+  const localPlayer = players.find((player) => player.id === currentUserId);
+  const remotePlayers = players.filter((player) => player.id !== currentUserId);
+
   return (
     <motion.div
       className={cn(
@@ -57,12 +73,12 @@ export const RemoteUsersCamera: FC<RemoteUsersCameraProps> = ({ cardHolder, clas
         classNames?.container,
       )}
       layout>
-      {players
-        .filter((player) => player.id !== currentUserId)
-        .map((player) => {
-          const stream = getPlayerStream(player, remoteStreams);
-          return <PlayerCard key={player.id} player={player} cardHolder={cardHolder} stream={stream} className={classNames?.item} />;
-        })}
+      {localPlayer && <LocalPlayerCard player={localPlayer} cardHolder={cardHolder} className={classNames?.item} />}
+
+      {remotePlayers.map((player) => {
+        const stream = getPlayerStream(player, remoteStreams);
+        return <RemotePlayerCard key={player.id} player={player} cardHolder={cardHolder} stream={stream} className={classNames?.item} />;
+      })}
     </motion.div>
   );
 };

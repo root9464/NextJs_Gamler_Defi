@@ -24,11 +24,8 @@ export const UserSelectCard = () => {
   const handleCardSelect = useCallback(
     (cardId: string) => {
       if (!selectedDeck) return;
-
       setSelectedCardId(cardId);
       socketManager.gameController.selectCard(selectedDeck.id, cardId);
-      console.log('cardId', cardId);
-      console.log('selectedDeck.id', selectedDeck.id);
     },
     [selectedDeck, socketManager],
   );
@@ -40,11 +37,8 @@ export const UserSelectCard = () => {
       onOpen();
     };
 
-    socketManager.on('prompt_select_card', handlePromptSelect);
-
-    return () => {
-      socketManager.off('prompt_select_card', handlePromptSelect);
-    };
+    const unsubscribe = socketManager.on('prompt_select_card', handlePromptSelect);
+    return () => unsubscribe();
   }, [socketManager, onOpen]);
 
   const handleClose = useCallback(() => {

@@ -30,12 +30,8 @@ export const ShowCardModal = () => {
   );
 
   useEffect(() => {
-    console.log('подписка на событие card_revealed');
-    socketManager.on('card_revealed', handleCardRevealed);
-
-    return () => {
-      socketManager.off('card_revealed', handleCardRevealed);
-    };
+    const unsubscribe = socketManager.on('card_revealed', handleCardRevealed);
+    return () => unsubscribe();
   }, [socketManager, handleCardRevealed]);
 
   return (

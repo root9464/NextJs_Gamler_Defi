@@ -51,15 +51,9 @@ export const IssuingCards: FC<IssuingCardsProps> = ({ className }) => {
 
   useEffect(() => {
     if (!isOpen) return;
-    console.log('Запрос колод с сервера');
     socketManager.gameController.getDecks();
-    console.log('socketManager', socketManager);
-
-    console.log('Подписка на событие got_decks');
-    socketManager.on('got_decks', (data: DeckFromServer[]) => {
-      console.log('got_decks получено', data);
-      setDecks(data);
-    });
+    const unsubscribe = socketManager.on('got_decks', (data: DeckFromServer[]) => setDecks(data));
+    return () => unsubscribe();
   }, [isOpen, socketManager]);
 
   return (

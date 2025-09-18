@@ -21,9 +21,6 @@ const fetchAccount = async () => {
   // const localAccountData = localStorage.getItem('user-logged-in');
   // const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
   const userAccount = validateResult(accountDataMock, UserSchema);
-
-  console.log(userAccount);
-
   const user = await proxy.get<AdditionalInformation>(`/api/web2/referral/referrer/${userAccount.user_id}`, {
     schema: AdditionalInformationSchema,
   });
