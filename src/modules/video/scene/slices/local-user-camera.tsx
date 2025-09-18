@@ -13,17 +13,16 @@ export const LocalUserPlaceholder: FC<LocalUserBannerProps> = ({ cardHolder: Car
       <div
         className={cn(
           'relative flex h-50 w-[332px] shrink-0 flex-col justify-between overflow-hidden rounded-[11px] bg-blue-300 px-[15px] py-[18px]',
-          'max-desktop-xs:w-30 max-desktop-xs:px-2.5 max-desktop-xs:h-[77px] py-1',
+          'max-desktop-xs:w-full max-desktop-xs:px-2.5 max-desktop-xs:h-[77px] max-desktop-xs:py-1',
         )}>
-        <div className='relative z-10 flex w-full justify-between'>
-          <div
-            className={cn(
-              'flex h-[22px] w-11 items-center justify-center rounded-[55px] bg-white text-xs text-black',
-              'max-desktop-xs:text-[9px] max-desktop-xs:w-8 max-desktop-xs:h-5',
-            )}>
-            <p>Вы</p>
-          </div>
+        <div
+          className={cn(
+            'flex size-16 items-center justify-center rounded-full bg-neutral-700 text-xl font-bold text-gray-300',
+            'max-desktop-xs:size-10 max-desktop-xs:self-center',
+          )}>
+          Вы
         </div>
+        <div className='max-desktop-xs:text-xs mt-2 text-sm text-gray-400'>{player.name || player.id}</div>
       </div>
       <CardHolder userId={player.id} />
     </div>

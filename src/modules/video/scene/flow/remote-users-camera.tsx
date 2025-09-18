@@ -3,21 +3,13 @@ import { useMockPlayers } from '@/shared/mocks/users';
 import { cn } from '@/shared/utils/tw.utils';
 import { useAtomValue } from 'jotai';
 import { motion } from 'motion/react';
-import { useEffect, type FC } from 'react';
+import { type FC } from 'react';
 import { CameraPlaceholder } from '../slices/camera-placeholder';
 import { LocalUserPlaceholder } from '../slices/local-user-camera';
 import { UserCameraFrame } from '../slices/user-camera-frame';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
 import { remoteStreamsAtom } from '../store/video';
-
-type RemoteUsersCameraProps = {
-  cardHolder: FC<{ userId: string }>;
-  classNames?: {
-    container?: string;
-    item?: string;
-  };
-};
 
 const getPlayerStream = (player: Player, streams: MediaStream[]) => {
   return player.streamId ? streams.find((s) => s.id === player.streamId) : undefined;
@@ -52,15 +44,24 @@ const LocalPlayerCard: FC<LocalPlayerCardProps> = ({ player, cardHolder, classNa
   </motion.div>
 );
 
+type RemoteUsersCameraProps = {
+  cardHolder: FC<{ userId: string }>;
+  classNames?: {
+    container?: string;
+    item?: string;
+  };
+};
+
 export const RemoteUsersCamera: FC<RemoteUsersCameraProps> = ({ cardHolder, classNames }) => {
   const remoteStreams = useAtomValue(remoteStreamsAtom);
   const players = useAtomValue(playersAtom) ?? [];
   const currentUserId = useAtomValue(currentUserIdAtom);
-  const { initializeMockPlayers } = useMockPlayers();
+  const { initializeMockPlayers, initializeLocalPlayer } = useMockPlayers();
 
-  useEffect(() => {
-    initializeMockPlayers(5, true);
-  }, []);
+  // useEffect(() => {
+  //   initializeMockPlayers(5, true);
+  //   initializeLocalPlayer(currentUserId!, 'Local');
+  // }, []);
 
   const localPlayer = players.find((player) => player.id === currentUserId);
   const remotePlayers = players.filter((player) => player.id !== currentUserId);

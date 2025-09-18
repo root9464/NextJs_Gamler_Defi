@@ -34,9 +34,9 @@ const normalizePosition = (raw: SocketPayload['position']): { x: number; y: numb
   };
 };
 
-const calculateRelativePosition = (event: PointerEvent, rect: DOMRect): { x: number; y: number } => {
-  const relativeX = (event.clientX - rect.left) / rect.width;
-  const relativeY = (event.clientY - rect.top) / rect.height;
+const calculateRelativePosition = (clientX: number, clientY: number, rect: DOMRect): { x: number; y: number } => {
+  const relativeX = (clientX - rect.left) / rect.width;
+  const relativeY = (clientY - rect.top) / rect.height;
   return {
     x: round(clamp(relativeX, 0, 1)),
     y: round(clamp(relativeY, 0, 1)),
@@ -91,42 +91,79 @@ export const GameField = () => {
     };
   }, [socketManager, updatePlayerPosition, currentUserId]);
 
+  const handleMove = (clientX: number, clientY: number) => {
+    if (!draggingRef.current || !constraintsRef.current || draggingRef.current !== currentUserId) return;
+
+    const rect = constraintsRef.current.getBoundingClientRect();
+    const { x, y } = calculateRelativePosition(clientX, clientY, rect);
+    setLocalPosition((prev) => ({ ...prev, [currentUserId!]: { x, y } }));
+  };
+
+  const handleEnd = (clientX: number, clientY: number) => {
+    if (!draggingRef.current || !constraintsRef.current || draggingRef.current !== currentUserId) return;
+
+    draggingRef.current = null;
+    const rect = constraintsRef.current.getBoundingClientRect();
+    const { x, y } = calculateRelativePosition(clientX, clientY, rect);
+    setLocalPosition((prev) => ({ ...prev, [currentUserId!]: { x, y } }));
+    updatePlayerPosition({ id: currentUserId!, position: { x, y } });
+
+    if (socketManager?.gameController?.moveToken) {
+      socketManager.gameController.moveToken({ x, y });
+    }
+  };
+
   useEffect(() => {
     const handlePointerMove = (event: PointerEvent) => {
-      if (!draggingRef.current || !constraintsRef.current || draggingRef.current !== currentUserId) return;
+      handleMove(event.clientX, event.clientY);
+    };
 
-      const rect = constraintsRef.current.getBoundingClientRect();
-      const { x, y } = calculateRelativePosition(event, rect);
-      setLocalPosition((prev) => ({ ...prev, [currentUserId!]: { x, y } }));
+    const handleTouchMove = (event: TouchEvent) => {
+      event.preventDefault();
+      if (event.touches.length > 0) {
+        handleMove(event.touches[0].clientX, event.touches[0].clientY);
+      }
     };
 
     const handlePointerUp = (event: PointerEvent) => {
-      if (!draggingRef.current || !constraintsRef.current || draggingRef.current !== currentUserId) return;
+      handleEnd(event.clientX, event.clientY);
+    };
 
-      draggingRef.current = null;
-      const rect = constraintsRef.current.getBoundingClientRect();
-      const { x, y } = calculateRelativePosition(event, rect);
-      setLocalPosition((prev) => ({ ...prev, [currentUserId!]: { x, y } }));
-      updatePlayerPosition({ id: currentUserId!, position: { x, y } });
-      if (socketManager?.gameController?.moveToken) {
-        socketManager.gameController.moveToken({ x, y });
+    const handleTouchEnd = (event: TouchEvent) => {
+      if (event.changedTouches.length > 0) {
+        handleEnd(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
       }
     };
 
     window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [socketManager, currentUserId, updatePlayerPosition]);
 
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>, playerId: string) => {
+  const handleStart = (clientX: number, clientY: number, playerId: string) => {
     if (!constraintsRef.current || playerId !== currentUserId) return;
 
     draggingRef.current = playerId;
+    handleMove(clientX, clientY);
+  };
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>, playerId: string) => {
     event.currentTarget.setPointerCapture(event.pointerId);
+    handleStart(event.clientX, event.clientY, playerId);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>, playerId: string) => {
+    if (event.touches.length > 0) {
+      handleStart(event.touches[0].clientX, event.touches[0].clientY, playerId);
+    }
   };
 
   return (
@@ -139,8 +176,9 @@ export const GameField = () => {
             left: `${(localPosition[player.id] || player.position).x * 100}%`,
             top: `${(localPosition[player.id] || player.position).y * 100}%`,
           }}
-          className='absolute h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer'
-          onPointerDown={(e) => handlePointerDown(e, player.id)}>
+          className='absolute h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer touch-none'
+          onPointerDown={(e) => handlePointerDown(e, player.id)}
+          onTouchStart={(e) => handleTouchStart(e, player.id)}>
           <CoinIco />
           <div className='flex items-center justify-center rounded-[5px] bg-black/60'>
             <p className='text-white'>{player.id}</p>

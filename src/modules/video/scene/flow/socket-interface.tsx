@@ -1,7 +1,7 @@
 'use client';
 import { useSetAtom } from 'jotai';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, type FC, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type FC, type ReactNode } from 'react';
 import { SocketManager } from '../lib/socket-manager';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
@@ -32,7 +32,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   const pathname = usePathname();
 
   // const userId = userAccount.user_id.toString();
-  const userId = '555';
+  const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
 
   console.log(userId, 'userId');
 

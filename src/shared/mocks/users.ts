@@ -35,5 +35,19 @@ export const useMockPlayers = () => {
     setPlayers(players);
   };
 
-  return { initializeMockPlayers };
+  const initializeLocalPlayer = (id: string, name: string) => {
+    const localPlayer: Player = {
+      id,
+      name,
+      isHost: false,
+      position: generateRandomPosition(),
+      hand: [],
+      metadata: {},
+      streamId: `stream-${id}`,
+      trackId: `track-${id}`,
+    };
+    setPlayers((prev) => [...prev, localPlayer]);
+  };
+
+  return { initializeMockPlayers, initializeLocalPlayer };
 };
