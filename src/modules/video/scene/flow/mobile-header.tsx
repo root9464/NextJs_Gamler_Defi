@@ -9,6 +9,16 @@ type MobileHeaderProps = {
   cardHolder: FC<{ userId: string }>;
 };
 
+const expandedStyles = {
+  container: 'grid grid-cols-2 gap-3 justify-items-center',
+  item: 'max-h-[150px] w-full max-w-[160px]',
+};
+
+const collapsedStyles = {
+  container: 'flex-row gap-3 flex-nowrap',
+  item: 'h-min w-[calc(50%-6px)]',
+};
+
 export const MobileHeader: FC<MobileHeaderProps> = ({ cardHolder }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -34,7 +44,7 @@ export const MobileHeader: FC<MobileHeaderProps> = ({ cardHolder }) => {
       )}>
       <div className='flex flex-1 flex-col gap-2.5 px-3 py-2'>
         <MenuBar />
-        <RemoteUsersCamera cardHolder={cardHolder} />
+        <RemoteUsersCamera cardHolder={cardHolder} classNames={isExpanded ? expandedStyles : collapsedStyles} />
       </div>
 
       <div className='flex justify-center pb-2'>
