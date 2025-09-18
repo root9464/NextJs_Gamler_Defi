@@ -6,7 +6,7 @@ import { Timer } from './timer';
 
 export const MenuBar = () => {
   return (
-    <div className='flex w-full flex-row items-center gap-4 rounded-xl border border-white/10 bg-[#050E21] px-4 py-3'>
+    <div className='flex h-[70px] w-full flex-row items-center gap-4 rounded-xl border border-white/10 bg-[#050E21] px-4 py-3'>
       <Timer />
       <div className='flex flex-row items-center gap-2.5'>
         <Image src={DiceImage} alt='dice' className='h-[30px] w-[27px] cursor-pointer' />
