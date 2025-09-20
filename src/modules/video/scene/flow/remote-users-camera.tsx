@@ -1,5 +1,4 @@
 'use client';
-import { useMockPlayers } from '@/shared/mocks/users';
 import { cn } from '@/shared/utils/tw.utils';
 import { useAtomValue } from 'jotai';
 import { motion } from 'motion/react';
@@ -56,7 +55,7 @@ export const RemoteUsersCamera: FC<RemoteUsersCameraProps> = ({ cardHolder, clas
   const remoteStreams = useAtomValue(remoteStreamsAtom);
   const players = useAtomValue(playersAtom) ?? [];
   const currentUserId = useAtomValue(currentUserIdAtom);
-  const { initializeMockPlayers, initializeLocalPlayer } = useMockPlayers();
+  // const { initializeMockPlayers, initializeLocalPlayer } = useMockPlayers();
 
   // useEffect(() => {
   //   initializeMockPlayers(5, true);
