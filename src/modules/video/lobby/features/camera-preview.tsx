@@ -5,7 +5,7 @@ import VideoIco from '@assets/svg/video.svg';
 import { useEffect, useRef } from 'react';
 
 export const CameraPreview = () => {
-  const { stream, videoTrack, audioTrack, start, toggleAudio, toggleVideo, isSupported, error } = useMedia({
+  const { stream, videoTrack, audioTrack, start, toggleAudio, toggleVideo, isSupported, error, permissionDenied } = useMedia({
     videoConstraints: { facingMode: 'user' },
     audioConstraints: true,
   });
@@ -16,16 +16,18 @@ export const CameraPreview = () => {
   const audioEnabled = !!audioTrack;
 
   useEffect(() => {
-    if (isSupported && !stream) start().catch(console.error);
-  }, [isSupported, stream, start]);
+    if (isSupported && !stream && !permissionDenied) {
+      start().catch(() => {});
+    }
+  }, [isSupported, stream, start, permissionDenied]);
 
   useEffect(() => {
     const videoElement = videoRef.current;
     if (videoElement) videoElement.srcObject = stream;
   }, [stream]);
 
-  const handleToggleVideo = () => toggleVideo().catch(console.error);
-  const handleToggleAudio = () => toggleAudio().catch(console.error);
+  const handleToggleVideo = () => toggleVideo().catch(() => {});
+  const handleToggleAudio = () => toggleAudio().catch(() => {});
 
   return (
     <div className='relative flex h-[317px] w-full max-w-[510px] min-w-50 items-center justify-center'>
@@ -44,14 +46,14 @@ export const CameraPreview = () => {
           onClick={handleToggleAudio}
           aria-pressed={audioEnabled}
           title={audioEnabled ? 'Выключить микрофон' : 'Включить микрофон'}
-          className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-full bg-[#292b2c] text-white hover:bg-white hover:text-blue-400'>
+          className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-full bg-[#292b2c] p-2 text-white hover:bg-white hover:text-blue-400'>
           <MicroIco className={`${audioEnabled ? 'fill-white' : 'fill-[#FF4D4F]'} hover:fill-[#1890FF]`} />
         </button>
         <button
           onClick={handleToggleVideo}
           aria-pressed={videoEnabled}
           title={videoEnabled ? 'Выключить камеру' : 'Включить камеру'}
-          className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-full bg-[#292b2c] text-white hover:bg-white hover:text-blue-400'>
+          className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-full bg-[#292b2c] p-2 text-white hover:bg-white hover:text-blue-400'>
           <VideoIco className={`${videoEnabled ? 'fill-white' : 'fill-[#FF4D4F]'} hover:fill-[#1890FF]`} />
         </button>
       </div>

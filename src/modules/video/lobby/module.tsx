@@ -5,6 +5,7 @@ import { cn } from '@/shared/utils/tw.utils';
 import Link from 'next/link';
 import type { FC } from 'react';
 import { getUserGameFlow } from './adapters/game-type';
+import { CameraPreview } from './features/camera-preview';
 import { DeviceStatusChecker } from './features/device-status-checker';
 
 type LobbyModuleProps = {
@@ -34,7 +35,7 @@ export const LobbyModule: FC<LobbyModuleProps> = ({ roomId, gameType }) => {
     <div className='m-auto flex w-full flex-col items-center justify-center gap-5'>
       <Description />
       <div className='max-desktop-xs:flex-col flex w-full flex-row justify-center gap-5 pt-2.5'>
-        {/* <CameraPreview /> */}
+        <CameraPreview />
         <UserGameSettings flows={gameFlow} />
       </div>
       <DeviceStatusChecker />

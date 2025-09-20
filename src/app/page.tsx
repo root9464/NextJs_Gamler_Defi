@@ -1,10 +1,10 @@
 'use client';
-import { AccountInfo } from '@/components/slices/account-info';
+import { CameraPreview } from '@/modules/video/lobby/features/camera-preview';
 
 export default function Home() {
   return (
     <>
-      <AccountInfo />
+      <CameraPreview />
     </>
   );
 }
