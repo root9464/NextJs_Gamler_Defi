@@ -37,7 +37,9 @@ export const NotOwn: FC<CardsProps> = ({ cardId, img, deckId }) => {
             <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))} onClick={() => showCardEveryone(cardId)}>
               Показать
             </Button>
-            <TransferCardModal deckId={deckId} cardId={cardId} img={img} />
+            <div onClick={onClose}>
+              <TransferCardModal deckId={deckId} cardId={cardId} img={img} />
+            </div>
             <Button className='w-full font-normal sm:w-fit' intent='primary' onClick={returnCardDeck}>
               Вернуть в колоду
             </Button>

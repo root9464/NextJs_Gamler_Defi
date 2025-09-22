@@ -29,6 +29,7 @@ const sizes = {
   '3xl': 'sm:max-w-3xl',
   '4xl': 'sm:max-w-4xl',
   '5xl': 'sm:max-w-5xl',
+  '7xl': 'sm:max-w-7xl',
   full: 'sm:w-full sm:h-full sm:max-w-none sm:max-h-none',
 };
 

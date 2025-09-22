@@ -1,12 +1,11 @@
 'use client';
-import CoinIcon from '@/assets/svg/coin.svg';
 import { NotOwn } from '@/modules/video/scene/features/not-own-card';
 import { UserAllCard } from '@/modules/video/scene/slices/user-all-cards';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { IssuingCardDeck } from '../features/issuing-card-deck';
-import { SettingsCoins } from '../features/setting-coins';
+import { SettingsCoinsDeck } from '../features/setting-coins-deck';
 
 type Card = {
   id: string;
@@ -45,10 +44,10 @@ export const CardHolder = ({ userId }: { userId: string }) => {
 
   return (
     <div className='max-desktop-xs:hidden flex h-[69px] w-full justify-between gap-5'>
-      <div className='flex h-full grow gap-5'>
-        {(hands.get(userId) || []).map((deck) => (
+      <div className='flex h-fit grow gap-5'>
+        {(hands.get(userId) || []).slice(0, 2).map((deck) => (
           <div className='flex gap-2'>
-            {deck.cards.map((card) => (
+            {deck.cards.slice(0, 1).map((card) => (
               <NotOwn key={card.id} img={card.image_url} cardId={card.id} deckId={deck.deck_id} />
             ))}
           </div>
@@ -56,10 +55,7 @@ export const CardHolder = ({ userId }: { userId: string }) => {
       </div>
       <UserAllCard userId={userId} />
       <IssuingCardDeck userId={userId} />
-      <SettingsCoins className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] bg-[#005C2F] text-sm text-white'>
-        <CoinIcon className='wfull h-full' />
-        <p>0 +</p>
-      </SettingsCoins>
+      <SettingsCoinsDeck userId={userId} />
     </div>
   );
 };

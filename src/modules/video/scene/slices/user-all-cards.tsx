@@ -47,6 +47,8 @@ export const UserAllCard: FC<Props> = ({ userId }) => {
     return () => unsubscribe();
   }, [socketManager, userId]);
 
+  const totalCards = Array.from(hands.get(userId) || []).reduce((total, deck) => total + deck.cards.length, 0);
+
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger
@@ -55,7 +57,7 @@ export const UserAllCard: FC<Props> = ({ userId }) => {
           onOpen();
         }}
         className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] bg-white text-sm text-black'>
-        <div className='flex h-5 w-5 items-center justify-center rounded-full bg-[#FF4D4F] text-xs text-white'>1</div>
+        <div className='flex h-5 w-5 items-center justify-center rounded-full bg-[#FF4D4F] text-xs text-white'>{totalCards}</div>
         <p>Все</p>
       </Modal.Trigger>
       <Modal.Content>

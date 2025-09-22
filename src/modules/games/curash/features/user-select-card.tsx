@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import { Modal } from '@/components/ui/modal';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useAtomValue } from 'jotai';
-import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 
 type PromptSelectResponse = {
@@ -17,49 +15,44 @@ type PromptSelectResponse = {
 
 export const UserSelectCard = () => {
   const [selectedDeck, setSelectedDeck] = useState<PromptSelectResponse | null>(null);
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
 
   const handleCardSelect = useCallback(
     (cardId: string) => {
       if (!selectedDeck) return;
-      setSelectedCardId(cardId);
       socketManager.gameController.selectCard(selectedDeck.id, cardId);
+      onClose();
     },
-    [selectedDeck, socketManager],
+    [selectedDeck, socketManager, onClose],
   );
 
   useEffect(() => {
     const handlePromptSelect = (data: PromptSelectResponse) => {
       setSelectedDeck(data);
-      setSelectedCardId(null);
       onOpen();
     };
 
-    const unsubscribe = socketManager.on('prompt_select_card', handlePromptSelect);
-    return () => unsubscribe();
+    socketManager.on('prompt_select_card', handlePromptSelect);
+
+    return () => {
+      socketManager.off('prompt_select_card', handlePromptSelect);
+    };
   }, [socketManager, onOpen]);
 
-  const handleClose = useCallback(() => {
-    setSelectedCardId(null);
-    onClose();
-  }, [onClose]);
-
   return (
-    <Modal isOpen={isOpen} onOpenChange={handleClose}>
-      <Modal.Content>
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal.Content size='7xl'>
         <Modal.Header />
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <h1>Выберите карту</h1>
-          <div className='flex gap-3'>
+          <div className='flex gap-3 flex-wrap'>
             {selectedDeck?.cards.map((cardId) => (
-              <Image
+              <img
                 key={cardId}
                 src={selectedDeck.back_image_url}
                 alt='not found'
-                width={120}
-                height={120}
+                className='w-[75px] h-[75px] sm:w-[120px] sm:h-[150px] cursor-pointer'
                 onClick={() => handleCardSelect(cardId)}
               />
             ))}
