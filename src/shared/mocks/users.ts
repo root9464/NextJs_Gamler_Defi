@@ -13,10 +13,10 @@ const generateRandomPosition = (): Position => ({
   y: 0,
 });
 
-const generateMockPlayer = (id: string, isHost: boolean = false): Player => ({
+const generateMockPlayer = (id: string, is_host: boolean = false): Player => ({
   id,
-  name: isHost ? 'Ведущий игры' : generateRandomName(),
-  isHost,
+  name: is_host ? 'Ведущий игры' : generateRandomName(),
+  is_host,
   position: generateRandomPosition(),
   hand: [],
   metadata: {},
@@ -39,7 +39,7 @@ export const useMockPlayers = () => {
     const localPlayer: Player = {
       id,
       name,
-      isHost: false,
+      is_host: false,
       position: generateRandomPosition(),
       hand: [],
       metadata: {},
