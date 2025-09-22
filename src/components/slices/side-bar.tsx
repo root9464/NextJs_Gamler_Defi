@@ -66,10 +66,10 @@ type SideBarBodyProps = {
 export const MENU_ITEMS = [
   { label: 'Размещенные игры', icon: MyPlayersIcon, href: '/account/published_games/' },
   { label: 'Мои игры', icon: MyGamesIcon, href: '/account/my-games/' },
-  { label: 'События', icon: EventsIcon, href: '/account/events/' },
+  { label: 'События', icon: EventsIcon, href: '/events/' },
   { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
   { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
-  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/referral-program' },
+  { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/web3/referral-program' },
 ];
 
 const bodyVariants: Variants = {

@@ -1,6 +1,6 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "tailwindcss-react-aria-components";
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @import './styles/theme.css';
 @import './styles/custom.css';
@@ -8,7 +8,6 @@
 @variant dark (&:is(.dark *));
 
 @layer base {
-
   *,
   ::after,
   ::before,
@@ -34,10 +33,12 @@
     text-rendering: optimizeLegibility;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
+    /* box-sizing: border-box;
+    box-shadow: 0 0 0 2px rgb(255, 0, 0); */
   }
 
   html {
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     font-variation-settings: normal;
     scroll-behavior: smooth;
     height: 100%;
@@ -46,14 +47,15 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  body {
-    @apply bg-uiPrimaryBg text-black/85 no-underline w-full min-h-screen h-full font-roboto;
+  body,
+  #root {
+    @apply bg-uiPrimaryBg font-roboto h-full min-h-screen w-full text-black/85 no-underline;
   }
 }
 
 @layer components {
   .heading-1 {
-    @apply text-lg font-medium text-black/85;
+    @apply text-lg font-semibold text-black/85;
   }
 
   .title-1 {
@@ -71,5 +73,19 @@
 
   .table-scroll {
     @apply [&_.ant-table]:w-full [&_.ant-table-content]:overflow-x-auto [&_.ant-table-content::-webkit-scrollbar]:h-2 [&_.ant-table-content::-webkit-scrollbar-thumb]:bg-gray-200 [&_.ant-table-content::-webkit-scrollbar-track]:bg-transparent [&_.ant-table-tbody]:overflow-y-auto;
+  }
+
+  .backdrop {
+    backdrop-filter: blur(16px);
+    mask-image: linear-gradient(to bottom, black 0% 50%, transparent 50% 100%);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

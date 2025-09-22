@@ -1,7 +1,8 @@
 'use client';
-import { LazyPartnerBalanceModule } from '@/modules/partner-balance/exports/exports-lazy';
+import { DynamicPartnerBalanceModule } from '@/modules/partner-balance/exports/exports';
 import { TableStatisticsModule } from '@/modules/table-statistics/module';
 import { useAccount } from '@/shared/hooks/api/useAccount';
+import { useUpdateAddress } from '@/shared/hooks/api/useUpdateAddress';
 import { useTonAddress } from '@tonconnect/ui-react';
 import type { FC, ReactNode } from 'react';
 
@@ -14,10 +15,12 @@ export const IsReferralProgram: FC<IsReferralProgramProps> = ({ Notification, Re
   const address = useTonAddress();
   const { data: account, isSuccess: isSuccessAccount } = useAccount();
   const hasAddress = !!address && address.trim() !== '';
+  useUpdateAddress(address ?? '', account?.user_id ?? 0);
+
   return (
     <>
       {!address && Notification}
-      <LazyPartnerBalanceModule />
+      <DynamicPartnerBalanceModule />
       {ReferralLink}
       {isSuccessAccount && hasAddress && account.referral_program_choice && <TableStatisticsModule />}
     </>

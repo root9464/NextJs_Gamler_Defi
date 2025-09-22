@@ -28,11 +28,13 @@ export const TransactionsTable = () => {
     data: transactions,
     isLoading: isLoadingTransactions,
     isError: isErrorTransactions,
-    error: errorTransactions,
     isSuccess: isSuccessTransactions,
   } = useGetTransactions(address ?? '');
 
-  const transactions_table_data = transactions && filterFrogeTransfers(transactions);
+ const transactions_table_data = transactions
+   ? Array.from(new Map(filterFrogeTransfers(transactions).map((item) => [item.id, item])).values())
+    : [];
+  
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -49,20 +51,22 @@ export const TransactionsTable = () => {
 
   return (
     <>
-      {isSuccessTransactions && transactions && (
+      {isSuccessTransactions && transactions_table_data?.length > 0 ? (
         <Table
           dataSource={transactions_table_data}
           onChange={handleTableChange}
           pagination={tableParams.pagination}
+          showSorterTooltip={false}
           rowKey='id'
           className='table-scroll'>
           <Column title='Дата' dataIndex='time' key='time' />
           <Column title='Сумма' dataIndex='amount' key='amount' />
           <Column title='Действие' dataIndex='action' key='action' />
         </Table>
+      ) : (
+        <p className='font-black/85 text-sm'>История транзакций пуста. Здесь будут отображаться ваши операции.</p>
       )}
-      {isLoadingTransactions && <TableSkeleton rows={3} columns={3} />}
-      {isErrorTransactions && <p>Ошибка при загрузке транзакций {errorTransactions.message}</p>}
+      {(isLoadingTransactions || isErrorTransactions) && <TableSkeleton rows={3} columns={3} />}
     </>
   );
 };

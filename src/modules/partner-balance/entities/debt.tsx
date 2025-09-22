@@ -1,8 +1,8 @@
 'use client';
-import HelperIcon from '@assets/svg/helper-symbol.svg';
 import { useAccount } from '@shared/hooks/api/useAccount';
-import { LazyPayAllOrdersBtn } from '../exports/exports-lazy';
+import { DynamicPayAllOrdersBtn } from '../exports/exports';
 import { useDebt } from '../hooks/api/usePaymentStats';
+import { PaymentDebtModal } from '../slices/payment-debt-modal';
 
 export const Debt = () => {
   const { data: account } = useAccount();
@@ -18,8 +18,8 @@ export const Debt = () => {
         {!account?.user_id && !debt && <p className='text-lg font-bold text-red-600'>0 Gamler</p>}
       </div>
       <div className='flex flex-row items-center justify-end gap-2.5'>
-        <LazyPayAllOrdersBtn />
-        <HelperIcon />
+        <DynamicPayAllOrdersBtn />
+        <PaymentDebtModal />
       </div>
     </div>
   );

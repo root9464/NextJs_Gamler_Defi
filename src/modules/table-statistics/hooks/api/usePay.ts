@@ -22,7 +22,6 @@ const usePay = (authorId: number, modalDisclosureControl?: ModalDisclosureContro
   const { mutate: addTransactionHash } = useAddTransactionHash(authorId);
 
   const payProcess = async (cell: string, commission_count: number) => {
-    console.log('cell', cell);
     if (!jettonWallet) return;
     try {
       const validUntil = Date.now() + 300000; // 3 minutes
@@ -58,7 +57,6 @@ const usePay = (authorId: number, modalDisclosureControl?: ModalDisclosureContro
       target_address: address,
       status: 'pending',
     };
-    console.log('validationOrder', validData);
     deleteOrder([validData, { type: 'all', array }]);
   };
 
@@ -76,7 +74,6 @@ const usePay = (authorId: number, modalDisclosureControl?: ModalDisclosureContro
       status: 'pending',
     };
     addTransactionHash({ orderId, trHash });
-    console.log('validationOrderSingle', validData);
     deleteOrder([validData, { type: 'single', orderId, array: [obj] }]);
   };
 

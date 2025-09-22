@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
@@ -82,11 +82,12 @@ export const DebtTable = () => {
   return (
     <div className='custom-scroll'>
       <PayModal isOpen={modalDisclosureControl.isOpen} />
-      {isSuccessPaymentOrders && (
+      {isSuccessPaymentOrders && debt_table_data.length > 0 ? (
         <Table<DebtTableDataType>
           dataSource={debt_table_data}
           onChange={handleTableChange}
           pagination={tableParams.pagination}
+          showSorterTooltip={false}
           rowKey='order_id'
           className='table-scroll'>
           <Column<DebtTableDataType> title='Количество билетов' dataIndex='tickets' sorter={(a, b) => a.tickets - b.tickets} key='tickets' />
@@ -114,7 +115,10 @@ export const DebtTable = () => {
             key='action'
           />
         </Table>
+      ) : (
+        <p className='font-black/85 text-sm'>Список задолженностей пуст</p>
       )}
+
       {(isLoadingPaymentOrders || isErrorPaymentOrders) && (
         <>
           <Skeleton className='mb-4 h-9 w-[200px]' />

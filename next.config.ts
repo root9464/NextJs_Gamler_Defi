@@ -4,12 +4,29 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ['@ton/core', 'rxjs'],
+    optimizePackageImports: ['@ton/core'],
     gzipSize: true,
     webpackMemoryOptimizations: true,
   },
   reactStrictMode: true,
   compress: true,
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '6069',
+        pathname: '/api/game/assets/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'serv.gamler.online',
+        port: '',
+        pathname: '/web3/api/game/assets/**',
+      },
+    ],
+  },
 
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule: any) => rule.test?.test?.('.svg'));
@@ -18,7 +35,7 @@ const nextConfig: NextConfig = {
       {
         ...fileLoaderRule,
         test: /\.svg$/i,
-        resourceQuery: /url/, // *.svg?url
+        resourceQuery: /url/,
       },
       {
         test: /\.svg$/i,

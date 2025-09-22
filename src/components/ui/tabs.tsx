@@ -62,7 +62,7 @@ type TabRenderProps = {
 type TabChildren = ReactNode | ((values: TabRenderProps) => ReactNode);
 
 interface TabProps extends TabPrimitiveProps {
-  ref?: React.RefObject<HTMLButtonElement>;
+  ref?: React.RefObject<HTMLDivElement>;
   children?: TabChildren;
 }
 const Tab = ({ children, className, ref, ...props }: TabProps) => {

@@ -1,4 +1,9 @@
-const copyClipboard = async (text: string) => await navigator.clipboard.writeText(text);
+import { toast } from 'sonner';
+
+const copyClipboard = async (text: string) => {
+  toast('Скопировано в буффер обмена');
+  await navigator.clipboard.writeText(text);
+};
 
 const formatUnixToDate = (unixTimestamp: number): string => {
   const date = new Date(unixTimestamp * 1000);
@@ -9,4 +14,7 @@ const formatUnixToDate = (unixTimestamp: number): string => {
   return `${day}.${month}.${year}`;
 };
 
-export { copyClipboard, formatUnixToDate };
+const isEqual = <T extends Record<string, unknown>>(current: T, initial: T): boolean =>
+  Object.keys(initial).every((key) => JSON.stringify(current[key]) === JSON.stringify(initial[key]));
+
+export { copyClipboard, formatUnixToDate, isEqual };

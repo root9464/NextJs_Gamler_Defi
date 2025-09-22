@@ -1,4 +1,5 @@
 'use client';
+import { copyClipboard } from '@/shared/utils/common.utils';
 import CopyIco from '@assets/svg/copy-icon.svg';
 import { cn } from '@shared/utils/tw.utils';
 import type { FC } from 'react';
@@ -17,6 +18,8 @@ export const CopyClipboard: FC<CopyClipboardProps> = ({ data, className }) => (
     <p className='sm:truncate-0 w-full truncate overflow-hidden whitespace-nowrap text-black/85 sm:overflow-visible sm:whitespace-normal'>
       {data}
     </p>
-    <CopyIco />
+    <button className='cursor-pointer' onClick={() => copyClipboard(data)}>
+      <CopyIco />
+    </button>
   </div>
 );

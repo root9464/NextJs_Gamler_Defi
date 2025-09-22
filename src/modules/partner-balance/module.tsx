@@ -1,5 +1,6 @@
 import HelperIcon from '@assets/svg/helper-symbol.svg';
 import { WalletConnectButton } from '@components/features/connect-wallet-button';
+import Link from 'next/link';
 import { CurrentBalance } from './entities/current-balance';
 import { Debt } from './entities/debt';
 
@@ -14,7 +15,9 @@ export const PartnerBalanceModule = () => (
       </div>
       <div className='flex flex-row items-center gap-2.5 px-5 sm:px-0'>
         <WalletConnectButton />
-        <HelperIcon />
+        <Link href='/web3/manual'>
+          <HelperIcon />
+        </Link>
       </div>
     </div>
   </div>

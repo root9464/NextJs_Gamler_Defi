@@ -7,7 +7,7 @@ export const ReferralLink = () => (
       <MyInviteLink />
       <p className='hidden w-[585px] text-sm text-black/85 sm:block'>
         Также можно просто <span className='text-sm font-bold'>попросить человека указать ваш Telegram-ник</span> при регистрации в{' '}
-        <a href='#' className='text-uiSecondaryText text-sm underline'>
+        <a href='https://t.me/GamlerOfficialBot' className='text-uiSecondaryText text-sm underline'>
           Telegram-боте.
         </a>
       </p>
