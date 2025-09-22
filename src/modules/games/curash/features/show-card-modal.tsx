@@ -8,6 +8,10 @@ import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 
 type CardRevealedResponse = {
+  card: Card;
+};
+
+type Card = {
   id: string;
   title: string;
   description: string;
@@ -17,13 +21,13 @@ type CardRevealedResponse = {
 };
 
 export const ShowCardModal = () => {
-  const [cardData, setCardData] = useState<CardRevealedResponse | null>(null);
+  const [cardData, setCardData] = useState<Card | null>(null);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const socketManager = useAtomValue(socketAtom);
 
   const handleCardRevealed = useCallback(
     (data: CardRevealedResponse) => {
-      setCardData(data);
+      setCardData(data.card);
       onOpen();
     },
     [onOpen],
@@ -38,7 +42,7 @@ export const ShowCardModal = () => {
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Content>
         <Modal.Header />
-        <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
+        <Modal.Body className='flex justify-center w-full items-center gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           {cardData && <Image src={cardData.image_url} alt={cardData.title} width={400} height={300} />}
         </Modal.Body>
         <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>

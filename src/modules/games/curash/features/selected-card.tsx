@@ -26,6 +26,8 @@ export const SelectedCard = () => {
     socketManager.gameController.showEveryoneCard(id);
     onClose();
   };
+  // ждать пока слава не будет возвращать deck_id
+  // const returnCardDeck = () => socketManager.gameController.returnCardToDeck(deckId, selectedCard.id);
 
   useEffect(() => {
     const unsubscribe = socketManager.on('card_selected', (data) => {
@@ -50,10 +52,10 @@ export const SelectedCard = () => {
               onClick={() => selectedCard && showCardEveryone(selectedCard.id)}>
               Показать
             </Button>
-            <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))}>Передать</Button>
+            {/* <Button className={cn(buttonStyles({ intent: 'primary', size: 'sm' }))}>Передать</Button>
             <Button className='w-full font-normal sm:w-fit' intent='primary'>
               Вернуть в колоду
-            </Button>
+            </Button> */}
           </div>
         </Modal.Body>
         <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>

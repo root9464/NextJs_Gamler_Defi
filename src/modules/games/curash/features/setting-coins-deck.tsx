@@ -2,27 +2,26 @@
 import CoinIcon from '@/assets/svg/coin.svg';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
-import { playersAtom } from '@/modules/video/scene/store/players';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useAtomValue } from 'jotai';
-import { useState, type FC } from 'react';
+import type { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
-export const SettingsCoins = () => {
+type Props = {
+  userId: string;
+};
+
+export const SettingsCoinsDeck: FC<Props> = ({ userId }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const socketManager = useAtomValue(socketAtom);
   const { register, handleSubmit, reset } = useForm<{ value: number }>();
 
   const onSubmit = (data: { value: number }) => {
-    if (selectedPlayerId && data.value) {
-      socketManager.gameController.courage.addCoins(selectedPlayerId, data.value);
+    if (data.value) {
+      socketManager.gameController.courage.addCoins(userId, data.value);
       reset();
-      setSelectedPlayerId(null);
       onClose();
-    } else {
-      console.warn('Выберите игрока и введите количество монет.');
     }
   };
 
@@ -30,10 +29,11 @@ export const SettingsCoins = () => {
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Trigger
         onClick={onOpen}
-        className='flex h-[35px] w-[35px] cursor-pointer rounded-full p-2 items-center justify-center gap-2 bg-white'>
+        className='flex h-full w-[49px] cursor-pointer flex-col items-center justify-center gap-2 rounded-[6px] bg-[#005C2F] text-sm text-white'>
         <CoinIcon />
+        <p>0 +</p>
       </Modal.Trigger>
-      <Modal.Content>
+      <Modal.Content className=''>
         <Modal.Header>Управление монетами</Modal.Header>
         <Modal.Body className='flex flex-col gap-3 border-t border-b border-black/10 pt-[22px] pb-[17px]'>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -47,7 +47,7 @@ export const SettingsCoins = () => {
                 />
               </div>
               <div className='flex flex-col gap-2.5'>
-                <UsersRender selectedPlayerId={selectedPlayerId} onSelectPlayer={setSelectedPlayerId} />
+                <UsersRender userId={userId} />
               </div>
             </div>
             <Modal.Footer className='flex h-full items-center justify-end sm:h-8'>
@@ -66,25 +66,15 @@ export const SettingsCoins = () => {
 };
 
 type UsersRenderProps = {
-  selectedPlayerId: string | null;
-  onSelectPlayer: (id: string) => void;
+  userId: string;
 };
 
-const UsersRender: FC<UsersRenderProps> = ({ selectedPlayerId, onSelectPlayer }) => {
-  const Players = useAtomValue(playersAtom);
-
+const UsersRender: FC<UsersRenderProps> = ({ userId }) => {
   return (
     <div className='flex flex-col gap-2.5'>
-      <h2 className='font-semibold'>Игрок которому будут выданы монеты</h2>
+      <h2 className='font-semibold'>Игрок которому будет выдана карта</h2>
       <div className='flex w-full gap-2.5'>
-        {Players.map(({ id }) => (
-          <div
-            key={id}
-            className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe] ${selectedPlayerId === id ? 'border-2 border-[#1890FF]' : 'focus:border focus:border-[#1890FF]'}`}
-            onClick={() => onSelectPlayer(id)}>
-            {id}
-          </div>
-        ))}
+        <div className={`flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-[#b9bbbe]`}>{userId}</div>
       </div>
     </div>
   );
