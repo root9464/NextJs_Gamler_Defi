@@ -102,8 +102,8 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
   const initSocket = useCallback(
     (userId: string) => {
       console.log('initialization socket connection');
-      // const url = `wss://serv.gamler.online/web3/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
-      const url = `ws://127.0.0.1:6069/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
+      const url = `wss://serv.gamler.online/web3/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
+      // const url = `ws://127.0.0.1:6069/api/session/ws/sales_courage/${encodeURIComponent(sessionId)}/${encodeURIComponent(userId)}`;
 
       const socket = new SocketManager(url);
       socketRef.current = socket;
