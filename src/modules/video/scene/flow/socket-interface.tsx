@@ -1,7 +1,9 @@
 'use client';
+import { UserSchema } from '@/shared/types/user';
+import { validateResult } from '@/shared/utils/zod.utils';
 import { useSetAtom } from 'jotai';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState, type FC, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, type FC, type ReactNode } from 'react';
 import { SocketManager } from '../lib/socket-manager';
 import type { Player } from '../store/players';
 import { currentUserIdAtom, playersAtom } from '../store/players';
@@ -14,8 +16,8 @@ type SocketInterfaceProps = {
 };
 
 export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children }) => {
-  // const localAccountData = localStorage.getItem('user-logged-in');
-  // const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
+  const localAccountData = localStorage.getItem('user-logged-in');
+  const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
 
   const setSocket = useSetAtom(socketAtom);
   const setLocalStream = useSetAtom(localStreamAtom);
@@ -31,8 +33,8 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   const pathname = usePathname();
 
-  // const userId = userAccount.user_id.toString();
-  const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
+  const userId = userAccount.user_id.toString();
+  // const [userId] = useState(() => Math.floor(Math.random() * 10000).toString());
 
   console.log(userId, 'userId');
 

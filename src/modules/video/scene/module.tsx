@@ -33,7 +33,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
 
           <MobileFooter controlPanel={controlPanel} />
         </div>
-        <RemoteUsersCamera cardHolder={cardHolder} />
+        <RemoteUsersCamera cardHolder={cardHolder} classNames={{ container: 'max-desktop-xs:hidden' }} />
       </div>
       <ShowCardModal />
       <SelectedCard />

@@ -19,9 +19,7 @@ export type ControlPanelProps = {
 export const ControlPanel: FC<ControlPanelProps> = ({ topActions, playerActions, adminTopActions, adminGameActions }) => {
   const players = useAtomValue(playersAtom);
   const currentUserId = useAtomValue(currentUserIdAtom);
-
-  const isAdmin = players.some((player) => player.isHost && player.id === currentUserId);
-  // const isAdmin = true;
+  const isAdmin = players.some((player) => player.is_host && player.id === currentUserId);
   return (
     <div
       className={cn(

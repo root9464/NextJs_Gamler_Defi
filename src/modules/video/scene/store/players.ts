@@ -8,7 +8,7 @@ export type Position = {
 export type Player = {
   id: string;
   name: string;
-  isHost: boolean;
+  is_host: boolean;
   position: Position;
   hand: unknown[];
   metadata: Record<string, unknown>;

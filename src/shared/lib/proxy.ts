@@ -40,7 +40,7 @@ class ApiProxy {
       },
       web2: {
         prefix: '/api/web2',
-        instance: { baseURL: 'https://serv.gamler.online' },
+        instance: { baseURL: 'https://serv.gamler.atma-dev.ru' },
       },
       coffee_server: {
         prefix: '/api/coffee_server',

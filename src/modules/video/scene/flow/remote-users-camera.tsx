@@ -64,7 +64,6 @@ export const RemoteUsersCamera: FC<RemoteUsersCameraProps> = ({ cardHolder, clas
 
   const localPlayer = players.find((player) => player.id === currentUserId);
   const remotePlayers = players.filter((player) => player.id !== currentUserId);
-
   return (
     <motion.div
       className={cn(
