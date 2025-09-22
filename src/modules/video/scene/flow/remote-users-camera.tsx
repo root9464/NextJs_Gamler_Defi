@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { cn } from '@/shared/utils/tw.utils';
 import { useAtomValue } from 'jotai';

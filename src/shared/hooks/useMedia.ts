@@ -25,13 +25,13 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
     permissionDenied: false,
   };
 
-  const [mediaState, _setMediaState] = useState<MediaState>(initialState);
+  const [mediaState, setMediaState] = useState<MediaState>(initialState);
   const mediaStateRef = useRef<MediaState>(initialState);
   const isRequestingRef = useRef(false);
 
-  const setMediaState = (next: MediaState) => {
+  const fnSetMediaState = (next: MediaState) => {
     mediaStateRef.current = next;
-    _setMediaState(next);
+    setMediaState(next);
   };
 
   const isSupported = typeof window !== 'undefined' && !!navigator.mediaDevices?.getUserMedia;
@@ -49,14 +49,14 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
     if (!isSupported) {
       const error = new Error('MediaDevices API не поддерживается');
       console.error(`[useUserMedia] ${error.message}`);
-      setMediaState({ ...mediaStateRef.current, error });
+      fnSetMediaState({ ...mediaStateRef.current, error });
       throw error;
     }
 
     if (mediaStateRef.current.permissionDenied) {
       console.warn('[useUserMedia] Permission already denied, skipping start()');
       const error = new Error('Доступ к камере/микрофону запрещён пользователем');
-      setMediaState({ ...mediaStateRef.current, error });
+      fnSetMediaState({ ...mediaStateRef.current, error });
       throw error;
     }
 
@@ -81,7 +81,7 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
       const audioTrack = stream.getAudioTracks()[0] || null;
 
       const nextState: MediaState = { stream, videoTrack, audioTrack, error: null, permissionDenied: false };
-      setMediaState(nextState);
+      fnSetMediaState(nextState);
       console.log('[useUserMedia] Media stream obtained successfully');
       return stream;
     } catch (err) {
@@ -93,7 +93,7 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
       const isPermissionError = name === 'NotAllowedError' || name === 'PermissionDeniedError' || /permission|denied/i.test(message);
 
       const nextState = { ...mediaStateRef.current, error, permissionDenied: isPermissionError };
-      setMediaState(nextState);
+      fnSetMediaState(nextState);
 
       if (isPermissionError) {
         console.warn('[useUserMedia] Permission denied — further attempts disabled');
@@ -110,7 +110,7 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
     stopTrack(mediaStateRef.current.videoTrack);
     stopTrack(mediaStateRef.current.audioTrack);
     const keepPermission = mediaStateRef.current.permissionDenied;
-    setMediaState({ stream: null, videoTrack: null, audioTrack: null, error: null, permissionDenied: keepPermission });
+    fnSetMediaState({ stream: null, videoTrack: null, audioTrack: null, error: null, permissionDenied: keepPermission });
   }, []);
 
   const toggleVideo = useCallback(async () => {
@@ -119,14 +119,20 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
     if (mediaStateRef.current.permissionDenied) {
       console.warn('[useUserMedia] Permission denied, cannot toggle video');
       const error = new Error('Доступ к камере запрещён');
-      setMediaState({ ...mediaStateRef.current, error });
+      fnSetMediaState({ ...mediaStateRef.current, error });
       return;
     }
 
     if (mediaStateRef.current.videoTrack) {
       stopTrack(mediaStateRef.current.videoTrack);
       const newStream = mediaStateRef.current.audioTrack ? new MediaStream([mediaStateRef.current.audioTrack]) : new MediaStream();
-      setMediaState({ stream: newStream, videoTrack: null, audioTrack: mediaStateRef.current.audioTrack, error: null, permissionDenied: false });
+      fnSetMediaState({
+        stream: newStream,
+        videoTrack: null,
+        audioTrack: mediaStateRef.current.audioTrack,
+        error: null,
+        permissionDenied: false,
+      });
       console.log('[useUserMedia] Video turned OFF');
     } else {
       if (isRequestingRef.current) {
@@ -141,7 +147,7 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
         if (!newVideoTrack) throw new Error('Failed to get new video track.');
         const tracks = mediaStateRef.current.audioTrack ? [mediaStateRef.current.audioTrack, newVideoTrack] : [newVideoTrack];
         const newStream = new MediaStream(tracks);
-        setMediaState({
+        fnSetMediaState({
           stream: newStream,
           videoTrack: newVideoTrack,
           audioTrack: mediaStateRef.current.audioTrack,
@@ -155,7 +161,7 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
         const name = (err as any)?.name || '';
         const message = (error.message || '').toLowerCase();
         const isPermissionError = name === 'NotAllowedError' || name === 'PermissionDeniedError' || /permission|denied/i.test(message);
-        setMediaState({ ...mediaStateRef.current, error, permissionDenied: isPermissionError });
+        fnSetMediaState({ ...mediaStateRef.current, error, permissionDenied: isPermissionError });
         if (isPermissionError) console.warn('[useUserMedia] Permission denied — Video OFF');
       } finally {
         isRequestingRef.current = false;
@@ -169,14 +175,20 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
     if (mediaStateRef.current.permissionDenied) {
       console.warn('[useUserMedia] Permission denied, cannot toggle audio');
       const error = new Error('Доступ к микрофону запрещён');
-      setMediaState({ ...mediaStateRef.current, error });
+      fnSetMediaState({ ...mediaStateRef.current, error });
       return;
     }
 
     if (mediaStateRef.current.audioTrack) {
       stopTrack(mediaStateRef.current.audioTrack);
       const newStream = mediaStateRef.current.videoTrack ? new MediaStream([mediaStateRef.current.videoTrack]) : new MediaStream();
-      setMediaState({ stream: newStream, videoTrack: mediaStateRef.current.videoTrack, audioTrack: null, error: null, permissionDenied: false });
+      fnSetMediaState({
+        stream: newStream,
+        videoTrack: mediaStateRef.current.videoTrack,
+        audioTrack: null,
+        error: null,
+        permissionDenied: false,
+      });
       console.log('[useUserMedia] Audio turned OFF');
     } else {
       if (isRequestingRef.current) {
@@ -191,7 +203,7 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
         if (!newAudioTrack) throw new Error('Failed to get new audio track.');
         const tracks = mediaStateRef.current.videoTrack ? [mediaStateRef.current.videoTrack, newAudioTrack] : [newAudioTrack];
         const newStream = new MediaStream(tracks);
-        setMediaState({
+        fnSetMediaState({
           stream: newStream,
           videoTrack: mediaStateRef.current.videoTrack,
           audioTrack: newAudioTrack,
@@ -205,7 +217,7 @@ export const useMedia = (options: UseUserMediaOptions = {}) => {
         const name = (err as any)?.name || '';
         const message = (error.message || '').toLowerCase();
         const isPermissionError = name === 'NotAllowedError' || name === 'PermissionDeniedError' || /permission|denied/i.test(message);
-        setMediaState({ ...mediaStateRef.current, error, permissionDenied: isPermissionError });
+        fnSetMediaState({ ...mediaStateRef.current, error, permissionDenied: isPermissionError });
         if (isPermissionError) console.warn('[useUserMedia] Permission denied — Audio OFF');
       } finally {
         isRequestingRef.current = false;
