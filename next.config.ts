@@ -19,6 +19,12 @@ const nextConfig: NextConfig = {
         port: '6069',
         pathname: '/api/game/assets/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'serv.gamler.online',
+        port: '',
+        pathname: '/web3/api/game/assets/**',
+      },
     ],
   },
 
