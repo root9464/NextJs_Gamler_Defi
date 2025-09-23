@@ -1,6 +1,4 @@
 import { SceneModule } from '@/modules/video/scene/module';
-import { cn } from '@/shared/utils/tw.utils';
-import CoinIcon from '@assets/svg/coin.svg';
 import type { FC } from 'react';
 import { ChangeDices } from './features/change-dices';
 import { GameField } from './features/game-field';
@@ -18,15 +16,7 @@ export const CurashModule: FC<CurashModuleProps> = ({ sessionId }) => {
     <SceneModule
       sessionId={sessionId}
       controlPanel={{
-        adminTopActions: (
-          <SettingsCoins
-            className={cn(
-              'flex size-[35px] cursor-pointer items-center justify-center rounded-full bg-white p-2',
-              'max-desktop-xs:size-[45px] max-desktop-xs:p-3',
-            )}
-            children={<CoinIcon className='h-full w-full' />}
-          />
-        ),
+        adminTopActions: <SettingsCoins />,
         adminGameActions: (
           <div className='flex flex-row items-center gap-2.5'>
             <RollDices />
