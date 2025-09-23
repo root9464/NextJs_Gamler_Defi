@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { atom, useAtom } from 'jotai';
 import { useCallback } from 'react';
