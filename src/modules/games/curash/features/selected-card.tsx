@@ -1,8 +1,8 @@
 'use client';
 import { Button, buttonStyles } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
+import { useModalManager } from '@/modules/video/scene/hooks/useModalManaget';
 import { socketAtom } from '@/modules/video/scene/store/socket';
-import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { cn } from '@/shared/utils/tw.utils';
 import { useAtomValue } from 'jotai';
 import Image from 'next/image';
@@ -18,7 +18,7 @@ type Card = {
 };
 
 export const SelectedCard = () => {
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useModalManager('selected-card');
   const socketManager = useAtomValue(socketAtom);
   const [selectedCard, setSelectedCard] = useState<Card>();
 

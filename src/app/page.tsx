@@ -1,10 +1,10 @@
 'use client';
-import { CameraPreview } from '@/modules/video/lobby/features/camera-preview';
+import { TestModule } from '@/modules/test/module';
 
 export default function Home() {
   return (
     <>
-      <CameraPreview />
+      <TestModule />
     </>
   );
 }

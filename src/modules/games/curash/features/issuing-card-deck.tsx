@@ -1,8 +1,8 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
+import { useModalManager } from '@/modules/video/scene/hooks/useModalManaget';
 import { socketAtom } from '@/modules/video/scene/store/socket';
-import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import PlusIco from '@assets/svg/plus.svg';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState, type FC } from 'react';
@@ -30,7 +30,7 @@ type IssuingProps = {
 };
 
 export const IssuingCardDeck: FC<IssuingProps> = ({ userId }) => {
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useModalManager('issuing-card-deck');
   const socketManager = useAtomValue(socketAtom);
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null);
   const [decks, setDecks] = useState<DeckFromServer[]>([]);
