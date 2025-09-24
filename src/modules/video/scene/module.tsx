@@ -8,6 +8,7 @@ import { ControlPanel } from './flow/control-panel';
 import { MobileFooter } from './flow/mobile-footer';
 import { MobileHeader } from './flow/mobile-header';
 import { SocketInterface } from './flow/socket-interface';
+import { ThrownDice } from './slices/thrown-dice';
 
 type SceneModuleProps = {
   controlPanel: ControlPanelProps;
@@ -38,6 +39,7 @@ export const SceneModule: FC<SceneModuleProps> = ({ controlPanel, gameField, car
       <ShowCardModal />
       <SelectedCard />
       <UserSelectCard />
+      <ThrownDice />
       {eventsModals}
     </SocketInterface>
   );

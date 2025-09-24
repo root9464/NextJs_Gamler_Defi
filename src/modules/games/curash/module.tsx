@@ -1,11 +1,10 @@
 import { SceneModule } from '@/modules/video/scene/module';
 import type { FC } from 'react';
 import { ChangeDices } from './features/change-dices';
-import { GameField } from './features/game-field';
 import { RollDices } from './features/roll-dices';
 import { SettingsCoins } from './features/setting-coins';
 import { CardHolder } from './flows/cardholder';
-import { ThrownDice } from './slices/thrown-dice';
+import { GameField } from './slices/game-field';
 
 type CurashModuleProps = {
   sessionId: string;
@@ -26,11 +25,6 @@ export const CurashModule: FC<CurashModuleProps> = ({ sessionId }) => {
       }}
       cardHolder={CardHolder}
       gameField={<GameField />}
-      eventsModals={
-        <>
-          <ThrownDice />
-        </>
-      }
     />
   );
 };
