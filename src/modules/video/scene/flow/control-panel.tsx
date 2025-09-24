@@ -1,7 +1,8 @@
 'use client';
+import { useMockPlayers } from '@/shared/mocks/users';
 import { cn } from '@/shared/utils/tw.utils';
 import { useAtomValue } from 'jotai';
-import type { FC } from 'react';
+import { useEffect, type FC } from 'react';
 import { ChangeTimer } from '../features/change-timer';
 import { UserActionsAudit } from '../features/user-actions-audit';
 import { Timer } from '../slices/timer';
@@ -19,6 +20,12 @@ export type ControlPanelProps = {
 export const ControlPanel: FC<ControlPanelProps> = ({ topActions, playerActions, adminTopActions, adminGameActions }) => {
   const players = useAtomValue(playersAtom);
   const currentUserId = useAtomValue(currentUserIdAtom);
+  const { initializeLocalPlayer, initializeMockPlayers } = useMockPlayers();
+
+  useEffect(() => {
+    initializeLocalPlayer('53', 'Local');
+    initializeMockPlayers(5);
+  }, []);
   const isAdmin = true;
   return (
     <div
