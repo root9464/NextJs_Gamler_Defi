@@ -1,13 +1,8 @@
 'use client';
 
 import { IconFlow } from '@/modules/video/scene/flow/icon-flow';
-import * as TrickIcons from '@assets/svg/acceptence-tricks';
 import React from 'react';
 import { useTrickIcons } from '../../store/trick-store';
-
-const icons = Object.entries(TrickIcons)
-  .filter(([name]) => name.endsWith('Icon'))
-  .map(([, comp]) => comp as React.ComponentType<React.SVGProps<SVGSVGElement>>);
 
 export const ChangeTrick: React.FC = () => {
   const { component: Icon, selectRandomIcon } = useTrickIcons();

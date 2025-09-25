@@ -174,7 +174,7 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
                 }
               }
             });
-          } catch (e) {
+          } catch (e: unknown) {
             console.error('Error parsing participants:', e);
           }
         }),
@@ -248,8 +248,8 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
       try {
         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         console.log(`Local stream acquired: ${localStream.id}`);
-      } catch (e) {
-        console.warn('No camera - proceeding without local stream');
+      } catch (e: unknown) {
+        console.warn('No camera - proceeding without local stream:', e instanceof Error ? e.message : String(e));
       }
 
       await initPeerConnection(localStream);
