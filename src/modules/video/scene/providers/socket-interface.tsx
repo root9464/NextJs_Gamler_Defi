@@ -40,22 +40,18 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   const handleRemoteTrack = useCallback(
     (stream: MediaStream, trackId: string) => {
-      console.log(
-        `Received track: trackId=${trackId}, streamId=${stream.id}, tracks=${stream
-          .getTracks()
-          .map((t) => `${t.kind}:${t.id}`)
-          .join(', ')}`,
-      );
+      console.log(`Remote track added: track=${trackId}, stream=${stream.id}`);
       setRemoteStreams((prev) => {
         if (prev.some((s) => s.id === stream.id)) return prev;
         return [...prev, stream];
       });
+
       const playerId = trackIdToPlayerId.current.get(trackId);
       if (playerId) {
         console.log(`Mapping stream ${stream.id} to player ${playerId}`);
         setPlayers((prev) => prev.map((p) => (p.id === playerId ? { ...p, streamId: stream.id } : p)));
       } else {
-        console.log(`No playerId for trackId=${trackId}, storing in pendingStreams`);
+        console.log(`Pending stream: track=${trackId}`);
         pendingStreams.current.set(trackId, stream);
       }
     },
@@ -71,28 +67,30 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
       pc.ontrack = (e) => {
         const stream = e.streams[0] || new MediaStream([e.track]);
-        console.log(`ontrack: kind=${e.track.kind}, trackId=${e.track.id}, streamId=${stream.id}`);
+        console.log(`Track received: kind=${e.track.kind}, track=${e.track.id}`);
         if (e.track.kind === 'video') {
           handleRemoteTrack(stream, e.track.id);
         }
       };
+
       pc.oniceconnectionstatechange = () => {
         console.log(`ICE state: ${pc.iceConnectionState}`);
         if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'disconnected') {
-          console.log('Reconnecting due to ICE failure...');
+          console.log('ICE failed - reconnecting...');
           setTimeout(() => joinRoom(userId), 2000);
         }
       };
+
       pc.onicecandidate = (e) => {
         if (e.candidate) {
-          console.log(`Sending ICE candidate: ${JSON.stringify(e.candidate.toJSON())}`);
+          console.log('Sending ICE candidate');
           socketRef.current?.sendMessage('candidate', JSON.stringify(e.candidate.toJSON()));
         }
       };
 
       if (localStream) {
         localStream.getTracks().forEach((track) => {
-          console.log(`Adding track: kind=${track.kind}, id=${track.id}`);
+          console.log(`Adding local track: ${track.kind}`);
           pc.addTrack(track, localStream);
         });
         setLocalStream(localStream);
@@ -204,36 +202,36 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
       socket.on('offer', async (data) => {
         if (!pcRef.current) return;
-        console.log(`Received offer: ${data}`);
+        console.log('Received offer');
         try {
           const offer = JSON.parse(data);
           await pcRef.current.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await pcRef.current.createAnswer();
           await pcRef.current.setLocalDescription(answer);
-          console.log(`Sending answer: ${JSON.stringify(answer)}`);
+          console.log('Sending answer');
           socket.sendMessage('answer', JSON.stringify(answer));
         } catch (e) {
-          console.error('Error handling offer:', e);
+          console.error('Offer error:', e);
         }
       });
 
       socket.on('answer', async (data) => {
         if (!pcRef.current) return;
-        console.log(`Received answer: ${data}`);
+        console.log('Received answer');
         try {
           await pcRef.current.setRemoteDescription(new RTCSessionDescription(JSON.parse(data)));
         } catch (e) {
-          console.error('Error handling answer:', e);
+          console.error('Answer error:', e);
         }
       });
 
       socket.on('candidate', async (data) => {
         if (!pcRef.current) return;
-        console.log(`Received candidate: ${data}`);
+        console.log('Received ICE candidate');
         try {
           await pcRef.current.addIceCandidate(new RTCIceCandidate(JSON.parse(data)));
         } catch {
-          console.warn('Не удалось добавить ICE-кандидата');
+          console.warn('Failed to add ICE candidate');
         }
       });
     },
@@ -242,21 +240,16 @@ export const SocketInterface: FC<SocketInterfaceProps> = ({ sessionId, children 
 
   const joinRoom = useCallback(
     async (userId: string) => {
-      console.log(`Joining room: sessionId=${sessionId}, userId=${userId}`);
+      console.log(`Joining room: session=${sessionId}, user=${userId}`);
       setRemoteStreams([]);
       pendingStreams.current.clear();
       let localStream: MediaStream | null = null;
 
       try {
         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        console.log(
-          `Got local stream: streamId=${localStream.id}, tracks=${localStream
-            .getTracks()
-            .map((t) => `${t.kind}:${t.id}`)
-            .join(', ')}`,
-        );
+        console.log(`Local stream acquired: ${localStream.id}`);
       } catch (e) {
-        console.warn('Пользователь без камеры — подключаемся без локального потока', e);
+        console.warn('No camera - proceeding without local stream');
       }
 
       await initPeerConnection(localStream);

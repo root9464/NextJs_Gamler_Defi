@@ -3,11 +3,11 @@
 import { currentUserIdAtom, playersAtom, updatePlayerPositionAtom, type Player } from '@/modules/video/scene/store/players';
 import { socketAtom } from '@/modules/video/scene/store/socket';
 import Acceptance from '@assets/img/acceptenceImg.png';
-import CoinIco from '@assets/svg/trick-curash.svg';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useTrickIcons } from '../store/trick-store';
 
 interface SocketPayload {
   position: {
@@ -59,6 +59,8 @@ export const GameField = () => {
   const currentUserId = useAtomValue(currentUserIdAtom);
   const players = useAtomValue(playersAtom);
   const updatePlayerPosition = useSetAtom(updatePlayerPositionAtom);
+  const { component: Icon } = useTrickIcons();
+
   const draggingRef = useRef<string | null>(null);
   const [localPosition, setLocalPosition] = useState<{ [key: string]: { x: number; y: number } }>({});
 
@@ -176,12 +178,12 @@ export const GameField = () => {
             left: `${(localPosition[player.id] || player.position).x * 100}%`,
             top: `${(localPosition[player.id] || player.position).y * 100}%`,
           }}
-          className='absolute h-12 w-12 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer touch-none'
+          className='absolute h-fit w-fit -translate-x-1/2 -translate-y-1/2 transform cursor-pointer touch-none'
           onPointerDown={(e) => handlePointerDown(e, player.id)}
           onTouchStart={(e) => handleTouchStart(e, player.id)}>
-          <CoinIco />
-          <div className='flex items-center justify-center rounded-[5px] bg-black/60'>
-            <p className='text-white'>{player.id}</p>
+          <div className='flex flex-row items-center gap-2 rounded-full bg-white p-2 shadow-md'>
+            <Icon className='size-5' />
+            <p className='text-black/85'>{player.id}</p>
           </div>
         </motion.div>
       ))}
