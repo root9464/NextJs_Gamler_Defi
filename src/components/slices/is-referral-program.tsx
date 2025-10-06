@@ -10,7 +10,6 @@ type IsReferralProgramProps = {
   Notification: Readonly<ReactNode>;
   ReferralLink: Readonly<ReactNode>;
 };
-
 export const IsReferralProgram: FC<IsReferralProgramProps> = ({ Notification, ReferralLink }) => {
   const address = useTonAddress();
   const { data: account, isSuccess: isSuccessAccount } = useAccount();

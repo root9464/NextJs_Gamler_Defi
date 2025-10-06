@@ -8,15 +8,15 @@ export const SocialLinks = () => (
     <DynamicBalanceInHeader />
     <div className='hidden flex-row items-center justify-center gap-1 min-[1200px]:flex'>
       <a href='https://t.me/gamleronline' className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
-        <TelegramIcon />
+        <TelegramIcon className='h-full w-full' />
       </a>
       <a
         href='https://www.facebook.com/gamler.online'
         className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
-        <FacebookIcon />
+        <FacebookIcon className='h-full w-full' />
       </a>
       <a href='https://vk.com/gamler' className='flex h-[2.7vw] w-[2.7vw] items-center justify-center rounded-[12px] bg-[#F0F4FA] p-2.5'>
-        <VkIcon />
+        <VkIcon className='h-full w-full' />
       </a>
     </div>
   </div>

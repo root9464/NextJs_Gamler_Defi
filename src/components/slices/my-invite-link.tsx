@@ -1,15 +1,13 @@
 'use client';
-import { UserSchema } from '@/shared/types/user';
-import { validateResult } from '@/shared/utils/zod.utils';
+import { useAccount } from '@/shared/hooks/api/useAccount';
 import { usePathname } from 'next/navigation';
 import { CopyClipboard } from '../features/copy-clipboard';
 
 export const MyInviteLink = () => {
-  const localAccountData = localStorage.getItem('user-logged-in');
-  const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
+  const { data: account } = useAccount();
   const pathname = usePathname();
   const domain = window.location.href.split(pathname)[0];
-  const link = `${domain}/signup?refferer_id=${userAccount?.user_id}`;
+  const link = `${domain}/signup?refferer_id=${account?.user_id}`;
 
   return (
     <div className='flex w-full flex-col gap-2 sm:w-[511px]'>

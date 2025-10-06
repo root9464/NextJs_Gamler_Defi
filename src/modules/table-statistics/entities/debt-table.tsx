@@ -1,14 +1,18 @@
 'use client';
 import { Skeleton } from '@/components/ui/skeleton';
+import { calcComission } from '@/modules/partner-balance/helpers/calc-comission';
 import { useAccount } from '@/shared/hooks/api/useAccount';
+import { useTon } from '@/shared/hooks/api/useTon';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { formatUnixToDate } from '@/shared/utils/common.utils';
+import { fromNano } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
 import { Table, type GetProp, type TablePaginationConfig, type TableProps } from 'antd';
 import Column from 'antd/es/table/Column';
 import type { SorterResult } from 'antd/es/table/interface';
 import type { FC } from 'react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { PayModal } from '../features/pay-modal';
 import { useDeletePaymentOrder, type DeletePaymentOrderFn } from '../hooks/api/useDeletePaymentOrder';
 import type { CreateCellFn } from '../hooks/api/usePay';
@@ -138,38 +142,48 @@ type ActionColumnProps = {
   address: string;
 };
 
-const ActionColumn: FC<ActionColumnProps> = ({ record, payOrder, createCell, deleteOrder, address, onOpenModal }) => (
-  <>
-    {record.tr_hash ? (
-      <a
-        key={record.order_id}
-        className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-blue-500 underline'
-        onClick={() => {
-          onOpenModal?.();
-          deleteOrder([
-            {
-              tx_hash: record.tr_hash ?? '',
-              tx_query_id: Math.floor(Date.now() / 1000),
-              target_address: address,
-              payment_order_id: record.order_id,
-              status: 'pending',
-            },
-            {
-              type: 'single',
-              orderId: record.order_id,
-              array: [{ amount: record.debt_amount, reffererId: record.refferer_id }],
-            },
-          ]);
-        }}>
-        Проверить задолженность
-      </a>
-    ) : (
-      <a
-        key={record.order_id}
-        className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-blue-500 underline'
-        onClick={() => payOrder(createCell, record.order_id, { amount: record.debt_amount, reffererId: record.refferer_id })}>
-        Погасить задолженность
-      </a>
-    )}
-  </>
-);
+const ActionColumn: FC<ActionColumnProps> = ({ record, payOrder, createCell, deleteOrder, address, onOpenModal }) => {
+  const { data: userTonBalance } = useTon(address);
+  const isBalanceSufficient = calcComission(Number(fromNano(userTonBalance?.balance ?? 0)), 1);
+
+  const handlePayAction = () =>
+    isBalanceSufficient
+      ? payOrder(createCell, record.order_id, { amount: record.debt_amount, reffererId: record.refferer_id })
+      : toast('Недостаточно средств');
+
+  return (
+    <>
+      {record.tr_hash ? (
+        <a
+          key={record.order_id}
+          className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-blue-500 underline'
+          onClick={() => {
+            onOpenModal?.();
+            deleteOrder([
+              {
+                tx_hash: record.tr_hash ?? '',
+                tx_query_id: Math.floor(Date.now() / 1000),
+                target_address: address,
+                payment_order_id: record.order_id,
+                status: 'pending',
+              },
+              {
+                type: 'single',
+                orderId: record.order_id,
+                array: [{ amount: record.debt_amount, reffererId: record.refferer_id }],
+              },
+            ]);
+          }}>
+          Проверить задолженность
+        </a>
+      ) : (
+        <a
+          key={record.order_id}
+          className='cursor-pointer bg-transparent text-start text-[16px] font-medium text-blue-500 underline'
+          onClick={handlePayAction}>
+          Погасить задолженность
+        </a>
+      )}
+    </>
+  );
+};

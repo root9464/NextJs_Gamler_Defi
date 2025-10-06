@@ -65,7 +65,7 @@ const buttonStyles = tv({
     isDisabled: {
       true: [
         'opacity-50 forced-colors:text-black/25 bg-uiButtonBg text-black/25 border-black/25',
-        'cursor-not-allowed',
+        'cursor-not-allowed select-none',
         'shadow-none',
         'hover:bg-[initial] hover:text-[initial] hover:border-[initial]',
         'focus:outline-none focus-visible:outline-none focus-visible:ring-0',
@@ -93,6 +93,9 @@ const buttonStyles = tv({
       className: [
         'bg-uiPrimaryBg border-black/25 text-black/25',
         'hover:bg-uiPrimaryBg hover:border-black/25 hover:text-black/25',
+        'focus:outline-none focus-visible:outline-none focus-visible:ring-0',
+        'active:bg-uiPrimaryBg active:text-black/25',
+        'cursor-not-allowed select-none',
       ],
     },
   ],

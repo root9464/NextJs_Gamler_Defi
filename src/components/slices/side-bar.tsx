@@ -11,6 +11,7 @@ import MyPlayersIcon from '@assets/svg/my-players.svg';
 import RefferalProgramIcon from '@assets/svg/refferal-program.svg';
 import TicketsIcon from '@assets/svg/tickets.svg';
 import TriggerSidebarIcon from '@assets/svg/trigger-sidebar.svg';
+import ExchangeIcon from '@assets/svg/exchange.svg';
 
 import { usePathname } from 'next/navigation';
 
@@ -70,6 +71,7 @@ export const MENU_ITEMS = [
   { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
   { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
   { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/web3/referral-program' },
+  { label: 'Обменник', icon: ExchangeIcon, href: '/web3/exchanger/' },
 ];
 
 const bodyVariants: Variants = {
