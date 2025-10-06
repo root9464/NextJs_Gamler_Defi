@@ -1,7 +1,7 @@
 'use client';
 
 import MicroIcon from '@/assets/svg/micro.svg';
-import { IconFlow } from '../flow/icon-flow';
+import { IconFlow } from '@/components/flows/icon-flow';
 import { useMediaContext } from '../providers/media';
 
 export const ToggleAudio = () => {

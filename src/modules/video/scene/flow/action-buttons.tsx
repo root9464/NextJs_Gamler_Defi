@@ -1,11 +1,11 @@
 import MenuHubIcon from '@/assets/svg/menuhub.svg';
+import { IconFlow } from '@/components/flows/icon-flow';
 import { IssuingCards } from '@/modules/games/curash/flows/issuing-card';
 import type { FC, ReactNode } from 'react';
 import { LeaveGame } from '../features/leave-game';
 import { ToggleAudio } from '../features/toggle-audio';
 import { ToggleVideo } from '../features/toggle-video';
 import { UserCards } from '../features/user-cards';
-import { IconFlow } from './icon-flow';
 
 type ActionButtonsProps = {
   adminActions?: ReactNode;

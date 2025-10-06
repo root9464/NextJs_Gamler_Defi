@@ -1,5 +1,6 @@
 'use client';
 import CardHubIcon from '@/assets/svg/cardhub.svg';
+import { IconFlow } from '@/components/flows/icon-flow';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { playersAtom } from '@/modules/video/scene/store/players';
@@ -7,7 +8,6 @@ import { socketAtom } from '@/modules/video/scene/store/socket';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
-import { IconFlow } from '../flow/icon-flow';
 import { NotOwn } from './not-own-card';
 
 type Card = {

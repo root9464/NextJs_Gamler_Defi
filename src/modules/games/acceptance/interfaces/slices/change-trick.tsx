@@ -1,7 +1,6 @@
 'use client';
 
-import { IconFlow } from '@/modules/video/scene/flow/icon-flow';
-import React from 'react';
+import { IconFlow } from '@/components/flows/icon-flow';
 import { useTrickIcons } from '../../store/trick-store';
 
 export const ChangeTrick: React.FC = () => {

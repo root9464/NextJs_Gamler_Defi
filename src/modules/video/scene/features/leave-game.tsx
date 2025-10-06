@@ -1,8 +1,8 @@
 'use client';
 import ExitIcon from '@/assets/svg/exit.svg';
+import { IconFlow } from '@/components/flows/icon-flow';
 import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/navigation';
-import { IconFlow } from '../flow/icon-flow';
 import { SocketManager } from '../lib/socket-manager';
 import { socketAtom } from '../store/socket';
 
