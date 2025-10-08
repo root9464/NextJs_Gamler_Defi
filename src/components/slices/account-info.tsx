@@ -32,7 +32,8 @@ export const AccountInfo: FC = () => {
   const playerLikes = isSuccess ? account?.player_likes_number : 0;
   const hostLikes = isSuccess ? account?.host_likes_number : 0;
 
-  const avatar = isSuccess ? account?.user_photo_url : isError ? BaseAvatar.src : null;
+  console.log(account?.user_photo_url);
+  const avatar = isSuccess && account?.user_photo_url && account.user_photo_url.trim() !== '' ? account.user_photo_url : BaseAvatar.src;
 
   return (
     <div className='mobile:max-w-[289px] mobile:gap-0 flex h-full w-full max-w-[180px] flex-row items-center justify-between gap-1'>

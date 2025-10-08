@@ -40,7 +40,7 @@ const fetchAccount = async () => {
   return account;
 };
 
-const getUserPhotoUrl = async (photoPath: string | null): Promise<string> => {
+const getUserPhotoUrl = async (photoPath: string | null) => {
   if (!photoPath) return '';
 
   const user_photo = await proxy.get<Blob>(`/api/web2/user/${photoPath}`, {
