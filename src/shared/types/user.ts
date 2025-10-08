@@ -5,7 +5,7 @@ const UserSchema = z.object({
   link: z.string(),
   name: z.string(),
   referral_program_choice: z.boolean(),
-  photo_path: z.string(),
+  photo_path: z.string().nullable(),
   coins_number: z.number(),
   player_likes_number: z.number(),
   host_likes_number: z.number(),

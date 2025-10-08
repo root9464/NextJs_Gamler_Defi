@@ -1,7 +1,7 @@
 import { proxy } from '@/shared/lib/proxy';
 import { UserSchema } from '@/shared/types/user';
 import type { Extend } from '@/shared/types/utils';
-// import accountDataMock from '@shared/mocks/user.json';
+import accountDataMock from '@shared/mocks/user.json';
 import type { AdditionalInformation } from '@shared/types/orders';
 import { AdditionalInformationSchema } from '@shared/types/orders';
 import { validateResult } from '@shared/utils/zod.utils';
@@ -17,23 +17,21 @@ type Account = Extend<
   }
 >;
 
+
 const fetchAccount = async () => {
-  const localAccountData = localStorage.getItem('user-logged-in');
-  const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
-  // const userAccount = validateResult(accountDataMock, UserSchema);
+  // const localAccountData = localStorage.getItem('user-logged-in');
+  // const userAccount = validateResult(JSON.parse(localAccountData ?? '{}'), UserSchema);
+  const userAccount = validateResult(accountDataMock, UserSchema);
+
   const user = await proxy.get<AdditionalInformation>(`/api/web2/referral/referrer/${userAccount.user_id}`, {
     schema: AdditionalInformationSchema,
   });
 
-  const user_photo = await proxy.get<Blob>(`/api/web2/user/${userAccount.photo_path}`, {
-    responseType: 'blob',
-  });
-
-  const user_photo_url = URL.createObjectURL(user_photo);
+  const user_photo_url = await getUserPhotoUrl(userAccount.photo_path);
 
   const account: Account = {
     ...user,
-    user_photo_url: user_photo_url,
+    user_photo_url,
     coins_number: userAccount.coins_number,
     player_likes_number: userAccount.player_likes_number,
     host_likes_number: userAccount.host_likes_number,
@@ -41,6 +39,17 @@ const fetchAccount = async () => {
 
   return account;
 };
+
+const getUserPhotoUrl = async (photoPath: string | null): Promise<string> => {
+  if (!photoPath) return '';
+
+  const user_photo = await proxy.get<Blob>(`/api/web2/user/${photoPath}`, {
+    responseType: 'blob',
+  });
+
+  return URL.createObjectURL(user_photo);
+};
+
 
 const useAccount = () =>
   useQuery({
