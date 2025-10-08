@@ -71,7 +71,7 @@ export const MENU_ITEMS = [
   { label: 'Мои игроки', icon: MyPlayersIcon, href: '/account/my-players/' },
   { label: 'Билеты', icon: TicketsIcon, href: '/account/tickets/' },
   { label: 'Парнерская программа', icon: RefferalProgramIcon, href: '/web3/referral-program' },
-  { label: 'Обменник', icon: ExchangeIcon, href: '/exchanger/' },
+  { label: 'Обменник', icon: ExchangeIcon, href: '/web3/exchanger/' },
 ];
 
 const bodyVariants: Variants = {

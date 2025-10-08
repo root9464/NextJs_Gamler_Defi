@@ -4,7 +4,7 @@ import { calcComission } from '@/modules/partner-balance/helpers/calc-comission'
 import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useTon } from '@/shared/hooks/api/useTon';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
-import { formatUnixToDate } from '@/shared/utils/common.utils';
+import { formatDate } from '@/shared/utils/common.utils';
 import { fromNano } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
 import { Table, type GetProp, type TablePaginationConfig, type TableProps } from 'antd';
@@ -55,7 +55,7 @@ export const DebtTable = () => {
     ? paymentOrders.map((order) => ({
         order_id: order.id,
         tickets: order.ticket_count,
-        date: formatUnixToDate(order.created_at),
+        date: formatDate(order.created_at),
         debt_amount: Number(order.total_amount),
         refferer_id: order.referrer_id,
         refferal: order.telegram,

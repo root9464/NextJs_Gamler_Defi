@@ -1,4 +1,4 @@
-import { formatUnixToDate } from '@/shared/utils/common.utils';
+import { formatDate } from '@/shared/utils/common.utils';
 import type { Action, ResponseGetTrHistory } from '../hooks/api/useGetTransactions';
 import type { Referrals } from '../hooks/api/useRefferals';
 import { isJettonTransfer } from '../utils/transaction';
@@ -24,7 +24,7 @@ const trimUserData = (user: Referrals, level: number = 0): TrimmedUser => {
   const result: TrimmedUser = { ...baseData };
 
   if (level >= 1) {
-    result.createdAt = user.createdAt;
+    result.createdAt = formatDate(user.createdAt ?? 0);
     result.percent = level === 1 ? 20 : level === 2 ? 2 : 0;
   }
 
@@ -45,7 +45,7 @@ function filterFrogeTransfers(data: ResponseGetTrHistory) {
       .filter(isFrogeJettonTransfer)
       .map((action) => ({
         id: event.event_id,
-        time: formatUnixToDate(event.timestamp),
+        time: formatDate(event.timestamp),
         amount: Number(action.JettonTransfer.amount) / 10 ** action.JettonTransfer.jetton.decimals,
         action: action.simple_preview.description,
       })),
