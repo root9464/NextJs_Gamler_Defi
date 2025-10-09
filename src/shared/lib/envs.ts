@@ -6,7 +6,7 @@ const ClientEnvSchema = z.object({
 });
 
 const ServerEnvSchema = z.object({
-  NODE_ENV: z.string().default('development'),
+  NODE_ENV: z.string().default('production'),
 });
 
 type ClientEnv = z.infer<typeof ClientEnvSchema>;
