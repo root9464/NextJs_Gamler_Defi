@@ -5,7 +5,9 @@ const ClientEnvSchema = z.object({
   NEXT_PUBLIC_JETTON_MASTER: z.string(),
 });
 
-const ServerEnvSchema = z.object({});
+const ServerEnvSchema = z.object({
+  NODE_ENV: z.string().default('development'),
+});
 
 type ClientEnv = z.infer<typeof ClientEnvSchema>;
 type ServerEnv = z.infer<typeof ServerEnvSchema>;

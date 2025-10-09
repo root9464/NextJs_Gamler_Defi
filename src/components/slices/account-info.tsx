@@ -5,7 +5,7 @@ import { Skeleton } from '@ui/skeleton';
 import type { ComponentType, FC, SVGProps } from 'react';
 import { memo } from 'react';
 
-import BaseAvatar from '@assets/svg/base-avatar.svg';
+import DefaultAvatar from '@assets/img/default-avatar.png';
 import CoinIcon from '@assets/svg/coin.svg';
 import OrangeHeartIcon from '@assets/svg/heart-orange.svg';
 import HeartIcon from '@assets/svg/heart.svg';
@@ -32,7 +32,7 @@ export const AccountInfo: FC = () => {
   const playerLikes = isSuccess ? account?.player_likes_number : 0;
   const hostLikes = isSuccess ? account?.host_likes_number : 0;
 
-  const avatar = isSuccess && account?.user_photo_url && account.user_photo_url.trim() !== '' ? account.user_photo_url : BaseAvatar.src;
+  const avatar = isSuccess && account?.user_photo_url && account.user_photo_url.trim() !== '' ? account.user_photo_url : DefaultAvatar.src;
 
   return (
     <div className='mobile:max-w-[289px] mobile:gap-0 flex h-full w-full max-w-[180px] flex-row items-center justify-between gap-1'>
