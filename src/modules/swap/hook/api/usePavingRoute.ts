@@ -72,10 +72,11 @@ const usePavingRoute = (sendToken: string, receiveToken: string, amount: number)
       return response;
     },
 
-    enabled: !!sendToken && !!receiveToken && amount > 0 && !!amount,
+    enabled: !!sendToken && !!receiveToken && amount > 0,
     refetchInterval: false,
     staleTime: 1000 * 60,
   });
 
 export { usePavingRoute };
 export type { Path, SwapResponse };
+

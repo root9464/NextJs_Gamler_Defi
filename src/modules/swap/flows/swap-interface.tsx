@@ -32,7 +32,7 @@ export const SwapInterface = () => {
     isSuccess: isSuccessJettonWallets,
   } = useJettonWallet({ address: address ?? '' });
   const gamlerJettonWallet = jettonWallets?.balances.find((balance) => balance.jetton.symbol === 'GMLR');
-  const gamlerInBalance = Number(gamlerJettonWallet?.balance) / 10 ** (gamlerJettonWallet?.jetton.decimals ?? 0);
+  const gamlerInBalance = Number(gamlerJettonWallet?.balance ?? 0) / 10 ** (gamlerJettonWallet?.jetton.decimals ?? 0);
   const gamlerJettonAddress =
     gamlerJettonWallet && gamlerJettonWallet.wallet_address ? Address.parse(gamlerJettonWallet.jetton.address).toString() : '';
 
@@ -46,7 +46,7 @@ export const SwapInterface = () => {
   const tonUserBalance = rawTonUserBalance ? rawTonUserBalance.balance / 10 ** 9 : 0;
 
   const swapTokens = () => {
-    if (!swapState.send || !swapState.receive) return;
+    // if (!swapState.send || !swapState.receive) return;
     updateSwapState((prevState) => ({
       send: prevState.receive,
       receive: prevState.send,
@@ -59,10 +59,10 @@ export const SwapInterface = () => {
   };
 
   useEffect(() => {
-    if (!isSuccessJettonWallets || !isSuccessTonUserBalance) return;
+    // if (!isSuccessJettonWallets || !isSuccessTonUserBalance) return;
     setSwapState({
       send: 'native',
-      receive: gamlerJettonAddress,
+      receive: gamlerJettonAddress || ENVs.client.NEXT_PUBLIC_JETTON_MASTER,
       amount: 1,
     });
 
@@ -91,24 +91,20 @@ export const SwapInterface = () => {
 
   return (
     <div className='flex flex-col gap-3'>
-      {isSuccessTonUserBalance && (
-        <SwapInput
-          type='send'
-          amount={swapState.amount}
-          maxAmount={swapState.send === 'native' ? tonUserBalance : gamlerInBalance}
-          setSwapState={updateSwapState}
-        />
-      )}
-      {(isErrorTonUserBalance || isLoadingTonUserBalance) && <p>чето не так</p>}
+      <SwapInput
+        type='send'
+        amount={swapState.amount}
+        maxAmount={swapState.send === 'native' ? tonUserBalance : gamlerInBalance}
+        setSwapState={updateSwapState}
+      />
+      {(isErrorTonUserBalance || isLoadingTonUserBalance) && <Skeleton className='h-8 w-full' />}
       <RollStats swapTokens={swapTokens} />
-      {isSuccessJettonWallets && gamlerJettonWallet && (
-        <SwapInput
-          type='receive'
-          amount={Number(swapRoute.output_amount.toFixed(4))}
-          maxAmount={swapState.send === 'native' ? gamlerInBalance : tonUserBalance}
-          setSwapState={updateSwapState}
-        />
-      )}
+      <SwapInput
+        type='receive'
+        amount={Number(swapRoute.output_amount.toFixed(4))}
+        maxAmount={swapState.send === 'native' ? gamlerInBalance : tonUserBalance}
+        setSwapState={updateSwapState}
+      />
       {(isErrorJettonWallets || isLoadingJettonWallets) && <Skeleton className='h-8 w-full' />}
       <SwapButton />
     </div>

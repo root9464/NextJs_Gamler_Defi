@@ -38,7 +38,7 @@ export const SwapButton = () => {
   const hasDebt = Boolean(debt && debt > 0) && pavingRoute?.output_token.metadata.symbol !== 'GMLR';
   const canSwap = isSuccessCellSwap && cellSwap.transactions.length > 0;
   const showButton = canSwap && !hasDebt;
-  const showSkeleton = isLoadingCellSwap || isErrorCellSwap || isLoadingDebt;
+  const showSkeleton = isLoadingCellSwap || isErrorCellSwap || isLoadingDebt || !address;
 
   const transaction = async () => {
     if (!canSwap || hasDebt) return;
@@ -55,12 +55,13 @@ export const SwapButton = () => {
     await tonConnectUI.sendTransaction(message);
     resetSwapRoute();
   };
+
   useEffect(() => {
-    if (!isSuccessCellSwap || !isSuccessPavingRoute) return;
+    if (!isSuccessPavingRoute) return;
     setSwapRoute({
       ...pavingRoute,
     });
-  }, [isSuccessCellSwap, isSuccessPavingRoute, pavingRoute, setSwapRoute]);
+  }, [isSuccessPavingRoute, pavingRoute, setSwapRoute]);
 
   return (
     <>
@@ -86,7 +87,7 @@ export const SwapButton = () => {
         </Tooltip>
       )}
 
-      {showSkeleton && <Skeleton className='h-9 w-[107px]' />}
+      {showSkeleton && <Skeleton className='h-9 w-full' />}
     </>
   );
 };
