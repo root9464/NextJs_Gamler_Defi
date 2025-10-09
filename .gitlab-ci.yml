@@ -8,6 +8,7 @@ build:
    stage: build
    script:
       - echo Build
+      - mv env.prod .env
       - yarn install
       - yarn build
 
@@ -41,10 +42,10 @@ Deploy to prod:
       - main
    script:
       - yarn config set registry https://registry.npmjs.org
+      - mv env.prod .env
       - yarn install
       - yarn build
       - rsync --exclude '.git'  --exclude '.gitlab-ci.yml'  -avzh . /www/gamler/gamler_micro
       - cd /www/gamler/gamler_micro
-      - mv env.prod .env
       - sudo systemctl stop gamlermicro
       - sudo systemctl start gamlermicro
