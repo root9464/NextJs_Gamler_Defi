@@ -7,19 +7,18 @@ import { useTon } from '@/shared/hooks/api/useTon';
 import { ENVs } from '@/shared/lib/envs';
 import { Address } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect } from 'react';
 import { RollStats } from '../features/roll-stats';
 import { SwapButton } from '../features/swap-button';
 import { SwapInput } from '../slices/swap-input';
 import { setSelectTokenAtom, updateSelectTokenAtom } from '../store/select-token';
 import { swapRouteAtom } from '../store/swap-route';
-import { setSwapStateAtom, swapStateAtom, updateSwapStateAtom } from '../store/swap-store';
+import { swapStateAtom, updateSwapStateAtom } from '../store/swap-store';
 
 export const SwapInterface = () => {
   const address = useTonAddress();
-  const swapState = useAtomValue(swapStateAtom);
-  const setSwapState = useSetAtom(setSwapStateAtom);
+  const [swapState, setSwapState] = useAtom(swapStateAtom);
   const setSelectToken = useSetAtom(setSelectTokenAtom);
   const updateSwapState = useSetAtom(updateSwapStateAtom);
   const updateSelectToken = useSetAtom(updateSelectTokenAtom);

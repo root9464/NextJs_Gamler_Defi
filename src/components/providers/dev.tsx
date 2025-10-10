@@ -8,8 +8,8 @@ import type { ReactNode } from 'react';
 export const DevProvider = ({ children }: Readonly<{ children: ReactNode }>) => {
   const isDev = ENVs.server.NODE_ENV === 'development';
 
-  localStorage.setItem('user-logged-in', JSON.stringify(userMock));
   if (isDev) {
+    localStorage.setItem('user-logged-in', JSON.stringify(userMock));
     console.log('is dev mode');
 
     return (
