@@ -88,7 +88,9 @@ export const SwapButton = () => {
             Вывести
           </Tooltip.Trigger>
           <Tooltip.Content>
-            <p className='text-muted-fg mt-1 max-w-2xs text-sm text-pretty'>Вы пока не можете выводить гамлеры тк у вас есть задолженность.</p>
+            <p className='text-muted-fg mt-1 max-w-2xs text-sm text-pretty'>
+              Вы пока не можете выводить гамлеры так как у вас есть задолженность.
+            </p>
           </Tooltip.Content>
         </Tooltip>
       )}
