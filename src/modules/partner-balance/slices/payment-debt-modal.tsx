@@ -17,7 +17,7 @@ const debtInstructions = [
     images: [PaymentDebtImage.src],
   },
   {
-    title: 'Для погашение конкретной задолженности, нажмите кнопку “Погасить задолженность”',
+    title: 'Для погашения конкретной задолженности, нажмите кнопку “Погасить задолженность”',
     images: [HowToPayDebtImage.src],
   },
   {

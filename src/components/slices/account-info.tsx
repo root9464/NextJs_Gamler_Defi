@@ -43,7 +43,7 @@ export const AccountInfo: FC = () => {
       </div>
       <div className='mobile:ml-6 ml-2 flex h-full w-fit flex-row items-center justify-end'>
         {avatar && <Avatar src={avatar} alt='Avatar' className='mobile:h-[38px] mobile:w-[38px] h-[32px] w-[32px]' />}
-        {(isLoading || !isSuccess || isError) && <Skeleton className='mobile:h-10 mobile:w-10 h-8 w-8 rounded-full' />}
+        {(isLoading || isError) && <Skeleton className='mobile:h-10 mobile:w-10 h-8 w-8 rounded-full' />}
       </div>
     </div>
   );

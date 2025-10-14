@@ -61,8 +61,8 @@ export const SwapInput: FC<SwapInputProps> = ({ type, amount, maxAmount, setSwap
     <div className='flex w-full flex-col gap-1'>
       <div className='flex w-full flex-row items-center justify-between'>
         {type === 'send' ? (
-          <div className='flex flex-row gap-1'>
-            <h3 className='text-sm font-medium'>Вы отправляете:</h3>
+          <div className='flex flex-row items-baseline gap-1 *:text-sm'>
+            <h3 className='font-medium'>Вы отправляете:</h3>
             <button
               className='text-uiActiveBlue w-fit cursor-pointer underline'
               onClick={() =>

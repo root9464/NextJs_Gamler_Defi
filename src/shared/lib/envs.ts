@@ -26,7 +26,7 @@ export class ENVsManager {
     } else {
       const clientEnv = this.getClientEnv();
       this.client = validateResult(clientEnv, ClientEnvSchema);
-      this.server = {} as ServerEnv;
+      this.server = validateResult(clientEnv, ServerEnvSchema);
     }
   }
 
@@ -35,6 +35,10 @@ export class ENVsManager {
 
     if (process.env.NEXT_PUBLIC_JETTON_MASTER) {
       env.NEXT_PUBLIC_JETTON_MASTER = process.env.NEXT_PUBLIC_JETTON_MASTER;
+    }
+
+    if (process.env.NODE_ENV) {
+      env.NODE_ENV = process.env.NODE_ENV;
     }
 
     return env;
