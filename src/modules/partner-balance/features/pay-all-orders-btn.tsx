@@ -2,7 +2,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useTon } from '@/shared/hooks/api/useTon';
 import { Button } from '@components/ui/button';
 import { useAccount } from '@shared/hooks/api/useAccount';
-import { fromNano } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
 import { toast } from 'sonner';
 import { usePay } from '../../table-statistics/hooks/api/usePay';
@@ -32,7 +31,7 @@ export const PayAllOrdersBtn = () => {
 
   const { payAllOrders } = usePay(account?.user_id ?? 0);
 
-  const isBalanceSufficient = calcComission(Number(fromNano(userTonBalance?.balance ?? 0)), debt_arr.length);
+  const isBalanceSufficient = calcComission(Number((userTonBalance?.balance ?? 0)), debt_arr.length);
   const handlePayAllOrders = () => (isBalanceSufficient ? payAllOrders(createCell, debt_arr) : toast('Недостаточно средств'));
 
   const isNullDebt = debt_arr.length > 0;
