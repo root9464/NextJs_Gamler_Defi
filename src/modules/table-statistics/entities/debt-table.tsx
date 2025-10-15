@@ -5,7 +5,6 @@ import { useAccount } from '@/shared/hooks/api/useAccount';
 import { useTon } from '@/shared/hooks/api/useTon';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { formatDate } from '@/shared/utils/common.utils';
-import { fromNano } from '@ton/core';
 import { useTonAddress } from '@tonconnect/ui-react';
 import { Table, type GetProp, type TablePaginationConfig, type TableProps } from 'antd';
 import Column from 'antd/es/table/Column';
@@ -144,7 +143,7 @@ type ActionColumnProps = {
 
 const ActionColumn: FC<ActionColumnProps> = ({ record, payOrder, createCell, deleteOrder, address, onOpenModal }) => {
   const { data: userTonBalance } = useTon(address);
-  const isBalanceSufficient = calcComission(Number(fromNano(userTonBalance?.balance ?? 0)), 1);
+  const isBalanceSufficient = calcComission(Number((userTonBalance?.balance ?? 0)), 1);
 
   const handlePayAction = () =>
     isBalanceSufficient
